@@ -10,7 +10,7 @@ import {
   RotateCcw,
   Search
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   CATEGORY_PATH_DELIMITER,
   formatCategoryPath,
@@ -41,17 +41,47 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [country, setCountry] = useState(ALL);
   const [publisher, setPublisher] = useState(ALL);
   const [category, setCategory] = useState(ALL);
+  const [subcategory, setSubcategory] = useState(ALL);
   const [directDownload, setDirectDownload] = useState(ALL);
+
+  const optionStandards = useMemo(
+    () =>
+      standards.filter(
+        (standard) =>
+          (country === ALL || standard.country_scope === country) &&
+          (publisher === ALL || standard.publisher === publisher)
+      ),
+    [country, publisher, standards]
+  );
 
   const filters = useMemo(
     () => ({
       countries: makeOptions(standards.map((standard) => standard.country_scope)),
       publishers: makeOptions(standards.map((standard) => standard.publisher)),
-      categories: makeCategoryOptions(standards),
+      categories: makeTopCategoryOptions(optionStandards),
+      subcategories: makeSubcategoryOptions(optionStandards, category),
       directDownloads: makeOptions(DIRECT_DOWNLOAD_FILTERS)
     }),
-    [standards]
+    [category, optionStandards, standards]
   );
+
+  useEffect(() => {
+    if (!hasOption(filters.categories, category)) {
+      setCategory(ALL);
+      setSubcategory(ALL);
+    }
+  }, [category, filters.categories]);
+
+  useEffect(() => {
+    if (category === ALL && subcategory !== ALL) {
+      setSubcategory(ALL);
+      return;
+    }
+
+    if (!hasOption(filters.subcategories, subcategory)) {
+      setSubcategory(ALL);
+    }
+  }, [category, filters.subcategories, subcategory]);
 
   const filteredStandards = useMemo(() => {
     const search = query.trim().toLowerCase();
@@ -78,13 +108,13 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
-        matchesCategory(standard, category) &&
+        matchesCategory(standard, category, subcategory) &&
         (directDownload === ALL ||
           (directDownload === DIRECT_DOWNLOAD_AVAILABLE && hasDirectDownload) ||
           (directDownload === DIRECT_DOWNLOAD_MISSING && !hasDirectDownload))
       );
     });
-  }, [category, country, directDownload, publisher, query, standards]);
+  }, [category, country, directDownload, publisher, query, standards, subcategory]);
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(
@@ -96,7 +126,25 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     setCountry(ALL);
     setPublisher(ALL);
     setCategory(ALL);
+    setSubcategory(ALL);
     setDirectDownload(ALL);
+  }
+
+  function updateCountry(nextCountry: string) {
+    setCountry(nextCountry);
+    setCategory(ALL);
+    setSubcategory(ALL);
+  }
+
+  function updatePublisher(nextPublisher: string) {
+    setPublisher(nextPublisher);
+    setCategory(ALL);
+    setSubcategory(ALL);
+  }
+
+  function updateCategory(nextCategory: string) {
+    setCategory(nextCategory);
+    setSubcategory(ALL);
   }
 
   return (
@@ -125,9 +173,16 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
             <h2>Filters</h2>
           </div>
 
-          <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={setCountry} />
-          <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={setPublisher} />
-          <FilterSelect label="Category" value={category} values={filters.categories} onChange={setCategory} />
+          <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={updateCountry} />
+          <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={updatePublisher} />
+          <FilterSelect label="Category" value={category} values={filters.categories} onChange={updateCategory} />
+          <FilterSelect
+            disabled={category === ALL || filters.subcategories.length <= 1}
+            label="Subcategory"
+            value={subcategory}
+            values={filters.subcategories}
+            onChange={setSubcategory}
+          />
           <FilterSelect
             label="Direct Download"
             value={directDownload}
@@ -190,7 +245,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                       aria-label={`Filter by publisher ${standard.publisher}`}
                       aria-pressed={publisher === standard.publisher}
                       className="publisher-filter-button"
-                      onClick={() => setPublisher(standard.publisher)}
+                      onClick={() => updatePublisher(standard.publisher)}
                       type="button"
                     >
                       {standard.publisher}
@@ -246,19 +301,31 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
 function makeOptions(values: string[]) {
   return [
     { value: ALL, label: ALL },
-    ...Array.from(new Set(values))
+    ...Array.from(new Set(values.filter(Boolean).filter((value) => value !== ALL)))
       .sort((a, b) => a.localeCompare(b))
       .map((value) => ({ value, label: value }))
   ];
 }
 
-function makeCategoryOptions(standards: StandardRecord[]) {
+function makeTopCategoryOptions(standards: StandardRecord[]) {
+  return makeOptions(standards.map((standard) => getCategoryPath(standard)[0]));
+}
+
+function makeSubcategoryOptions(standards: StandardRecord[], selectedCategory: string) {
   const nodes = new Map<string, string[]>();
+
+  if (selectedCategory === ALL) {
+    return [{ value: ALL, label: ALL }];
+  }
 
   standards.forEach((standard) => {
     const path = getCategoryPath(standard);
 
-    for (let depth = 1; depth <= path.length; depth += 1) {
+    if (path[0] !== selectedCategory) {
+      return;
+    }
+
+    for (let depth = 2; depth <= path.length; depth += 1) {
       const nodePath = path.slice(0, depth);
       nodes.set(getCategoryKey(nodePath), nodePath);
     }
@@ -272,38 +339,58 @@ function makeCategoryOptions(standards: StandardRecord[]) {
       )
       .map(([value, path]) => ({
         value,
-        label: formatCategoryPath(path)
+        label: formatCategoryPath(path.slice(1))
       }))
   ];
 }
 
-function matchesCategory(standard: StandardRecord, selectedCategory: string) {
-  if (selectedCategory === ALL) {
+function matchesCategory(
+  standard: StandardRecord,
+  selectedCategory: string,
+  selectedSubcategory: string
+) {
+  const path = getCategoryPath(standard);
+
+  if (selectedCategory !== ALL && path[0] !== selectedCategory) {
+    return false;
+  }
+
+  if (selectedSubcategory === ALL) {
     return true;
   }
 
-  const categoryKey = getCategoryKey(getCategoryPath(standard));
+  const categoryKey = getCategoryKey(path);
   return (
-    categoryKey === selectedCategory ||
-    categoryKey.startsWith(`${selectedCategory}${CATEGORY_PATH_DELIMITER}`)
+    categoryKey === selectedSubcategory ||
+    categoryKey.startsWith(`${selectedSubcategory}${CATEGORY_PATH_DELIMITER}`)
   );
+}
+
+function hasOption(options: FilterOption[], value: string) {
+  return options.some((option) => option.value === value);
 }
 
 function FilterSelect({
   label,
   value,
   values,
+  disabled,
   onChange
 }: {
   label: string;
   value: string;
   values: FilterOption[];
+  disabled?: boolean;
   onChange: (value: string) => void;
 }) {
   return (
     <label className="filter-control">
       <span>{label}</span>
-      <select value={value} onChange={(event) => onChange(event.target.value)}>
+      <select
+        disabled={disabled}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      >
         {values.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

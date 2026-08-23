@@ -27,15 +27,15 @@ For that reason, the registry classifies individual Information Documents as `in
 
 ## UI Category Tree
 
-The app derives a tree-style category path from `primary_category` values instead of storing extra CSV columns. AESO records are grouped as:
+The app derives a tree-style category path from `primary_category` values instead of storing extra CSV columns. Publisher names are not repeated in category labels because publisher is already a separate filter. AESO records are grouped as:
 
-- AESO / ISO Rules / Current ISO Rules / Part ...
-- AESO / ISO Rules / REM ISO Rules / Part ...
-- AESO / Alberta Reliability Standards / family
-- AESO / Information Documents / ISO Rules and Alberta Reliability Standards
-- AESO / Technical Guidance / Connection Requirements or Modelling
-- AESO / Reference / Glossary
-- AESO / Collections / Rules and Standards Portal
+- ISO Rules / Current ISO Rules / Part ...
+- ISO Rules / REM ISO Rules / Part ...
+- Alberta Reliability Standards / family
+- Information Documents / ISO Rules and Alberta Reliability Standards
+- Technical Guidance / Connection Requirements or Modelling
+- Reference / Glossary
+- Collections / Rules and Standards Portal
 
 ## Current Batch Added
 
