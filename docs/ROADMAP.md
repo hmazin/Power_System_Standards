@@ -20,10 +20,15 @@ Initial target: 50 to 100 records.
 
 Priority groups:
 
+- NERC reliability and CIP standards
+- WECC regional reliability standards and criteria
+- Ontario IESO market rules manuals and grid requirements
+- Ontario Energy Board electricity codes and filing requirements
+- ERCOT protocols guides and market rules
+- CAISO tariff business practice manuals and operating procedures
 - CSA Canadian Electrical Code and key C22.2 product standards
 - NFPA NEC, 70E, 70B, 855, and related electrical/fire standards
 - IEEE power standards for substations, grounding, DER, protection, and safety
-- NERC reliability and CIP standards
 - UL standards for DER, BESS, PV, EV charging, and equipment certification
 - NEMA equipment standards
 - Province and state adoption records for CEC and NEC

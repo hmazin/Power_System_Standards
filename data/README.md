@@ -10,6 +10,8 @@ BC Hydro records can be refreshed from the official public source pages with `sc
 
 AUC records are sourced from the official public AUC rules and regulatory reference pages.
 
+NERC reliability standard records can be refreshed from the official public NERC Reliability Standards pages with `scripts/update_nerc_catalog.mjs`.
+
 ## What Is Allowed
 
 Allowed data includes:
