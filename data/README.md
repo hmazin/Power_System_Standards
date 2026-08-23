@@ -2,6 +2,8 @@
 
 This folder contains public metadata about electrical and power-system standards.
 
+The app reads compatible CSV files in this folder. Keep each CSV on the same schema as `standards_seed.csv`.
+
 ## What Is Allowed
 
 Allowed data includes:

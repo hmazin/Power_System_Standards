@@ -19,11 +19,17 @@ export type StandardRecord = {
   notes: string;
 };
 
-const CSV_PATH = path.join(process.cwd(), "data", "standards_seed.csv");
+const DATA_DIR = path.join(process.cwd(), "data");
 
 export function getStandards(): StandardRecord[] {
-  const csv = fs.readFileSync(CSV_PATH, "utf8");
-  return parseCsv(csv);
+  return fs
+    .readdirSync(DATA_DIR)
+    .filter((fileName) => fileName.endsWith(".csv"))
+    .sort((a, b) => a.localeCompare(b))
+    .flatMap((fileName) => {
+      const csv = fs.readFileSync(path.join(DATA_DIR, fileName), "utf8");
+      return parseCsv(csv);
+    });
 }
 
 export function getStandardById(standardId: string): StandardRecord | undefined {
