@@ -35,7 +35,6 @@ The app derives a tree-style category path from `primary_category` values instea
 - Information Documents / ISO Rules and Alberta Reliability Standards
 - Technical Guidance / Connection Requirements or Modelling
 - Reference / Glossary
-- Collections / Rules and Standards Portal
 
 ## Current Batch Added
 

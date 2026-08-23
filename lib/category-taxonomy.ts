@@ -21,10 +21,6 @@ export function formatCategoryPath(path: string[]) {
 function getAesoCategoryPath(standard: StandardRecord): string[] {
   const category = standard.primary_category;
 
-  if (category === "AESO authoritative and guidance documents") {
-    return ["Collections", "Rules and Standards Portal"];
-  }
-
   if (category === "AESO market and system rules") {
     return ["ISO Rules", "Current ISO Rules", "Complete Set"];
   }
