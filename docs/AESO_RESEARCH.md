@@ -24,7 +24,7 @@ AESO identifies Authoritative Documents as ISO Rules, Alberta Reliability Standa
 
 AESO Information Documents provide guidance related to Authoritative Documents. AESO states that Information Documents are not authoritative and do not contain requirements that AESO or market participants must comply with. In a conflict, the Authoritative Document governs.
 
-For that reason, the registry includes a collection-level record for AESO Information Documents but does not classify individual Information Documents as standards.
+For that reason, the registry classifies individual Information Documents as `information_document` records and does not classify them as authoritative standards.
 
 ## Current Batch Added
 
@@ -40,6 +40,7 @@ The first AESO data batch adds:
 - Current individual Alberta Reliability Standards listed by AESO
 - Current individual ISO Rules listed by AESO
 - Individually accessible REM ISO Rules listed by AESO
+- Current individual Information Documents for ISO Rules and Alberta Reliability Standards listed by AESO
 - AESO Connection Requirements for Inverter-Based Resources
 - AESO Transformer Modelling Guide
 
@@ -51,13 +52,14 @@ The AESO Connection Requirements for Inverter-Based Resources record uses the pu
 
 The AESO Transformer Modelling Guide record uses the public AESO-hosted PDF URL directly because no current AESO landing page was found during source review. The PDF cover labels the document Confidential/Internal, so this public registry stores metadata and the publisher-hosted link only.
 
-The AESO rule rows can be refreshed from the official public ISO Rules and REM ISO Rules pages with `scripts/update_aeso_rule_catalog.mjs`.
+The AESO ISO Rule, REM ISO Rule, and Information Document rows can be refreshed from the official public AESO pages with `scripts/update_aeso_rule_catalog.mjs`.
 
 ## Future AESO Collection Passes
 
 The next AESO metadata passes should add:
 
 - Individual ISO Tariff rates, riders, terms and appendices
+- Individual AESO Information Documents for Tariff
 - Future-effective REM ISO Rule sections that are in the approved REM package but not yet individually exposed by AESO
 - Future-effective Alberta Reliability Standards from AESO Engage consultations
 - Retired and non-applicable ARS records as separate historical applicability records

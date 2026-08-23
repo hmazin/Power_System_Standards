@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const AESO_ROOT = "https://www.aeso.ca";
 const ISO_RULES_URL = `${AESO_ROOT}/rules-standards-and-tariff/iso-rules/`;
 const REM_RULES_URL = `${AESO_ROOT}/rules-standards-and-tariff/rem-iso-rules/`;
+const INFORMATION_DOCUMENTS_URL = `${AESO_ROOT}/rules-standards-and-tariff/information-documents/`;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
@@ -38,11 +39,16 @@ const existingRows = parseCsv(fs.readFileSync(dataPath, "utf8"));
 const rowsWithoutGeneratedRules = existingRows.filter(
   (row) =>
     !row.standard_id.startsWith("AESO-ISO-RULE-") &&
-    !row.standard_id.startsWith("AESO-REM-ISO-RULE-")
+    !row.standard_id.startsWith("AESO-REM-ISO-RULE-") &&
+    !row.standard_id.startsWith("AESO-INFO-DOC-")
 );
 
 const isoHtml = await readHtml("--iso-html", ISO_RULES_URL);
 const remHtml = await readHtml("--rem-html", REM_RULES_URL);
+const informationDocumentsHtml = await readHtml(
+  "--information-documents-html",
+  INFORMATION_DOCUMENTS_URL
+);
 
 const isoRules = parseRuleRows({
   html: isoHtml,
@@ -71,18 +77,20 @@ const remRules = parseRuleRows({
 });
 
 const generatedRules = [...isoRules, ...remRules];
+const informationDocuments = parseInformationDocumentRows(informationDocumentsHtml);
 const insertAfterIndex = rowsWithoutGeneratedRules.findIndex(
   (row) => row.standard_id === "AESO-INFORMATION-DOCUMENTS"
 );
 const nextRows = [...rowsWithoutGeneratedRules];
-nextRows.splice(insertAfterIndex + 1, 0, ...generatedRules);
+nextRows.splice(insertAfterIndex + 1, 0, ...informationDocuments, ...generatedRules);
 
 fs.writeFileSync(dataPath, stringifyCsv(nextRows), "utf8");
 
+console.log(`information_documents=${informationDocuments.length}`);
 console.log(`iso_rules=${isoRules.length}`);
 console.log(`rem_iso_rules=${remRules.length}`);
 console.log(
-  `direct_downloads=${generatedRules.filter((row) => row.source_download_url).length}`
+  `direct_downloads=${[...informationDocuments, ...generatedRules].filter((row) => row.source_download_url).length}`
 );
 console.log(
   `missing_downloads=${generatedRules
@@ -187,6 +195,68 @@ function parseRuleRows({
       official_url: absolutize(match[1]),
       source_download_url: downloadUrl,
       notes: downloadUrl ? notes : noDownloadNotes
+    });
+  }
+
+  return rows;
+}
+
+function parseInformationDocumentRows(html) {
+  const startMarker =
+    "Individual Information Documents for ISO Rules and Alberta Reliability Standards";
+  const endMarker = "Information Documents for Tariff";
+  const start = html.indexOf(startMarker);
+  const end = html.indexOf(endMarker, start);
+
+  if (start === -1 || end === -1) {
+    throw new Error("Could not find AESO Information Documents table");
+  }
+
+  const segment = html.slice(start, end);
+  const rowPattern = /<tr\b[^>]*>([\s\S]*?)<\/tr>/g;
+  const rows = [];
+
+  for (const rowMatch of segment.matchAll(rowPattern)) {
+    const rowHtml = rowMatch[1];
+    const cells = Array.from(
+      rowHtml.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g),
+      (match) => match[1]
+    );
+
+    if (cells.length < 3) {
+      continue;
+    }
+
+    const idMatch = cells[0].match(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/);
+    if (!idMatch) {
+      continue;
+    }
+
+    const designation = decodeHtml(stripTags(idMatch[2]));
+    if (!/^20\d{2}-/.test(designation)) {
+      continue;
+    }
+
+    const title = decodeHtml(stripTags(cells[1]));
+    const postingDate = decodeHtml(stripTags(cells[2]));
+
+    rows.push({
+      standard_id: `AESO-INFO-DOC-${designation.toUpperCase().replace(/[^A-Z0-9]+/g, "-")}`,
+      designation,
+      title,
+      publisher: "AESO",
+      record_type: "information_document",
+      country_scope: "Canada - Alberta",
+      primary_category:
+        "AESO information document - ISO Rules and Alberta Reliability Standards",
+      latest_known_edition: postingDate || editionFromDownload(idMatch[1]),
+      applicability:
+        "Not authoritative guidance; related AESO authoritative documents govern",
+      summary: `AESO Information Document ${designation} provides non-authoritative guidance: ${title}.`,
+      official_url: INFORMATION_DOCUMENTS_URL,
+      source_download_url: absolutize(idMatch[1]),
+      notes:
+        "Extracted from official AESO Information Documents page current individual documents list. AESO states Information Documents are not authoritative and do not contain binding requirements."
     });
   }
 
