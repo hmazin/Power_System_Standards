@@ -67,8 +67,7 @@ select {
 .filters-panel,
 .results-panel,
 .detail-header,
-.detail-panel,
-.notice-band {
+.detail-panel {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
@@ -239,15 +238,6 @@ h1 {
   color: var(--blue-dark);
   background: var(--surface-soft);
   cursor: pointer;
-}
-
-.metadata-note {
-  padding: 12px;
-  border-left: 3px solid var(--amber);
-  color: var(--muted);
-  background: var(--surface-warm);
-  font-size: 0.88rem;
-  line-height: 1.45;
 }
 
 .results-panel {
@@ -585,17 +575,6 @@ h1 {
   line-height: 1.65;
 }
 
-.notice-band {
-  margin-top: 14px;
-  padding: 14px 16px;
-  color: var(--amber);
-  background: var(--surface-warm);
-  border-left: 4px solid var(--amber);
-  border-radius: 8px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
 @media (max-width: 1180px) {
   .registry-header,
   .workbench {
@@ -608,7 +587,6 @@ h1 {
   }
 
   .panel-title,
-  .metadata-note,
   .reset-button {
     grid-column: 1 / -1;
   }

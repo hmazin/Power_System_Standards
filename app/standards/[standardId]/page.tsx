@@ -98,11 +98,6 @@ export default async function StandardPage({ params }: StandardPageProps) {
         <h2>Notes</h2>
         <p>{standard.notes}</p>
       </section>
-
-      <section className="notice-band">
-        This registry stores public metadata and original applicability notes only.
-        It does not host standards PDFs or reproduce copyrighted standards text.
-      </section>
     </main>
   );
 }

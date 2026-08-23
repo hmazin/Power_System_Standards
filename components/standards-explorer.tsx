@@ -117,9 +117,6 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
             Reset
           </button>
 
-          <div className="metadata-note">
-            Public metadata only. Official source links are kept with every record.
-          </div>
         </aside>
 
         <section className="results-panel">
