@@ -25,6 +25,18 @@ AESO Information Documents provide guidance related to Authoritative Documents. 
 
 For that reason, the registry classifies individual Information Documents as `information_document` records and does not classify them as authoritative standards.
 
+## UI Category Tree
+
+The app derives a tree-style category path from `primary_category` values instead of storing extra CSV columns. AESO records are grouped as:
+
+- AESO / ISO Rules / Current ISO Rules / Part ...
+- AESO / ISO Rules / REM ISO Rules / Part ...
+- AESO / Alberta Reliability Standards / family
+- AESO / Information Documents / ISO Rules and Alberta Reliability Standards
+- AESO / Technical Guidance / Connection Requirements or Modelling
+- AESO / Reference / Glossary
+- AESO / Collections / Rules and Standards Portal
+
 ## Current Batch Added
 
 The first AESO data batch adds:

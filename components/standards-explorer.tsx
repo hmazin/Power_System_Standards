@@ -11,6 +11,12 @@ import {
   Search
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import {
+  CATEGORY_PATH_DELIMITER,
+  formatCategoryPath,
+  getCategoryKey,
+  getCategoryPath
+} from "@/lib/category-taxonomy";
 import type { StandardRecord } from "@/lib/standards";
 
 type StandardsExplorerProps = {
@@ -25,6 +31,10 @@ const DIRECT_DOWNLOAD_FILTERS = [
   DIRECT_DOWNLOAD_AVAILABLE,
   DIRECT_DOWNLOAD_MISSING
 ];
+type FilterOption = {
+  value: string;
+  label: string;
+};
 
 export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [query, setQuery] = useState("");
@@ -37,7 +47,8 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     () => ({
       countries: makeOptions(standards.map((standard) => standard.country_scope)),
       publishers: makeOptions(standards.map((standard) => standard.publisher)),
-      categories: makeOptions(standards.map((standard) => standard.primary_category))
+      categories: makeCategoryOptions(standards),
+      directDownloads: makeOptions(DIRECT_DOWNLOAD_FILTERS)
     }),
     [standards]
   );
@@ -52,6 +63,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         standard.title,
         standard.publisher,
         standard.primary_category,
+        formatCategoryPath(getCategoryPath(standard)),
         standard.country_scope,
         standard.latest_known_edition,
         standard.applicability,
@@ -66,7 +78,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
-        (category === ALL || standard.primary_category === category) &&
+        matchesCategory(standard, category) &&
         (directDownload === ALL ||
           (directDownload === DIRECT_DOWNLOAD_AVAILABLE && hasDirectDownload) ||
           (directDownload === DIRECT_DOWNLOAD_MISSING && !hasDirectDownload))
@@ -75,7 +87,9 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   }, [category, country, directDownload, publisher, query, standards]);
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
-  const categoryCount = new Set(standards.map((standard) => standard.primary_category)).size;
+  const categoryCount = new Set(
+    standards.map((standard) => getCategoryKey(getCategoryPath(standard)))
+  ).size;
 
   function resetFilters() {
     setQuery("");
@@ -117,7 +131,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
           <FilterSelect
             label="Direct Download"
             value={directDownload}
-            values={DIRECT_DOWNLOAD_FILTERS}
+            values={filters.directDownloads}
             onChange={setDirectDownload}
           />
 
@@ -156,60 +170,64 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
               <span role="columnheader">Links</span>
             </div>
 
-            {filteredStandards.map((standard) => (
-              <article className="standard-row" key={standard.standard_id} role="row">
-                <div className="designation-cell" role="cell">
-                  <Link href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
-                    {standard.designation}
-                  </Link>
-                  <span>{standard.primary_category}</span>
-                </div>
-                <div className="title-cell" role="cell">
-                  <strong>{standard.title}</strong>
-                  <p>{standard.summary}</p>
-                </div>
-                <div className="publisher-cell" role="cell">
-                  <button
-                    aria-label={`Filter by publisher ${standard.publisher}`}
-                    aria-pressed={publisher === standard.publisher}
-                    className="publisher-filter-button"
-                    onClick={() => setPublisher(standard.publisher)}
-                    type="button"
-                  >
-                    {standard.publisher}
-                  </button>
-                </div>
-                <span role="cell">{standard.latest_known_edition}</span>
-                <span role="cell">{standard.country_scope}</span>
-                <div className="action-cell" role="cell">
-                  <Link className="row-action" href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
-                    Details
-                  </Link>
-                  {standard.source_download_url ? (
+            {filteredStandards.map((standard) => {
+              const categoryLabel = formatCategoryPath(getCategoryPath(standard));
+
+              return (
+                <article className="standard-row" key={standard.standard_id} role="row">
+                  <div className="designation-cell" role="cell">
+                    <Link href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
+                      {standard.designation}
+                    </Link>
+                    <span>{categoryLabel}</span>
+                  </div>
+                  <div className="title-cell" role="cell">
+                    <strong>{standard.title}</strong>
+                    <p>{standard.summary}</p>
+                  </div>
+                  <div className="publisher-cell" role="cell">
+                    <button
+                      aria-label={`Filter by publisher ${standard.publisher}`}
+                      aria-pressed={publisher === standard.publisher}
+                      className="publisher-filter-button"
+                      onClick={() => setPublisher(standard.publisher)}
+                      type="button"
+                    >
+                      {standard.publisher}
+                    </button>
+                  </div>
+                  <span role="cell">{standard.latest_known_edition}</span>
+                  <span role="cell">{standard.country_scope}</span>
+                  <div className="action-cell" role="cell">
+                    <Link className="row-action" href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
+                      Details
+                    </Link>
+                    {standard.source_download_url ? (
+                      <a
+                        className="download-icon"
+                        href={standard.source_download_url}
+                        rel="noreferrer"
+                        target="_blank"
+                        aria-label={`${standard.designation} direct public download`}
+                        title="Direct public download"
+                      >
+                        <FileDown aria-hidden="true" size={17} />
+                      </a>
+                    ) : null}
                     <a
-                      className="download-icon"
-                      href={standard.source_download_url}
+                      className="source-icon"
+                      href={standard.official_url}
                       rel="noreferrer"
                       target="_blank"
-                      aria-label={`${standard.designation} direct public download`}
-                      title="Direct public download"
+                      aria-label={`${standard.designation} official source`}
+                      title="Official source"
                     >
-                      <FileDown aria-hidden="true" size={17} />
+                      <ExternalLink aria-hidden="true" size={17} />
                     </a>
-                  ) : null}
-                  <a
-                    className="source-icon"
-                    href={standard.official_url}
-                    rel="noreferrer"
-                    target="_blank"
-                    aria-label={`${standard.designation} official source`}
-                    title="Official source"
-                  >
-                    <ExternalLink aria-hidden="true" size={17} />
-                  </a>
-                </div>
-              </article>
-            ))}
+                  </div>
+                </article>
+              );
+            })}
           </div>
 
           {filteredStandards.length === 0 ? (
@@ -226,7 +244,49 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
 }
 
 function makeOptions(values: string[]) {
-  return [ALL, ...Array.from(new Set(values)).sort((a, b) => a.localeCompare(b))];
+  return [
+    { value: ALL, label: ALL },
+    ...Array.from(new Set(values))
+      .sort((a, b) => a.localeCompare(b))
+      .map((value) => ({ value, label: value }))
+  ];
+}
+
+function makeCategoryOptions(standards: StandardRecord[]) {
+  const nodes = new Map<string, string[]>();
+
+  standards.forEach((standard) => {
+    const path = getCategoryPath(standard);
+
+    for (let depth = 1; depth <= path.length; depth += 1) {
+      const nodePath = path.slice(0, depth);
+      nodes.set(getCategoryKey(nodePath), nodePath);
+    }
+  });
+
+  return [
+    { value: ALL, label: ALL },
+    ...Array.from(nodes.entries())
+      .sort(([, pathA], [, pathB]) =>
+        formatCategoryPath(pathA).localeCompare(formatCategoryPath(pathB))
+      )
+      .map(([value, path]) => ({
+        value,
+        label: formatCategoryPath(path)
+      }))
+  ];
+}
+
+function matchesCategory(standard: StandardRecord, selectedCategory: string) {
+  if (selectedCategory === ALL) {
+    return true;
+  }
+
+  const categoryKey = getCategoryKey(getCategoryPath(standard));
+  return (
+    categoryKey === selectedCategory ||
+    categoryKey.startsWith(`${selectedCategory}${CATEGORY_PATH_DELIMITER}`)
+  );
 }
 
 function FilterSelect({
@@ -237,7 +297,7 @@ function FilterSelect({
 }: {
   label: string;
   value: string;
-  values: string[];
+  values: FilterOption[];
   onChange: (value: string) => void;
 }) {
   return (
@@ -245,8 +305,8 @@ function FilterSelect({
       <span>{label}</span>
       <select value={value} onChange={(event) => onChange(event.target.value)}>
         {values.map((option) => (
-          <option key={option} value={option}>
-            {option}
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>
