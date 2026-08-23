@@ -16,6 +16,7 @@ $headers = @(
   "applicability",
   "summary",
   "official_url",
+  "source_download_url",
   "notes"
 )
 
@@ -275,6 +276,18 @@ function Get-Applicability([string]$recordType, [string]$area) {
   return "BC Hydro requirement or reference where applicable"
 }
 
+function Get-SourceDownloadUrl([string]$href, [string]$recordType) {
+  if ($recordType -in @("collection", "standard_family")) {
+    return ""
+  }
+
+  if ($href -match "\.(pdf|docx|xlsx|xlsm)(\?|$)" -or $href -match "/content/dam/") {
+    return $href
+  }
+
+  return ""
+}
+
 function Should-Include([object]$link) {
   $title = $link.title
   $href = $link.href
@@ -414,6 +427,7 @@ foreach ($link in ($candidateMap.Values | Sort-Object area,title,href)) {
     applicability = Get-Applicability $recordType $link.area
     summary = "BC Hydro record for $summaryTitle."
     official_url = $link.href
+    source_download_url = Get-SourceDownloadUrl $link.href $recordType
     notes = "Extracted from official BC Hydro $($link.label) source page."
   }
 

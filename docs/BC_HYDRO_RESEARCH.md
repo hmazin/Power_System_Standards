@@ -42,6 +42,10 @@ The BC Hydro data set currently covers the public BC Hydro standards-related sou
 - Public transmission planning methodologies
 - Public system operating orders
 
+## Direct Public Download URLs
+
+The BC Hydro CSV includes `source_download_url` values where an official public BC Hydro file URL is available for the exact record. Collection and standard-family landing page records intentionally keep this field blank when a single linked file would only represent one item inside the broader collection.
+
 ## Future BC Hydro Collection Passes
 
 The next BC Hydro metadata passes should check whether any related BC Hydro pages outside the source boundary should also be treated as standards metadata:

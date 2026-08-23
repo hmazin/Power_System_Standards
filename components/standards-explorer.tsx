@@ -18,16 +18,20 @@ type StandardsExplorerProps = {
 };
 
 const ALL = "All";
-const DIRECT_PDF_AVAILABLE = "Direct PDF available";
-const DIRECT_PDF_MISSING = "Direct PDF missing";
-const DIRECT_PDF_FILTERS = [ALL, DIRECT_PDF_AVAILABLE, DIRECT_PDF_MISSING];
+const DIRECT_DOWNLOAD_AVAILABLE = "Direct download available";
+const DIRECT_DOWNLOAD_MISSING = "Direct download missing";
+const DIRECT_DOWNLOAD_FILTERS = [
+  ALL,
+  DIRECT_DOWNLOAD_AVAILABLE,
+  DIRECT_DOWNLOAD_MISSING
+];
 
 export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState(ALL);
   const [publisher, setPublisher] = useState(ALL);
   const [category, setCategory] = useState(ALL);
-  const [directPdf, setDirectPdf] = useState(ALL);
+  const [directDownload, setDirectDownload] = useState(ALL);
 
   const filters = useMemo(
     () => ({
@@ -56,19 +60,19 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
       ]
         .join(" ")
         .toLowerCase();
-      const hasDirectPdf = Boolean(standard.source_download_url?.trim());
+      const hasDirectDownload = Boolean(standard.source_download_url?.trim());
 
       return (
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
         (category === ALL || standard.primary_category === category) &&
-        (directPdf === ALL ||
-          (directPdf === DIRECT_PDF_AVAILABLE && hasDirectPdf) ||
-          (directPdf === DIRECT_PDF_MISSING && !hasDirectPdf))
+        (directDownload === ALL ||
+          (directDownload === DIRECT_DOWNLOAD_AVAILABLE && hasDirectDownload) ||
+          (directDownload === DIRECT_DOWNLOAD_MISSING && !hasDirectDownload))
       );
     });
-  }, [category, country, directPdf, publisher, query, standards]);
+  }, [category, country, directDownload, publisher, query, standards]);
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(standards.map((standard) => standard.primary_category)).size;
@@ -78,7 +82,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     setCountry(ALL);
     setPublisher(ALL);
     setCategory(ALL);
-    setDirectPdf(ALL);
+    setDirectDownload(ALL);
   }
 
   return (
@@ -110,7 +114,12 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
           <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={setCountry} />
           <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={setPublisher} />
           <FilterSelect label="Category" value={category} values={filters.categories} onChange={setCategory} />
-          <FilterSelect label="Direct PDF" value={directPdf} values={DIRECT_PDF_FILTERS} onChange={setDirectPdf} />
+          <FilterSelect
+            label="Direct Download"
+            value={directDownload}
+            values={DIRECT_DOWNLOAD_FILTERS}
+            onChange={setDirectDownload}
+          />
 
           <button className="reset-button" type="button" onClick={resetFilters}>
             <RotateCcw aria-hidden="true" size={16} />
@@ -182,8 +191,8 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                       href={standard.source_download_url}
                       rel="noreferrer"
                       target="_blank"
-                      aria-label={`${standard.designation} direct public PDF`}
-                      title="Direct public PDF"
+                      aria-label={`${standard.designation} direct public download`}
+                      title="Direct public download"
                     >
                       <FileDown aria-hidden="true" size={17} />
                     </a>

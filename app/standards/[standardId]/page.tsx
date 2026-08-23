@@ -61,7 +61,7 @@ export default async function StandardPage({ params }: StandardPageProps) {
               rel="noreferrer"
               target="_blank"
             >
-              Direct PDF
+              Direct Download
               <FileDown aria-hidden="true" size={16} />
             </a>
           ) : null}
