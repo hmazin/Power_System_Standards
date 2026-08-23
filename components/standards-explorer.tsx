@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   Database,
   ExternalLink,
+  FileDown,
   FileSearch,
   ListFilter,
   RotateCcw,
@@ -184,12 +185,25 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                   <Link className="row-action" href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
                     Details
                   </Link>
+                  {standard.source_download_url ? (
+                    <a
+                      className="download-icon"
+                      href={standard.source_download_url}
+                      rel="noreferrer"
+                      target="_blank"
+                      aria-label={`${standard.designation} direct public PDF`}
+                      title="Direct public PDF"
+                    >
+                      <FileDown aria-hidden="true" size={17} />
+                    </a>
+                  ) : null}
                   <a
                     className="source-icon"
                     href={standard.official_url}
                     rel="noreferrer"
                     target="_blank"
                     aria-label={`${standard.designation} official source`}
+                    title="Official source"
                   >
                     <ExternalLink aria-hidden="true" size={17} />
                   </a>

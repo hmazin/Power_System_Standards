@@ -22,6 +22,7 @@ create table standards (
     status text,
     summary text,
     official_url text,
+    source_download_url text,
     created_at timestamptz not null default now(),
     updated_at timestamptz not null default now(),
     unique (designation, publisher_id)
@@ -36,6 +37,7 @@ create table standard_editions (
     status text,
     supersedes_edition_id text references standard_editions(id),
     official_url text,
+    source_download_url text,
     date_verified date,
     notes text,
     created_at timestamptz not null default now(),

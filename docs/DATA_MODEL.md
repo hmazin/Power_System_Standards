@@ -28,6 +28,7 @@ Suggested fields:
 - `status`
 - `summary`
 - `official_url`
+- `source_download_url`
 - `created_at`
 - `updated_at`
 
@@ -51,7 +52,10 @@ Suggested fields:
 - `status`
 - `supersedes_edition_id`
 - `official_url`
+- `source_download_url`
 - `date_verified`
+
+Use `official_url` for the publisher page where the record is described. Use `source_download_url` only for an official public direct file or download URL, such as a PDF hosted by the publisher. Do not store private local paths or private cloud-drive URLs in public metadata.
 
 ## Publisher
 

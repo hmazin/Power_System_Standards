@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, FileText, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileDown, FileText, ShieldCheck } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getStandardById, getStandards } from "@/lib/standards";
 
@@ -53,15 +53,28 @@ export default async function StandardPage({ params }: StandardPageProps) {
           <ArrowLeft aria-hidden="true" size={18} />
           Registry
         </Link>
-        <a
-          className="source-button"
-          href={standard.official_url}
-          rel="noreferrer"
-          target="_blank"
-        >
-          Official Source
-          <ExternalLink aria-hidden="true" size={16} />
-        </a>
+        <div className="detail-actions">
+          {standard.source_download_url ? (
+            <a
+              className="download-button"
+              href={standard.source_download_url}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Direct PDF
+              <FileDown aria-hidden="true" size={16} />
+            </a>
+          ) : null}
+          <a
+            className="source-button"
+            href={standard.official_url}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Official Source
+            <ExternalLink aria-hidden="true" size={16} />
+          </a>
+        </div>
       </div>
 
       <section className="detail-header">

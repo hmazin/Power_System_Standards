@@ -14,6 +14,7 @@ export type StandardRecord = {
   mandatory_status: string;
   summary: string;
   official_url: string;
+  source_download_url?: string;
   date_verified: string;
   verification_status: string;
   notes: string;

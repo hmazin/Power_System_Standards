@@ -37,6 +37,10 @@ The first AESO data batch adds:
 - AESO Information Documents collection
 - Current individual Alberta Reliability Standards listed by AESO
 
+## Direct Public Download URLs
+
+The AESO CSV includes `source_download_url` values where an official public AESO PDF or direct download URL is available. These links are public publisher-hosted URLs only. Local downloader paths and private file locations are intentionally excluded from this public metadata project.
+
 ## Future AESO Collection Passes
 
 The next AESO metadata passes should add:
