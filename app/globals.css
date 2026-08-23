@@ -193,6 +193,35 @@ h1 {
   gap: 7px;
 }
 
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 11px;
+  color: var(--text);
+  background: #ffffff;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.filter-toggle input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  accent-color: var(--green);
+}
+
+.filter-toggle span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--blue-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
 .filter-control span {
   color: var(--muted);
   font-size: 0.78rem;
@@ -216,6 +245,7 @@ h1 {
 }
 
 .filter-control select:focus,
+.filter-toggle:focus-within,
 .search-box:focus-within {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(36, 95, 159, 0.14);

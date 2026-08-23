@@ -24,6 +24,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [country, setCountry] = useState(ALL);
   const [publisher, setPublisher] = useState(ALL);
   const [category, setCategory] = useState(ALL);
+  const [downloadOnly, setDownloadOnly] = useState(false);
 
   const filters = useMemo(
     () => ({
@@ -57,10 +58,11 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
-        (category === ALL || standard.primary_category === category)
+        (category === ALL || standard.primary_category === category) &&
+        (!downloadOnly || Boolean(standard.source_download_url?.trim()))
       );
     });
-  }, [category, country, publisher, query, standards]);
+  }, [category, country, downloadOnly, publisher, query, standards]);
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(standards.map((standard) => standard.primary_category)).size;
@@ -70,6 +72,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     setCountry(ALL);
     setPublisher(ALL);
     setCategory(ALL);
+    setDownloadOnly(false);
   }
 
   return (
@@ -101,6 +104,17 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
           <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={setCountry} />
           <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={setPublisher} />
           <FilterSelect label="Category" value={category} values={filters.categories} onChange={setCategory} />
+          <label className="filter-toggle">
+            <input
+              type="checkbox"
+              checked={downloadOnly}
+              onChange={(event) => setDownloadOnly(event.target.checked)}
+            />
+            <span>
+              <FileDown aria-hidden="true" size={16} />
+              Direct PDF available
+            </span>
+          </label>
 
           <button className="reset-button" type="button" onClick={resetFilters}>
             <RotateCcw aria-hidden="true" size={16} />
