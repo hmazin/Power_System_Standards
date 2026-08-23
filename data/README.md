@@ -4,6 +4,8 @@ This folder contains public metadata about electrical and power-system standards
 
 The app reads compatible CSV files in this folder. Keep each CSV on the same schema as `standards_seed.csv`.
 
+BC Hydro records can be refreshed from the official public source pages with `scripts/update_bc_hydro_catalog.ps1`.
+
 ## What Is Allowed
 
 Allowed data includes:

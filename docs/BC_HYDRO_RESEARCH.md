@@ -16,9 +16,9 @@ BC Hydro publishes several public technical and tariff source areas that are rel
 
 The first data batch keeps the publisher as BC Hydro only where the public source is a BC Hydro standard requirement tariff procedure operating order guide or methodology. External reliability standards such as NERC TPL records should be linked as related records in a later pass rather than reclassified as BC Hydro standards.
 
-## Current Batch Added
+## Current Coverage
 
-The first BC Hydro data batch adds:
+The BC Hydro data set currently covers the public BC Hydro standards-related source pages listed below. The first pass added curated collection and major-document records. The complete source-page pass then used `scripts/update_bc_hydro_catalog.ps1` to extract and append the remaining public metadata records from those source pages.
 
 - Collection records for distribution standards generator interconnections tariffs system operating orders and transmission planning
 - Primary and secondary customer service requirements
@@ -27,23 +27,29 @@ The first BC Hydro data batch adds:
 - ES53 underground electrical services
 - ES54 underground civil standards
 - ES55 power quality and customer equipment standards
+- Class of Work Specifications
+- Professional assurance forms and primary service statement forms
+- BC Hydro distribution information bulletins listed from 2016 through 2026
 - Distribution generator interconnection requirements
+- Distribution generator interconnection application forms fact sheets study agreements and sample agreements
+- Closed transition transfer application documents checklists sample drawings and requirements
 - Closed transition transfer interconnection requirements
 - Transmission generator interconnection and transmission facility requirements
+- Transmission generator interconnection queue studies forms criteria and study process documents
 - OATT SGIP and Attachment K records
+- OATT terms conditions attachments schedules and tariff supplements
+- Electric Tariff supplements listed on the BC Hydro Electric Tariff page
 - Public transmission planning methodologies
 - Public system operating orders
 
 ## Future BC Hydro Collection Passes
 
-The next BC Hydro metadata passes should add:
+The next BC Hydro metadata passes should verify whether any related BC Hydro pages outside the source boundary should also be treated as standards metadata:
 
-- Individual ES53 and ES54 drawing level records where useful
-- Individual information bulletin records where they revise active standards
-- Electric Tariff rate schedules and tariff supplements
-- OATT schedules and attachments beyond Attachment K and Attachment M-1
 - BC Hydro distribution planning and designated voltage area material
 - Cross-links to BCUC approvals and adopted mandatory reliability standards
+- Historical documents not currently linked from the public source pages
+- Any private or internal BC Hydro standards are outside this public metadata project unless an official public source URL is available
 
 ## Official Source URLs
 
