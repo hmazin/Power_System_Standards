@@ -14,6 +14,8 @@ AESO groups its public regulatory material under Rules, Standards and Tariff. Th
 - Consolidated Authoritative Document Glossary
 - Information Documents
 
+AESO also publishes public technical and connection requirement material outside the Rules, Standards and Tariff section. Those records are included when AESO provides a public source page and public direct download URL.
+
 ## Authoritative Documents
 
 AESO identifies Authoritative Documents as ISO Rules, Alberta Reliability Standards, and the ISO tariff. These are the primary records to track as binding Alberta power-system requirements.
@@ -38,10 +40,13 @@ The first AESO data batch adds:
 - Current individual Alberta Reliability Standards listed by AESO
 - Current individual ISO Rules listed by AESO
 - Individually accessible REM ISO Rules listed by AESO
+- AESO Connection Requirements for Inverter-Based Resources
 
 ## Direct Public Download URLs
 
 The AESO CSV includes `source_download_url` values where an official public AESO PDF or direct download URL is available. These links are public publisher-hosted URLs only. Local downloader paths and private file locations are intentionally excluded from this public metadata project.
+
+The AESO Connection Requirements for Inverter-Based Resources record uses the public AESO Reliability Requirements Roadmap page as its official source and the AESO-hosted PDF as its direct download URL.
 
 The AESO rule rows can be refreshed from the official public ISO Rules and REM ISO Rules pages with `scripts/update_aeso_rule_catalog.mjs`.
 
@@ -64,3 +69,5 @@ The next AESO metadata passes should add:
 - https://www.aeso.ca/rules-standards-and-tariff/tariff/
 - https://www.aeso.ca/rules-standards-and-tariff/consolidated-authoritative-document-glossary/
 - https://www.aeso.ca/rules-standards-and-tariff/information-documents/
+- https://www.aeso.ca/future-of-electricity/reliability-requirements-roadmap/
+- https://www.aeso.ca/grid/connecting-to-the-grid/connection-process-templates/
