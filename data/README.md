@@ -4,6 +4,8 @@ This folder contains public metadata about electrical and power-system standards
 
 The app reads compatible CSV files in this folder. Keep the core columns from `standards_seed.csv`; source-specific optional columns such as `source_download_url` may be added when useful.
 
+AESO rule records can be refreshed from the official public ISO Rules and REM ISO Rules pages with `scripts/update_aeso_rule_catalog.mjs`.
+
 BC Hydro records can be refreshed from the official public source pages with `scripts/update_bc_hydro_catalog.ps1`.
 
 ## What Is Allowed
