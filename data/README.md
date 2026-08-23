@@ -8,6 +8,8 @@ AESO rule records can be refreshed from the official public ISO Rules and REM IS
 
 BC Hydro records can be refreshed from the official public source pages with `scripts/update_bc_hydro_catalog.ps1`.
 
+AUC records are sourced from the official public AUC rules and regulatory reference pages.
+
 ## What Is Allowed
 
 Allowed data includes:
