@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  agentRules: false,
-  typedRoutes: true
+  agentRules: false
 };
 
 export default nextConfig;
