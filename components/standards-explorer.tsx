@@ -18,13 +18,16 @@ type StandardsExplorerProps = {
 };
 
 const ALL = "All";
+const DIRECT_PDF_AVAILABLE = "Direct PDF available";
+const DIRECT_PDF_MISSING = "Direct PDF missing";
+const DIRECT_PDF_FILTERS = [ALL, DIRECT_PDF_AVAILABLE, DIRECT_PDF_MISSING];
 
 export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState(ALL);
   const [publisher, setPublisher] = useState(ALL);
   const [category, setCategory] = useState(ALL);
-  const [downloadOnly, setDownloadOnly] = useState(false);
+  const [directPdf, setDirectPdf] = useState(ALL);
 
   const filters = useMemo(
     () => ({
@@ -53,16 +56,19 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
       ]
         .join(" ")
         .toLowerCase();
+      const hasDirectPdf = Boolean(standard.source_download_url?.trim());
 
       return (
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
         (category === ALL || standard.primary_category === category) &&
-        (!downloadOnly || Boolean(standard.source_download_url?.trim()))
+        (directPdf === ALL ||
+          (directPdf === DIRECT_PDF_AVAILABLE && hasDirectPdf) ||
+          (directPdf === DIRECT_PDF_MISSING && !hasDirectPdf))
       );
     });
-  }, [category, country, downloadOnly, publisher, query, standards]);
+  }, [category, country, directPdf, publisher, query, standards]);
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(standards.map((standard) => standard.primary_category)).size;
@@ -72,7 +78,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     setCountry(ALL);
     setPublisher(ALL);
     setCategory(ALL);
-    setDownloadOnly(false);
+    setDirectPdf(ALL);
   }
 
   return (
@@ -104,17 +110,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
           <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={setCountry} />
           <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={setPublisher} />
           <FilterSelect label="Category" value={category} values={filters.categories} onChange={setCategory} />
-          <label className="filter-toggle">
-            <input
-              type="checkbox"
-              checked={downloadOnly}
-              onChange={(event) => setDownloadOnly(event.target.checked)}
-            />
-            <span>
-              <FileDown aria-hidden="true" size={16} />
-              Direct PDF available
-            </span>
-          </label>
+          <FilterSelect label="Direct PDF" value={directPdf} values={DIRECT_PDF_FILTERS} onChange={setDirectPdf} />
 
           <button className="reset-button" type="button" onClick={resetFilters}>
             <RotateCcw aria-hidden="true" size={16} />
