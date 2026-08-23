@@ -160,7 +160,17 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                   <strong>{standard.title}</strong>
                   <p>{standard.summary}</p>
                 </div>
-                <span role="cell">{standard.publisher}</span>
+                <div className="publisher-cell" role="cell">
+                  <button
+                    aria-label={`Filter by publisher ${standard.publisher}`}
+                    aria-pressed={publisher === standard.publisher}
+                    className="publisher-filter-button"
+                    onClick={() => setPublisher(standard.publisher)}
+                    type="button"
+                  >
+                    {standard.publisher}
+                  </button>
+                </div>
                 <span role="cell">{standard.latest_known_edition}</span>
                 <span role="cell">{standard.country_scope}</span>
                 <div className="status-cell" role="cell">

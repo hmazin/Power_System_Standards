@@ -365,6 +365,37 @@ h1 {
   line-height: 1.35;
 }
 
+.publisher-cell {
+  display: flex;
+  align-items: flex-start;
+}
+
+.publisher-filter-button {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: var(--blue-dark);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.publisher-filter-button:hover,
+.publisher-filter-button:focus-visible {
+  color: var(--blue);
+}
+
+.publisher-filter-button:focus-visible {
+  border-radius: 4px;
+  outline: 3px solid rgba(36, 95, 159, 0.22);
+  outline-offset: 3px;
+}
+
 .title-cell strong {
   display: block;
   line-height: 1.28;
