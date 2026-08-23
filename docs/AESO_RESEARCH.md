@@ -41,12 +41,15 @@ The first AESO data batch adds:
 - Current individual ISO Rules listed by AESO
 - Individually accessible REM ISO Rules listed by AESO
 - AESO Connection Requirements for Inverter-Based Resources
+- AESO Transformer Modelling Guide
 
 ## Direct Public Download URLs
 
 The AESO CSV includes `source_download_url` values where an official public AESO PDF or direct download URL is available. These links are public publisher-hosted URLs only. Local downloader paths and private file locations are intentionally excluded from this public metadata project.
 
 The AESO Connection Requirements for Inverter-Based Resources record uses the public AESO Reliability Requirements Roadmap page as its official source and the AESO-hosted PDF as its direct download URL.
+
+The AESO Transformer Modelling Guide record uses the public AESO-hosted PDF URL directly because no current AESO landing page was found during source review. The PDF cover labels the document Confidential/Internal, so this public registry stores metadata and the publisher-hosted link only.
 
 The AESO rule rows can be refreshed from the official public ISO Rules and REM ISO Rules pages with `scripts/update_aeso_rule_catalog.mjs`.
 
@@ -71,3 +74,4 @@ The next AESO metadata passes should add:
 - https://www.aeso.ca/rules-standards-and-tariff/information-documents/
 - https://www.aeso.ca/future-of-electricity/reliability-requirements-roadmap/
 - https://www.aeso.ca/grid/connecting-to-the-grid/connection-process-templates/
+- https://www.aeso.ca/assets/linkfiles/4040.002-Rev02-Transformer-Modelling-Guide.pdf
