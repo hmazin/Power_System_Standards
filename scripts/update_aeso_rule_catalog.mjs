@@ -76,11 +76,21 @@ const remRules = parseRuleRows({
     "Extracted from official AESO REM ISO Rules page current individual rules list; no current PDF link was exposed for this row."
 });
 
-const generatedRules = [...isoRules, ...remRules];
+const excludedGeneratedRuleIds = new Set([
+  // AESO keeps this legacy URL, but its page says it was re-designated to ISO Rule 306.3.
+  "AESO-ISO-RULE-208-1"
+]);
+
+const generatedRules = [...isoRules, ...remRules].filter(
+  (row) => !excludedGeneratedRuleIds.has(row.standard_id)
+);
 const informationDocuments = parseInformationDocumentRows(informationDocumentsHtml);
 const insertAfterIndex = rowsWithoutGeneratedRules.findIndex(
-  (row) => row.standard_id === "AESO-INFORMATION-DOCUMENTS"
+  (row) => row.standard_id === "AESO-CADG"
 );
+if (insertAfterIndex === -1) {
+  throw new Error("Could not find AESO-CADG insertion anchor");
+}
 const nextRows = [...rowsWithoutGeneratedRules];
 nextRows.splice(insertAfterIndex + 1, 0, ...informationDocuments, ...generatedRules);
 

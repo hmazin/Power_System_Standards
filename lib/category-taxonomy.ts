@@ -33,10 +33,6 @@ function getAesoCategoryPath(standard: StandardRecord): string[] {
     return ["Alberta Reliability Standards", "Complete Set"];
   }
 
-  if (category === "AESO guidance documents") {
-    return ["Information Documents", "Collection"];
-  }
-
   if (
     category ===
     "AESO information document - ISO Rules and Alberta Reliability Standards"
