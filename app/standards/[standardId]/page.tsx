@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, FileDown, FileText, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileDown, FileText } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getStandardById, getStandards } from "@/lib/standards";
 
@@ -83,20 +83,14 @@ export default async function StandardPage({ params }: StandardPageProps) {
           <h1>{standard.designation}</h1>
           <p className="detail-title">{standard.title}</p>
         </div>
-        <div className="verification-card">
-          <ShieldCheck aria-hidden="true" size={24} />
-          <span>{standard.verification_status}</span>
-          <strong>{standard.date_verified}</strong>
-        </div>
       </section>
 
       <section className="detail-grid" aria-label="Standard metadata">
         <MetadataItem label="Latest Edition" value={standard.latest_known_edition} />
-        <MetadataItem label="Status" value={standard.status} />
         <MetadataItem label="Country Scope" value={standard.country_scope} />
         <MetadataItem label="Category" value={standard.primary_category} />
         <MetadataItem label="Record Type" value={standard.record_type} />
-        <MetadataItem label="Mandatory Status" value={standard.mandatory_status} />
+        <MetadataItem label="Applicability" value={standard.applicability} />
       </section>
 
       <section className="detail-panel">

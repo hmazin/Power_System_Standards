@@ -10,13 +10,10 @@ export type StandardRecord = {
   country_scope: string;
   primary_category: string;
   latest_known_edition: string;
-  status: string;
-  mandatory_status: string;
+  applicability: string;
   summary: string;
   official_url: string;
   source_download_url?: string;
-  date_verified: string;
-  verification_status: string;
   notes: string;
 };
 

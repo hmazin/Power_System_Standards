@@ -1,7 +1,6 @@
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-$verifiedDate = "2026-08-23"
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $dataPath = Join-Path $repoRoot "data\bc_hydro_standards.csv"
 
@@ -14,12 +13,9 @@ $headers = @(
   "country_scope",
   "primary_category",
   "latest_known_edition",
-  "status",
-  "mandatory_status",
+  "applicability",
   "summary",
   "official_url",
-  "date_verified",
-  "verification_status",
   "notes"
 )
 
@@ -266,7 +262,7 @@ function Get-LatestEdition([string]$title) {
   return "current"
 }
 
-function Get-MandatoryStatus([string]$recordType, [string]$area) {
+function Get-Applicability([string]$recordType, [string]$area) {
   if ($recordType -in @("tariff", "tariff_terms", "tariff_schedule", "tariff_attachment", "tariff_supplement")) {
     return "Regulated tariff terms where applicable"
   }
@@ -415,12 +411,9 @@ foreach ($link in ($candidateMap.Values | Sort-Object area,title,href)) {
     country_scope = "Canada - British Columbia"
     primary_category = $category
     latest_known_edition = Get-LatestEdition $link.title
-    status = "Active"
-    mandatory_status = Get-MandatoryStatus $recordType $link.area
+    applicability = Get-Applicability $recordType $link.area
     summary = "BC Hydro record for $summaryTitle."
     official_url = $link.href
-    date_verified = $verifiedDate
-    verification_status = "verified"
     notes = "Extracted from official BC Hydro $($link.label) source page."
   }
 

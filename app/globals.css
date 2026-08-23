@@ -117,7 +117,7 @@ h1 {
 
 .header-meta {
   display: grid;
-  grid-template-columns: repeat(4, minmax(92px, 1fr));
+  grid-template-columns: repeat(3, minmax(92px, 1fr));
   gap: 1px;
   min-width: min(560px, 100%);
   overflow: hidden;
@@ -165,14 +165,12 @@ h1 {
 .panel-heading,
 .search-row,
 .result-count,
-.status-cell,
 .action-cell,
 .detail-actions,
 .icon-link,
 .download-button,
 .source-button,
-.reset-button,
-.verified-pill {
+.reset-button {
   display: flex;
   align-items: center;
 }
@@ -307,7 +305,6 @@ h1 {
     minmax(140px, 0.85fr)
     minmax(88px, 0.55fr)
     minmax(110px, 0.7fr)
-    minmax(130px, 0.75fr)
     minmax(150px, 0.7fr);
   gap: 0;
 }
@@ -416,35 +413,6 @@ h1 {
   -webkit-line-clamp: 2;
 }
 
-.status-cell {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.status-pill,
-.verified-pill {
-  width: fit-content;
-  max-width: 100%;
-  min-height: 26px;
-  padding: 5px 8px;
-  border-radius: 999px;
-  font-size: 0.76rem;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.status-pill {
-  color: var(--green);
-  background: #e6f3ee;
-}
-
-.verified-pill {
-  gap: 5px;
-  color: var(--blue-dark);
-  background: #e8f0f8;
-}
-
 .action-cell {
   gap: 8px;
   flex-wrap: wrap;
@@ -550,7 +518,7 @@ h1 {
 
 .detail-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 210px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   align-items: stretch;
   padding: 24px;
@@ -563,28 +531,6 @@ h1 {
   color: var(--muted);
   font-size: 1.05rem;
   line-height: 1.5;
-}
-
-.verification-card {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 8px;
-  min-height: 150px;
-  color: var(--green);
-  background: #e8f4ef;
-  border: 1px solid #c9e2d6;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.verification-card span {
-  font-weight: 900;
-  text-transform: capitalize;
-}
-
-.verification-card strong {
-  color: var(--text);
 }
 
 .detail-grid {

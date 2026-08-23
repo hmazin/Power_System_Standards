@@ -8,8 +8,7 @@ import {
   FileSearch,
   ListFilter,
   RotateCcw,
-  Search,
-  ShieldCheck
+  Search
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { StandardRecord } from "@/lib/standards";
@@ -25,14 +24,12 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [country, setCountry] = useState(ALL);
   const [publisher, setPublisher] = useState(ALL);
   const [category, setCategory] = useState(ALL);
-  const [status, setStatus] = useState(ALL);
 
   const filters = useMemo(
     () => ({
       countries: makeOptions(standards.map((standard) => standard.country_scope)),
       publishers: makeOptions(standards.map((standard) => standard.publisher)),
-      categories: makeOptions(standards.map((standard) => standard.primary_category)),
-      statuses: makeOptions(standards.map((standard) => standard.status))
+      categories: makeOptions(standards.map((standard) => standard.primary_category))
     }),
     [standards]
   );
@@ -49,8 +46,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         standard.primary_category,
         standard.country_scope,
         standard.latest_known_edition,
-        standard.status,
-        standard.mandatory_status,
+        standard.applicability,
         standard.summary,
         standard.notes
       ]
@@ -61,15 +57,11 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
-        (category === ALL || standard.primary_category === category) &&
-        (status === ALL || standard.status === status)
+        (category === ALL || standard.primary_category === category)
       );
     });
-  }, [category, country, publisher, query, standards, status]);
+  }, [category, country, publisher, query, standards]);
 
-  const verifiedCount = standards.filter(
-    (standard) => standard.verification_status === "verified"
-  ).length;
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(standards.map((standard) => standard.primary_category)).size;
 
@@ -78,7 +70,6 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     setCountry(ALL);
     setPublisher(ALL);
     setCategory(ALL);
-    setStatus(ALL);
   }
 
   return (
@@ -97,7 +88,6 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
           <StatCard label="Records" value={standards.length.toString()} />
           <StatCard label="Publishers" value={publisherCount.toString()} />
           <StatCard label="Categories" value={categoryCount.toString()} />
-          <StatCard label="Verified" value={verifiedCount.toString()} />
         </div>
       </header>
 
@@ -111,7 +101,6 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
           <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={setCountry} />
           <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={setPublisher} />
           <FilterSelect label="Category" value={category} values={filters.categories} onChange={setCategory} />
-          <FilterSelect label="Status" value={status} values={filters.statuses} onChange={setStatus} />
 
           <button className="reset-button" type="button" onClick={resetFilters}>
             <RotateCcw aria-hidden="true" size={16} />
@@ -129,7 +118,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search designation, title, publisher, topic, status..."
+                placeholder="Search designation, title, publisher, topic..."
               />
             </label>
             <div className="result-count">
@@ -145,7 +134,6 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
               <span role="columnheader">Publisher</span>
               <span role="columnheader">Edition</span>
               <span role="columnheader">Scope</span>
-              <span role="columnheader">Status</span>
               <span role="columnheader">Links</span>
             </div>
 
@@ -174,13 +162,6 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                 </div>
                 <span role="cell">{standard.latest_known_edition}</span>
                 <span role="cell">{standard.country_scope}</span>
-                <div className="status-cell" role="cell">
-                  <span className="status-pill">{standard.status}</span>
-                  <span className="verified-pill">
-                    <ShieldCheck aria-hidden="true" size={14} />
-                    {standard.verification_status}
-                  </span>
-                </div>
                 <div className="action-cell" role="cell">
                   <Link className="row-action" href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
                     Details

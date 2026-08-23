@@ -1,6 +1,6 @@
 # Data Model
 
-This project should model standards as public metadata records, then connect those records to editions, topics, assets, jurisdictions, adoption status, and source evidence.
+This project should model standards as public metadata records, then connect those records to editions, topics, assets, jurisdictions, adoption details, and source evidence.
 
 ## Core Concepts
 
@@ -25,7 +25,7 @@ Suggested fields:
 - `record_type`
 - `country_scope`
 - `primary_category`
-- `status`
+- `applicability`
 - `summary`
 - `official_url`
 - `source_download_url`
@@ -49,11 +49,9 @@ Suggested fields:
 - `edition_label`
 - `publication_year`
 - `published_date`
-- `status`
 - `supersedes_edition_id`
 - `official_url`
 - `source_download_url`
-- `date_verified`
 
 Use `official_url` for the publisher page where the record is described. Use `source_download_url` only for an official public direct file or download URL, such as a PDF hosted by the publisher. Do not store private local paths or private cloud-drive URLs in public metadata.
 
@@ -110,15 +108,14 @@ Suggested fields:
 - `standard_id`
 - `edition_id`
 - `jurisdiction_id`
-- `adoption_status`
+- `adoption_type`
 - `effective_date`
 - `end_date`
 - `authority_name`
 - `authority_url`
 - `amendment_notes`
-- `date_verified`
 
-Suggested `adoption_status` values:
+Suggested `adoption_type` values:
 
 - `model_code`
 - `adopted`
@@ -164,7 +161,7 @@ Examples:
 
 ## Source
 
-Evidence used to verify a record.
+Evidence used to support a record.
 
 Suggested fields:
 

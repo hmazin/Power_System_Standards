@@ -35,7 +35,7 @@ Goal: create a public browsing experience.
 Features:
 
 - Search by designation, title, publisher, topic, or asset
-- Filter by country, jurisdiction, category, status, and asset type
+- Filter by country, jurisdiction, category, applicability, and asset type
 - Standard detail page with source links
 - Topic landing pages
 - CSV/JSON export
@@ -54,14 +54,14 @@ Features:
 
 ## Phase 4 - Editorial Workflow
 
-Goal: make it easier to maintain verified records.
+Goal: make it easier to maintain sourced records.
 
 Features:
 
 - Admin-only editor
-- Verification date tracking
+- Source review date tracking
 - Change history
-- Review status
+- Review queue
 - Source checks
 - Import from CSV
 - Export review reports

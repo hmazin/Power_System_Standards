@@ -14,13 +14,11 @@ Allowed data includes:
 - Standard title
 - Publisher
 - Latest known edition
-- Status
+- Applicability notes
 - Public summary written in our own words
 - Official source URL
 - Official public direct download URL when available
-- Jurisdiction applicability notes
 - Topic and asset tags
-- Verification date
 
 ## What Is Not Allowed
 
@@ -34,15 +32,6 @@ Do not add:
 - Tables, figures, annexes, clauses, or rule text from copyrighted standards
 
 Short titles and factual metadata are fine. Applicability notes should be written in original language and should link back to official sources.
-
-## Record Status Values
-
-Use these values in the `verification_status` field:
-
-- `verified` - checked against an official or authoritative source
-- `candidate` - plausible record, not fully verified
-- `needs_review` - record exists but needs editorial or source review
-- `retired` - known retired or superseded standard
 
 ## Source Preference
 

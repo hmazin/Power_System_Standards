@@ -1,6 +1,6 @@
 # BC Hydro Research Notes
 
-Verified on 2026-08-23.
+Source review date: 2026-08-23.
 
 ## Source Boundary
 
@@ -44,7 +44,7 @@ The BC Hydro data set currently covers the public BC Hydro standards-related sou
 
 ## Future BC Hydro Collection Passes
 
-The next BC Hydro metadata passes should verify whether any related BC Hydro pages outside the source boundary should also be treated as standards metadata:
+The next BC Hydro metadata passes should check whether any related BC Hydro pages outside the source boundary should also be treated as standards metadata:
 
 - BC Hydro distribution planning and designated voltage area material
 - Cross-links to BCUC approvals and adopted mandatory reliability standards

@@ -1,6 +1,6 @@
 # AESO Research Notes
 
-Verified on 2026-08-23.
+Source review date: 2026-08-23.
 
 ## Source Boundary
 
@@ -48,7 +48,7 @@ The next AESO metadata passes should add:
 - Individual current ISO Rules, especially Part 500 technical and operating requirements
 - Individual ISO Tariff rates, riders, terms and appendices
 - Future-effective Alberta Reliability Standards from AESO Engage consultations
-- Retired and non-applicable ARS records as separate historical status records
+- Retired and non-applicable ARS records as separate historical applicability records
 - Alberta Utilities Commission approval decision links where available
 
 ## Official Source URLs
