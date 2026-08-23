@@ -9,7 +9,6 @@ AESO groups its public regulatory material under Rules, Standards and Tariff. Th
 - ISO Rules
 - REM ISO Rules
 - Alberta Reliability Standards
-- ISO Tariff
 - Compliance Monitoring
 - Consolidated Authoritative Document Glossary
 - Information Documents
@@ -18,7 +17,7 @@ AESO also publishes public technical and connection requirement material outside
 
 ## Authoritative Documents
 
-AESO identifies Authoritative Documents as ISO Rules, Alberta Reliability Standards, and the ISO tariff. These are the primary records to track as binding Alberta power-system requirements.
+AESO identifies Authoritative Documents as ISO Rules, Alberta Reliability Standards, and the ISO tariff. This registry tracks ISO Rules and Alberta Reliability Standards for AESO; AESO tariff records are out of scope for the current standards registry.
 
 ## Non-Authoritative Guidance
 
@@ -30,11 +29,10 @@ For that reason, the registry classifies individual Information Documents as `in
 
 The first AESO data batch adds:
 
-- AESO Rules, Standards and Tariff portal
+- AESO Rules and Standards portal
 - AESO ISO Rules collection
 - AESO REM ISO Rules collection
 - AESO Alberta Reliability Standards collection
-- AESO ISO Tariff collection
 - AESO Consolidated Authoritative Document Glossary
 - AESO Information Documents collection
 - Current individual Alberta Reliability Standards listed by AESO
@@ -58,8 +56,6 @@ The AESO ISO Rule, REM ISO Rule, and Information Document rows can be refreshed 
 
 The next AESO metadata passes should add:
 
-- Individual ISO Tariff rates, riders, terms and appendices
-- Individual AESO Information Documents for Tariff
 - Future-effective REM ISO Rule sections that are in the approved REM package but not yet individually exposed by AESO
 - Future-effective Alberta Reliability Standards from AESO Engage consultations
 - Retired and non-applicable ARS records as separate historical applicability records
@@ -71,7 +67,6 @@ The next AESO metadata passes should add:
 - https://www.aeso.ca/rules-standards-and-tariff/iso-rules/
 - https://www.aeso.ca/rules-standards-and-tariff/rem-iso-rules/
 - https://www.aeso.ca/rules-standards-and-tariff/alberta-reliability-standards/
-- https://www.aeso.ca/rules-standards-and-tariff/tariff/
 - https://www.aeso.ca/rules-standards-and-tariff/consolidated-authoritative-document-glossary/
 - https://www.aeso.ca/rules-standards-and-tariff/information-documents/
 - https://www.aeso.ca/future-of-electricity/reliability-requirements-roadmap/
