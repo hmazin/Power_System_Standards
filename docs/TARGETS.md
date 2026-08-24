@@ -5,14 +5,14 @@ Source review date: 2026-08-24.
 ## Started
 
 - NERC - North American Electric Reliability Corporation: first official Reliability Standards ingestion added. Next pass should add jurisdiction-specific adoption pages and retired/historical records.
+- WECC - Western Electricity Coordinating Council: first official regional standards, variances, criteria, and standards procedure ingestion added. Next pass should separate BC adoption records and link WECC records to related NERC standards.
 
 ## Current Priority
 
-1. WECC - Western Electricity Coordinating Council
-2. IESO - Independent Electricity System Operator
-3. OEB - Ontario Energy Board
-4. ERCOT - Electric Reliability Council of Texas
-5. CAISO - California ISO
+1. IESO - Independent Electricity System Operator
+2. OEB - Ontario Energy Board
+3. ERCOT - Electric Reliability Council of Texas
+4. CAISO - California ISO
 
 ## Later Targets
 

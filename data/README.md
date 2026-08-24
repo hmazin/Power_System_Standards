@@ -12,6 +12,8 @@ AUC records are sourced from the official public AUC rules and regulatory refere
 
 NERC reliability standard records can be refreshed from the official public NERC Reliability Standards pages with `scripts/update_nerc_catalog.mjs`.
 
+WECC regional standards, criteria, and standards procedure records can be refreshed from the official public WECC Standards page with `scripts/update_wecc_catalog.mjs`.
+
 ## What Is Allowed
 
 Allowed data includes:

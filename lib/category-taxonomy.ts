@@ -15,6 +15,10 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getAucCategoryPath(standard);
   }
 
+  if (standard.publisher === "WECC") {
+    return getWeccCategoryPath(standard);
+  }
+
   return [standard.primary_category || "Uncategorized"];
 }
 
@@ -217,4 +221,49 @@ function getAucCategoryPath(standard: StandardRecord): string[] {
   }
 
   return ["Other AUC Records", category.replace(/^AUC\s+/, "") || "Uncategorized"];
+}
+
+function getWeccCategoryPath(standard: StandardRecord): string[] {
+  const category = standard.primary_category;
+
+  if (category === "WECC regional reliability standard - Historical or superseded") {
+    return ["Regional Reliability Standards", "Historical / Superseded"];
+  }
+
+  if (category === "WECC regional standards support") {
+    return ["Regional Reliability Standards", "Support Documents"];
+  }
+
+  if (category.startsWith("WECC regional reliability standard - ")) {
+    return [
+      "Regional Reliability Standards",
+      "Standards",
+      category.replace("WECC regional reliability standard - ", "")
+    ];
+  }
+
+  if (category.startsWith("WECC regional reliability variance - ")) {
+    return [
+      "Regional Reliability Standards",
+      "Regional Variances",
+      category.replace("WECC regional reliability variance - ", "")
+    ];
+  }
+
+  if (category.startsWith("WECC regional criterion - ")) {
+    return [
+      "Regional Criteria",
+      category.replace("WECC regional criterion - ", "")
+    ];
+  }
+
+  if (category === "WECC regional criterion support") {
+    return ["Regional Criteria", "Support Documents"];
+  }
+
+  if (category === "WECC standards procedure") {
+    return ["Standards Procedures"];
+  }
+
+  return ["Other WECC Records", category.replace(/^WECC\s+/, "") || "Uncategorized"];
 }
