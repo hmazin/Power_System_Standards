@@ -11,7 +11,7 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getNercCategoryPath(standard);
   }
 
-  if (standard.publisher === "Alberta Utilities Commission (AUC)") {
+  if (standard.publisher === "AUC") {
     return getAucCategoryPath(standard);
   }
 
