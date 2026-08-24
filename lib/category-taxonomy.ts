@@ -126,14 +126,6 @@ function getAucCategoryPath(standard: StandardRecord): string[] {
     return ["Rules", "Historical / Not in Effect"];
   }
 
-  if (category === "AUC regulatory rules") {
-    return ["Rules", "Complete Set"];
-  }
-
-  if (category === "AUC retail market codes") {
-    return ["Reference", "Standard Codes"];
-  }
-
   if (
     [
       "AUC hearing and practice rules",

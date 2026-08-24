@@ -18,8 +18,6 @@ This first registry pass treats AUC-authored rules and named rule-code artifacts
 
 The first AUC data batch adds:
 
-- AUC Rules collection
-- AUC Standard Codes collection
 - AUC Rule 001 through AUC Rule 035 records
 
 The AUC rules home page lists Rules 008 014 020 030 and 034 as no longer in effect. Those rule numbers are still included as historical metadata records so searches do not look like accidental gaps.
@@ -30,7 +28,6 @@ Rule 018 is also included as a historical rule. The AUC rules home page says Rul
 
 The app derives cleaner AUC filter categories from the source `primary_category` labels. Publisher names are not repeated in category labels because publisher is already a separate filter. AUC records are grouped as:
 
-- Rules / Complete Set
 - Rules / Proceedings and Participation
 - Rules / Facility Applications and Operations
 - Rules / Distributed Energy and Generation
@@ -41,13 +38,12 @@ The app derives cleaner AUC filter categories from the source `primary_category`
 - Rules / Compliance and Enforcement
 - Rules / ISO and Reliability Standards Oversight
 - Rules / Historical / Not in Effect
-- Reference / Standard Codes
 
 ## Direct Public Download URLs
 
 The AUC CSV includes `source_download_url` values where an official public AUC-hosted PDF is available for the exact rule record. Current rule records use the direct PDF linked from the individual AUC rule page. Historical rule records use public AUC-hosted PDF URLs where confirmed.
 
-The AUC Standard Codes collection keeps `source_download_url` blank because the public AUC standard-codes page directs users to Rule 004 rather than exposing a separate code file during this source review.
+The registry intentionally excludes general AUC navigation records such as the AUC rules home page and the standard-codes landing page. The standard-codes page points users back to Rule 004, so the useful record is AUC Rule 004 rather than a separate blank collection record.
 
 ## Future AUC Collection Passes
 
