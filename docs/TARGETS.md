@@ -9,8 +9,8 @@ Source review date: 2026-08-24.
 
 ## Current Priority
 
-1. IESO - Independent Electricity System Operator
-2. OEB - Ontario Energy Board
+1. IESO - Independent Electricity System Operator, empty CSV registered at `data/ieso_standards.csv`
+2. OEB - Ontario Energy Board, empty CSV registered at `data/oeb_standards.csv`
 3. ERCOT - Electric Reliability Council of Texas
 4. CAISO - California ISO
 
