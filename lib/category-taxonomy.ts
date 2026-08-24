@@ -7,6 +7,10 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getAesoCategoryPath(standard);
   }
 
+  if (standard.publisher === "North American Electric Reliability Corporation") {
+    return getNercCategoryPath(standard);
+  }
+
   return [standard.primary_category || "Uncategorized"];
 }
 
@@ -79,4 +83,34 @@ function getAesoCategoryPath(standard: StandardRecord): string[] {
   }
 
   return ["Other AESO Records", category || "Uncategorized"];
+}
+
+function getNercCategoryPath(standard: StandardRecord): string[] {
+  const category = standard.primary_category;
+
+  if (category === "Bulk electric system reliability") {
+    return ["Reliability Standards", "Complete Set"];
+  }
+
+  if (category === "Bulk electric system reliability definitions") {
+    return ["Reference", "Definitions"];
+  }
+
+  if (category === "Bulk electric system reliability reference") {
+    return ["Reference", "Implementation and Compliance Links"];
+  }
+
+  if (category === "Bulk electric system reliability applicability") {
+    return ["Reference", "US Effective Date Status"];
+  }
+
+  if (category === "Bulk electric system reliability compliance") {
+    return ["Reference", "VRF and VSL"];
+  }
+
+  if (category.startsWith("NERC ")) {
+    return ["Reliability Standards", category.replace("NERC ", "")];
+  }
+
+  return ["Other NERC Records", category || "Uncategorized"];
 }

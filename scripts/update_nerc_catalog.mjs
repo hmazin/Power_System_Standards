@@ -129,23 +129,6 @@ const collectionRows = [
   },
 ];
 
-const familyRows = [...familyDescriptions.entries()].map(([family, description]) => ({
-  standard_id: `NERC-${family}`,
-  designation: `NERC ${family}`,
-  title: description,
-  publisher: "North American Electric Reliability Corporation",
-  record_type: "standard_family",
-  country_scope: "North America",
-  primary_category: `NERC ${description}`,
-  latest_known_edition: "current",
-  applicability:
-    "Enforceable after approval or adoption by the applicable regulatory authority",
-  summary: `NERC ${family} reliability standards family for ${description.toLowerCase()} requirements.`,
-  official_url: `${RELIABILITY_STANDARDS_URL}/${family.toLowerCase()}`,
-  source_download_url: "",
-  notes: "Family record generated from the official NERC Reliability Standards page.",
-}));
-
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
@@ -173,7 +156,7 @@ async function main() {
     rows.push(toStandardRow(standard, detailModel.pageModel));
   }
 
-  const allRows = [...collectionRows, ...familyRows, ...rows].sort((a, b) =>
+  const allRows = [...collectionRows, ...rows].sort((a, b) =>
     a.standard_id.localeCompare(b.standard_id)
   );
 

@@ -1,6 +1,6 @@
 # NERC Research Notes
 
-Source review date: 2026-08-23.
+Source review date: 2026-08-24.
 
 ## Source Boundary
 
@@ -16,6 +16,8 @@ NERC publishes public reliability standards material under its Reliability Stand
 
 This pass does not add retired or inactive historical standards. Jurisdiction-specific adoption pages are also left for a later pass because Canadian provincial adoption is handled by separate authorities such as AESO or provincial regulators.
 
+The registry uses NERC family names as filter categories. It does not emit family landing pages such as BAL CIP or PRC as standalone records because those pages are navigation aids rather than individual standards.
+
 ## Current Batch Added
 
 The first NERC data batch is generated with `scripts/update_nerc_catalog.mjs`.
@@ -26,7 +28,7 @@ The script reads NERC's embedded public page model from:
 - Each official NERC reliability standards family page
 - Each official NERC reliability standard detail page
 
-The generated data includes individual standard number title family effective date page URL direct standard document URL when provided and concise original summary text.
+The generated data includes individual standard number title family effective date page URL direct standard document URL when provided and concise original summary text. It also keeps the complete NERC Reliability Standards set because NERC provides a public complete-set PDF.
 
 ## Direct Public Download URLs
 

@@ -1,15 +1,18 @@
 # Target Publisher Queue
 
-Source review date: 2026-08-23.
+Source review date: 2026-08-24.
+
+## Started
+
+- NERC - North American Electric Reliability Corporation: first official Reliability Standards ingestion added. Next pass should add jurisdiction-specific adoption pages and retired/historical records.
 
 ## Current Priority
 
-1. NERC - North American Electric Reliability Corporation
-2. WECC - Western Electricity Coordinating Council
-3. IESO - Independent Electricity System Operator
-4. OEB - Ontario Energy Board
-5. ERCOT - Electric Reliability Council of Texas
-6. CAISO - California ISO
+1. WECC - Western Electricity Coordinating Council
+2. IESO - Independent Electricity System Operator
+3. OEB - Ontario Energy Board
+4. ERCOT - Electric Reliability Council of Texas
+5. CAISO - California ISO
 
 ## Later Targets
 
