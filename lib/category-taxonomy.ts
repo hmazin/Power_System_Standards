@@ -11,6 +11,10 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getNercCategoryPath(standard);
   }
 
+  if (standard.publisher === "Alberta Utilities Commission (AUC)") {
+    return getAucCategoryPath(standard);
+  }
+
   return [standard.primary_category || "Uncategorized"];
 }
 
@@ -113,4 +117,112 @@ function getNercCategoryPath(standard: StandardRecord): string[] {
   }
 
   return ["Other NERC Records", category || "Uncategorized"];
+}
+
+function getAucCategoryPath(standard: StandardRecord): string[] {
+  const category = standard.primary_category;
+
+  if (standard.record_type === "historical_rule") {
+    return ["Rules", "Historical / Not in Effect"];
+  }
+
+  if (category === "AUC regulatory rules") {
+    return ["Rules", "Complete Set"];
+  }
+
+  if (category === "AUC retail market codes") {
+    return ["Reference", "Standard Codes"];
+  }
+
+  if (
+    [
+      "AUC hearing and practice rules",
+      "AUC intervener costs",
+      "AUC decision review",
+      "AUC negotiated settlements"
+    ].includes(category)
+  ) {
+    return ["Rules", "Proceedings and Participation"];
+  }
+
+  if (
+    [
+      "AUC facility applications",
+      "AUC noise control",
+      "AUC municipal franchise agreements"
+    ].includes(category)
+  ) {
+    return ["Rules", "Facility Applications and Operations"];
+  }
+
+  if (
+    ["AUC micro-generation", "AUC wind and solar monitoring"].includes(category)
+  ) {
+    return ["Rules", "Distributed Energy and Generation"];
+  }
+
+  if (
+    [
+      "AUC service quality and reliability",
+      "AUC service quality reporting"
+    ].includes(category)
+  ) {
+    return ["Rules", "Service Quality and Reliability"];
+  }
+
+  if (
+    [
+      "AUC retail billing code",
+      "AUC retail market information exchange",
+      "AUC settlement system code",
+      "AUC natural gas settlement code"
+    ].includes(category)
+  ) {
+    return ["Rules", "Retail and Settlement Codes"];
+  }
+
+  if (
+    [
+      "AUC financial and operational reporting",
+      "AUC regulatory accounting",
+      "AUC financing and reporting exemptions"
+    ].includes(category)
+  ) {
+    return ["Rules", "Financial and Operational Reporting"];
+  }
+
+  if (
+    [
+      "AUC water utility rate applications",
+      "AUC utility rates costs",
+      "AUC payment interest",
+      "AUC administration fees",
+      "AUC UCA administration fee"
+    ].includes(category)
+  ) {
+    return ["Rules", "Rates Fees and Cost Recovery"];
+  }
+
+  if (
+    [
+      "AUC regulatory audits",
+      "AUC administrative penalties",
+      "AUC contravention proceeding costs",
+      "AUC rule penalties"
+    ].includes(category)
+  ) {
+    return ["Rules", "Compliance and Enforcement"];
+  }
+
+  if (
+    [
+      "AUC ISO rule process",
+      "AUC ISO rule penalties",
+      "AUC reliability standards penalties"
+    ].includes(category)
+  ) {
+    return ["Rules", "ISO and Reliability Standards Oversight"];
+  }
+
+  return ["Other AUC Records", category.replace(/^AUC\s+/, "") || "Uncategorized"];
 }
