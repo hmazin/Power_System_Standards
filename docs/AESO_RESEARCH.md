@@ -44,7 +44,7 @@ The first AESO data batch tracks document-level and family-level records:
 - AESO REM ISO Rules collection
 - AESO Alberta Reliability Standards collection
 - AESO Consolidated Authoritative Document Glossary
-- Current and no-current individual Alberta Reliability Standards listed by AESO
+- Current downloadable individual Alberta Reliability Standards listed by AESO
 - Current individual ISO Rules listed by AESO
 - Individually accessible REM ISO Rules listed by AESO
 - Current individual Information Documents for ISO Rules and Alberta Reliability Standards listed by AESO
@@ -60,8 +60,6 @@ The AESO Connection Requirements for Inverter-Based Resources record uses the pu
 The AESO Transformer Modelling Guide record uses the public AESO-hosted PDF URL directly because no current AESO landing page was found during source review. The PDF cover labels the document Confidential/Internal, so this public registry stores metadata and the publisher-hosted link only.
 
 The AESO ISO Rule, REM ISO Rule, Information Document, and individual Alberta Reliability Standard rows can be refreshed from the official public AESO pages with `scripts/update_aeso_rule_catalog.mjs`.
-
-The individual Alberta Reliability Standards pass intentionally includes AESO-listed entries that do not expose a "Download current" link. Those rows keep the official AESO detail URL and leave `source_download_url` empty so the app can filter ARS records with and without direct public PDF links.
 
 The registry intentionally excludes general navigation records such as the AESO Rules and Standards portal and the Information Documents landing page. It also excludes ISO Rule 208.1 because AESO's public page states that the document was re-designated to Section 306.3 of the ISO rules; the active Section 306.3 row is tracked separately with its direct public PDF URL.
 

@@ -114,7 +114,7 @@ fs.writeFileSync(dataPath, stringifyCsv(nextRows), "utf8");
 console.log(`information_documents=${informationDocuments.length}`);
 console.log(`alberta_reliability_standards=${albertaReliabilityStandards.length}`);
 console.log(
-  `alberta_reliability_standards_direct_downloads=${albertaReliabilityStandards.filter((row) => row.source_download_url).length}`
+  `alberta_reliability_standards_direct_downloads=${albertaReliabilityStandards.length}`
 );
 console.log(`iso_rules=${isoRules.length}`);
 console.log(`rem_iso_rules=${remRules.length}`);
@@ -317,9 +317,14 @@ function parseAlbertaReliabilityStandardRows(html) {
     const downloadMatch = trailingHtml.match(
       /<a href="([^"]+)" class="download[^"]*"><span class="command">Download<\/span>\s*current<\/a>/
     );
+    const downloadUrl = absolutize(downloadMatch?.[1] ?? "");
+
+    if (!downloadUrl) {
+      continue;
+    }
+
     const designation = rawTitle.split(/\s+/)[0];
     const title = cleanArsTitle(designation, rawTitle);
-    const downloadUrl = absolutize(downloadMatch?.[1] ?? "");
     const isRetired = /\bRetired\b/i.test(rawTitle);
 
     rows.push({
@@ -331,13 +336,12 @@ function parseAlbertaReliabilityStandardRows(html) {
       country_scope: "Canada - Alberta",
       primary_category: `Alberta reliability standard - ${arsCategory(designation)}`,
       latest_known_edition: editionFromArsTitle(rawTitle, downloadUrl),
-      applicability: arsApplicability(isRetired, Boolean(downloadUrl)),
+      applicability: arsApplicability(isRetired),
       summary: `${isRetired ? "Historical AESO-listed" : "AESO-listed"} Alberta Reliability Standard ${designation}: ${title}.`,
       official_url: absolutize(match[1]),
       source_download_url: downloadUrl,
-      notes: downloadUrl
-        ? "Extracted from AESO Individual Alberta Reliability Standards page current downloadable list."
-        : "Extracted from AESO Individual Alberta Reliability Standards page; no current PDF link was exposed for this row."
+      notes:
+        "Extracted from AESO Individual Alberta Reliability Standards page current downloadable list."
     });
   }
 
@@ -374,13 +378,9 @@ function arsRecordType(designation, isRetired) {
   return "standard";
 }
 
-function arsApplicability(isRetired, hasDownload) {
+function arsApplicability(isRetired) {
   if (isRetired) {
     return "Historical retired Alberta reliability standard listed by AESO";
-  }
-
-  if (!hasDownload) {
-    return "AESO-listed Alberta reliability standard with no current download link exposed";
   }
 
   return "Binding reliability requirement in Alberta when applicable";
