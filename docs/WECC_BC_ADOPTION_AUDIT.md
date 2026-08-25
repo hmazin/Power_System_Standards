@@ -24,7 +24,7 @@ Audit counts from `scripts/audit_wecc_bc_against_bchydro.mjs`:
 
 The result does not indicate a gap in the BC Hydro standards collection. It indicates a separate missing collection: BC-specific mandatory reliability standard adoption/status records.
 
-These records should not be stored as publisher `BC Hydro`. A later data pass should add them as a separate BC reliability adoption/status dataset, with the WECC table as the public source and with relationship links to NERC or WECC reliability-standard records where those generic records already exist.
+These records should not be stored as publisher `BC Hydro`. They are tracked separately as BCUC records in `data/bcuc_standards.csv`, with the WECC table as the public source. A later pass should add relationship links to NERC or WECC reliability-standard records where those generic records already exist.
 
 ## Recommended Database Treatment
 

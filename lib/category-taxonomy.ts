@@ -15,6 +15,10 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getAucCategoryPath(standard);
   }
 
+  if (standard.publisher === "BCUC") {
+    return getBcucCategoryPath(standard);
+  }
+
   if (standard.publisher === "WECC") {
     return getWeccCategoryPath(standard);
   }
@@ -225,6 +229,26 @@ function getAucCategoryPath(standard: StandardRecord): string[] {
   }
 
   return ["Other AUC Records", category.replace(/^AUC\s+/, "") || "Uncategorized"];
+}
+
+function getBcucCategoryPath(standard: StandardRecord): string[] {
+  const category = standard.primary_category;
+
+  if (category === "BCUC mandatory reliability standards implementation") {
+    return ["Mandatory Reliability Standards", "Implementation Plans"];
+  }
+
+  if (category.startsWith("BCUC mandatory reliability standard - ")) {
+    const family = category.replace("BCUC mandatory reliability standard - ", "");
+
+    if (standard.record_type === "errata") {
+      return ["Mandatory Reliability Standards", "Errata", family];
+    }
+
+    return ["Mandatory Reliability Standards", family];
+  }
+
+  return ["Other BCUC Records", category.replace(/^BCUC\s+/, "") || "Uncategorized"];
 }
 
 function getWeccCategoryPath(standard: StandardRecord): string[] {

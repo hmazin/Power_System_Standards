@@ -22,6 +22,7 @@ Priority groups:
 
 - NERC reliability and CIP standards
 - WECC regional reliability standards and criteria
+- BCUC British Columbia Mandatory Reliability Standards adoption/status records
 - Ontario IESO market rules manuals and grid requirements
 - Ontario Energy Board electricity codes and filing requirements
 - ERCOT protocols guides and market rules
