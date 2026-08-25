@@ -40,11 +40,12 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState(ALL);
   const [publisher, setPublisher] = useState(ALL);
+  const [series, setSeries] = useState(ALL);
   const [category, setCategory] = useState(ALL);
   const [subcategory, setSubcategory] = useState(ALL);
   const [directDownload, setDirectDownload] = useState(ALL);
 
-  const optionStandards = useMemo(
+  const baseOptionStandards = useMemo(
     () =>
       standards.filter(
         (standard) =>
@@ -54,16 +55,31 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     [country, publisher, standards]
   );
 
+  const optionStandards = useMemo(
+    () =>
+      baseOptionStandards.filter(
+        (standard) => series === ALL || getStandardSeries(standard) === series
+      ),
+    [baseOptionStandards, series]
+  );
+
   const filters = useMemo(
     () => ({
       countries: makeOptions(standards.map((standard) => standard.country_scope)),
       publishers: makeOptions(standards.map((standard) => standard.publisher)),
+      series: makeSeriesOptions(baseOptionStandards),
       categories: makeTopCategoryOptions(optionStandards),
       subcategories: makeSubcategoryOptions(optionStandards, category),
       directDownloads: makeOptions(DIRECT_DOWNLOAD_FILTERS)
     }),
-    [category, optionStandards, standards]
+    [baseOptionStandards, category, optionStandards, standards]
   );
+
+  useEffect(() => {
+    if (!hasOption(filters.series, series)) {
+      setSeries(ALL);
+    }
+  }, [filters.series, series]);
 
   useEffect(() => {
     if (!hasOption(filters.categories, category)) {
@@ -108,13 +124,23 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
+        (series === ALL || getStandardSeries(standard) === series) &&
         matchesCategory(standard, category, subcategory) &&
         (directDownload === ALL ||
           (directDownload === DIRECT_DOWNLOAD_AVAILABLE && hasDirectDownload) ||
           (directDownload === DIRECT_DOWNLOAD_MISSING && !hasDirectDownload))
       );
     });
-  }, [category, country, directDownload, publisher, query, standards, subcategory]);
+  }, [
+    category,
+    country,
+    directDownload,
+    publisher,
+    query,
+    series,
+    standards,
+    subcategory
+  ]);
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(
@@ -125,6 +151,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     setQuery("");
     setCountry(ALL);
     setPublisher(ALL);
+    setSeries(ALL);
     setCategory(ALL);
     setSubcategory(ALL);
     setDirectDownload(ALL);
@@ -138,6 +165,12 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
 
   function updatePublisher(nextPublisher: string) {
     setPublisher(nextPublisher);
+    setCategory(ALL);
+    setSubcategory(ALL);
+  }
+
+  function updateSeries(nextSeries: string) {
+    setSeries(nextSeries);
     setCategory(ALL);
     setSubcategory(ALL);
   }
@@ -175,6 +208,12 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
 
           <FilterSelect label="Country Scope" value={country} values={filters.countries} onChange={updateCountry} />
           <FilterSelect label="Publisher" value={publisher} values={filters.publishers} onChange={updatePublisher} />
+          <FilterSelect
+            label="Series"
+            value={series}
+            values={filters.series}
+            onChange={updateSeries}
+          />
           <FilterSelect label="Category" value={category} values={filters.categories} onChange={updateCategory} />
           <FilterSelect
             disabled={category === ALL || filters.subcategories.length <= 1}
@@ -307,6 +346,30 @@ function makeOptions(values: string[]) {
   ];
 }
 
+function makeSeriesOptions(standards: StandardRecord[]) {
+  const preferredOrder = ["IEEE C57", "IEEE C37", "IEEE C62"];
+  const values = Array.from(
+    new Set(standards.map(getStandardSeries).filter(Boolean))
+  );
+
+  return [
+    { value: ALL, label: ALL },
+    ...values
+      .sort((a, b) => {
+        const orderA = preferredOrder.indexOf(a);
+        const orderB = preferredOrder.indexOf(b);
+
+        if (orderA >= 0 || orderB >= 0) {
+          return (orderA >= 0 ? orderA : Number.MAX_SAFE_INTEGER) -
+            (orderB >= 0 ? orderB : Number.MAX_SAFE_INTEGER);
+        }
+
+        return a.localeCompare(b);
+      })
+      .map((value) => ({ value, label: value }))
+  ];
+}
+
 function makeTopCategoryOptions(standards: StandardRecord[]) {
   return makeOptions(standards.map((standard) => getCategoryPath(standard)[0]));
 }
@@ -368,6 +431,18 @@ function matchesCategory(
 
 function hasOption(options: FilterOption[], value: string) {
   return options.some((option) => option.value === value);
+}
+
+function getStandardSeries(standard: StandardRecord) {
+  if (standard.publisher === "IEEE") {
+    const match = standard.designation.match(/\bIEEE\s+C(57|37|62)\b/i);
+
+    if (match) {
+      return `IEEE C${match[1]}`;
+    }
+  }
+
+  return "";
 }
 
 function FilterSelect({
