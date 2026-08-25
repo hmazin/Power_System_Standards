@@ -19,6 +19,10 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getWeccCategoryPath(standard);
   }
 
+  if (standard.publisher === "BC Hydro") {
+    return getBcHydroCategoryPath(standard);
+  }
+
   return [standard.primary_category || "Uncategorized"];
 }
 
@@ -266,4 +270,198 @@ function getWeccCategoryPath(standard: StandardRecord): string[] {
   }
 
   return ["Other WECC Records", category.replace(/^WECC\s+/, "") || "Uncategorized"];
+}
+
+function getBcHydroCategoryPath(standard: StandardRecord): string[] {
+  const category = standard.primary_category;
+  const recordType = standard.record_type;
+
+  if (recordType === "information_bulletin") {
+    return [
+      "Distribution Standards and Guides",
+      "Bulletins and Support",
+      "Information Bulletins"
+    ];
+  }
+
+  if (category === "BC Hydro distribution technical standards") {
+    return ["Distribution Standards and Guides", "Overview"];
+  }
+
+  if (category === "BC Hydro overhead distribution standards") {
+    return ["Distribution Standards and Guides", "Overhead Distribution (ES43)"];
+  }
+
+  if (category === "BC Hydro underground electrical standards") {
+    return [
+      "Distribution Standards and Guides",
+      "Underground Electrical Distribution (ES53)"
+    ];
+  }
+
+  if (category === "BC Hydro underground civil standards") {
+    return [
+      "Distribution Standards and Guides",
+      "Underground Civil Distribution (ES54)"
+    ];
+  }
+
+  if (
+    category === "BC Hydro power quality standards" ||
+    category === "BC Hydro customer equipment standards"
+  ) {
+    return [
+      "Distribution Standards and Guides",
+      "Power Quality and Customer Equipment (ES55)"
+    ];
+  }
+
+  if (category === "BC Hydro primary service requirements") {
+    return [
+      "Distribution Standards and Guides",
+      "Customer Service Requirements",
+      "Primary Service"
+    ];
+  }
+
+  if (category === "BC Hydro secondary service requirements") {
+    return [
+      "Distribution Standards and Guides",
+      "Customer Service Requirements",
+      "Secondary Service"
+    ];
+  }
+
+  if (category === "BC Hydro revenue metering requirements") {
+    return [
+      "Distribution Standards and Guides",
+      "Metering",
+      "Revenue Metering"
+    ];
+  }
+
+  if (category === "BC Hydro metering requirements") {
+    return [
+      "Distribution Standards and Guides",
+      "Metering",
+      "Accepted Metering Equipment"
+    ];
+  }
+
+  if (category === "BC Hydro distribution technical publications") {
+    return ["Distribution Standards and Guides", "Technical Publications"];
+  }
+
+  if (category === "BC Hydro class of work specifications") {
+    return ["Distribution Standards and Guides", "Construction Work Specifications"];
+  }
+
+  if (category === "BC Hydro distribution generator interconnection") {
+    if (["form", "agreement", "fact_sheet"].includes(recordType)) {
+      return [
+        "Interconnections",
+        "Distribution Generator",
+        "Forms Agreements and Support"
+      ];
+    }
+
+    if (["amendment", "guidance"].includes(recordType)) {
+      return [
+        "Interconnections",
+        "Distribution Generator",
+        "Guidance and Amendments"
+      ];
+    }
+
+    return [
+      "Interconnections",
+      "Distribution Generator",
+      "Technical Requirements"
+    ];
+  }
+
+  if (category === "BC Hydro closed transition transfer interconnection") {
+    if (recordType === "standard") {
+      return [
+        "Interconnections",
+        "Closed Transition Transfer",
+        "Technical Requirements"
+      ];
+    }
+
+    return ["Interconnections", "Closed Transition Transfer", "Forms and Support"];
+  }
+
+  if (category === "BC Hydro transmission generator interconnection") {
+    if (["standard", "procedure"].includes(recordType)) {
+      return [
+        "Interconnections",
+        "Transmission Generator",
+        "Requirements and Procedures"
+      ];
+    }
+
+    return ["Interconnections", "Transmission Generator", "Forms and Support"];
+  }
+
+  if (category === "BC Hydro transmission facility interconnection") {
+    return ["Interconnections", "Transmission Facility", "Requirements"];
+  }
+
+  if (category === "BC Hydro transmission planning") {
+    if (recordType === "methodology") {
+      return ["Transmission", "Planning and Studies", "Methodologies"];
+    }
+
+    if (recordType === "procedure") {
+      return ["Transmission", "Planning and Studies", "Planning Procedures"];
+    }
+
+    if (recordType === "form") {
+      return ["Transmission", "Planning and Studies", "Forms"];
+    }
+
+    return ["Transmission", "Planning and Studies", "Guides and References"];
+  }
+
+  if (category === "BC Hydro system operating orders") {
+    return ["Transmission", "System Operating Orders"];
+  }
+
+  if (category === "BC Hydro transmission tariff") {
+    if (recordType === "tariff_attachment") {
+      return ["Tariffs and Regulatory", "Open Access Transmission Tariff", "Attachments"];
+    }
+
+    if (recordType === "tariff_schedule") {
+      return ["Tariffs and Regulatory", "Open Access Transmission Tariff", "Schedules"];
+    }
+
+    if (recordType === "tariff_supplement") {
+      return ["Tariffs and Regulatory", "Open Access Transmission Tariff", "Supplements"];
+    }
+
+    if (recordType === "tariff_terms") {
+      return [
+        "Tariffs and Regulatory",
+        "Open Access Transmission Tariff",
+        "Terms and Conditions"
+      ];
+    }
+
+    return ["Tariffs and Regulatory", "Open Access Transmission Tariff", "Core Tariff"];
+  }
+
+  if (category === "BC Hydro electric tariff") {
+    if (recordType === "tariff_supplement") {
+      return ["Tariffs and Regulatory", "Electric Tariff", "Supplements"];
+    }
+
+    return ["Tariffs and Regulatory", "Electric Tariff", "Core Tariff"];
+  }
+
+  return [
+    "Other BC Hydro Records",
+    category.replace(/^BC Hydro\s+/, "") || "Uncategorized"
+  ];
 }

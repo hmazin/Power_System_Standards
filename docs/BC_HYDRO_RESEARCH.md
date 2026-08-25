@@ -1,6 +1,6 @@
 # BC Hydro Research Notes
 
-Source review date: 2026-08-23.
+Source review date: 2026-08-24.
 
 ## Source Boundary
 
@@ -41,6 +41,29 @@ The BC Hydro data set currently covers the public BC Hydro standards-related sou
 - Electric Tariff supplements listed on the BC Hydro Electric Tariff page
 - Public transmission planning methodologies
 - Public system operating orders
+
+## UI Category Tree
+
+The app derives cleaner BC Hydro filter categories from the source `primary_category` labels. Publisher names are not repeated in category labels because publisher is already a separate filter. BC Hydro records are grouped as:
+
+- Distribution Standards and Guides / Overview
+- Distribution Standards and Guides / Overhead Distribution (ES43)
+- Distribution Standards and Guides / Underground Electrical Distribution (ES53)
+- Distribution Standards and Guides / Underground Civil Distribution (ES54)
+- Distribution Standards and Guides / Power Quality and Customer Equipment (ES55)
+- Distribution Standards and Guides / Customer Service Requirements / Primary or Secondary Service
+- Distribution Standards and Guides / Metering / Revenue Metering or Accepted Metering Equipment
+- Distribution Standards and Guides / Technical Publications
+- Distribution Standards and Guides / Construction Work Specifications
+- Distribution Standards and Guides / Bulletins and Support / Information Bulletins
+- Interconnections / Distribution Generator
+- Interconnections / Closed Transition Transfer
+- Interconnections / Transmission Generator
+- Interconnections / Transmission Facility
+- Transmission / Planning and Studies
+- Transmission / System Operating Orders
+- Tariffs and Regulatory / Open Access Transmission Tariff
+- Tariffs and Regulatory / Electric Tariff
 
 ## Direct Public Download URLs
 
