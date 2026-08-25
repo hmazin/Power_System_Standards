@@ -27,6 +27,10 @@ export function getCategoryPath(standard: StandardRecord): string[] {
     return getBcHydroCategoryPath(standard);
   }
 
+  if (standard.publisher === "IEEE") {
+    return getIeeeCategoryPath(standard);
+  }
+
   return [standard.primary_category || "Uncategorized"];
 }
 
@@ -488,4 +492,34 @@ function getBcHydroCategoryPath(standard: StandardRecord): string[] {
     "Other BC Hydro Records",
     category.replace(/^BC Hydro\s+/, "") || "Uncategorized"
   ];
+}
+
+function getIeeeCategoryPath(standard: StandardRecord): string[] {
+  const category = standard.primary_category;
+
+  if (category.startsWith("C57 transformer standards - ")) {
+    return [
+      "Transformer Standards",
+      "C57 Series",
+      category.replace("C57 transformer standards - ", "")
+    ];
+  }
+
+  if (category.startsWith("C37 switchgear and protection standards - ")) {
+    return [
+      "Switchgear and Protection Standards",
+      "C37 Series",
+      category.replace("C37 switchgear and protection standards - ", "")
+    ];
+  }
+
+  if (category.startsWith("C62 surge protection standards - ")) {
+    return [
+      "Surge Protection Standards",
+      "C62 Series",
+      category.replace("C62 surge protection standards - ", "")
+    ];
+  }
+
+  return ["Other IEEE Records", category.replace(/^IEEE\s+/, "") || "Uncategorized"];
 }

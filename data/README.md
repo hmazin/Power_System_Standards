@@ -14,6 +14,8 @@ NERC reliability standard records can be refreshed from the official public NERC
 
 WECC regional standards, criteria, and standards procedure records can be refreshed from the official public WECC Standards page with `scripts/update_wecc_catalog.mjs`.
 
+IEEE C57, C37, and C62 records can be refreshed from official IEEE SA standards pages discovered through the public IEEE standards sitemap with `scripts/update_ieee_catalog.mjs`.
+
 Empty source-specific CSV files may be added with only the standard header row to reserve future target publishers without creating public app records.
 
 ## What Is Allowed

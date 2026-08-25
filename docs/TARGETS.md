@@ -6,6 +6,7 @@ Source review date: 2026-08-24.
 
 - NERC - North American Electric Reliability Corporation: first official Reliability Standards ingestion added. Next pass should add jurisdiction-specific adoption pages and retired/historical records.
 - WECC - Western Electricity Coordinating Council: first official regional standards, variances, criteria, and standards procedure ingestion added. Next pass should separate BC adoption records and link WECC records to related NERC standards.
+- IEEE - Institute of Electrical and Electronics Engineers: C57, C37, and C62 active-standard metadata ingestion started from official IEEE SA pages.
 
 ## Current Priority
 
