@@ -46,7 +46,7 @@ The WECC CSV includes `source_download_url` values where WECC exposes an officia
 
 The next WECC metadata passes should add or refine:
 
-- British Columbia adoption records from the WECC Approved BC Standards section, likely as BC jurisdiction records rather than WECC-owned standards
+- British Columbia adoption records from the WECC Approved BC Standards section, likely as BC jurisdiction records rather than WECC-owned standards. See `docs/WECC_BC_ADOPTION_AUDIT.md`.
 - Relationship links between WECC regional standards and the related NERC records already in the registry
 - WECC standards under development and recently completed standards projects
 - WECC compliance and registration guidance only where documents are useful standalone public records
