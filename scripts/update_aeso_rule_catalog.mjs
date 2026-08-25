@@ -7,6 +7,7 @@ const AESO_ROOT = "https://www.aeso.ca";
 const ISO_RULES_URL = `${AESO_ROOT}/rules-standards-and-tariff/iso-rules/`;
 const REM_RULES_URL = `${AESO_ROOT}/rules-standards-and-tariff/rem-iso-rules/`;
 const INFORMATION_DOCUMENTS_URL = `${AESO_ROOT}/rules-standards-and-tariff/information-documents/`;
+const ALBERTA_RELIABILITY_STANDARDS_URL = `${AESO_ROOT}/rules-standards-and-tariff/alberta-reliability-standards/`;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
@@ -40,7 +41,8 @@ const rowsWithoutGeneratedRules = existingRows.filter(
   (row) =>
     !row.standard_id.startsWith("AESO-ISO-RULE-") &&
     !row.standard_id.startsWith("AESO-REM-ISO-RULE-") &&
-    !row.standard_id.startsWith("AESO-INFO-DOC-")
+    !row.standard_id.startsWith("AESO-INFO-DOC-") &&
+    !row.standard_id.startsWith("AESO-ARS-")
 );
 
 const isoHtml = await readHtml("--iso-html", ISO_RULES_URL);
@@ -48,6 +50,10 @@ const remHtml = await readHtml("--rem-html", REM_RULES_URL);
 const informationDocumentsHtml = await readHtml(
   "--information-documents-html",
   INFORMATION_DOCUMENTS_URL
+);
+const albertaReliabilityStandardsHtml = await readHtml(
+  "--alberta-reliability-standards-html",
+  ALBERTA_RELIABILITY_STANDARDS_URL
 );
 
 const isoRules = parseRuleRows({
@@ -85,25 +91,42 @@ const generatedRules = [...isoRules, ...remRules].filter(
   (row) => !excludedGeneratedRuleIds.has(row.standard_id)
 );
 const informationDocuments = parseInformationDocumentRows(informationDocumentsHtml);
-const insertAfterIndex = rowsWithoutGeneratedRules.findIndex(
+const albertaReliabilityStandards = parseAlbertaReliabilityStandardRows(
+  albertaReliabilityStandardsHtml
+);
+const nextRows = [...rowsWithoutGeneratedRules];
+const arsInsertAfterIndex = nextRows.findIndex((row) => row.standard_id === "AESO-ARS");
+if (arsInsertAfterIndex === -1) {
+  throw new Error("Could not find AESO-ARS insertion anchor");
+}
+nextRows.splice(arsInsertAfterIndex + 1, 0, ...albertaReliabilityStandards);
+
+const insertAfterIndex = nextRows.findIndex(
   (row) => row.standard_id === "AESO-CADG"
 );
 if (insertAfterIndex === -1) {
   throw new Error("Could not find AESO-CADG insertion anchor");
 }
-const nextRows = [...rowsWithoutGeneratedRules];
 nextRows.splice(insertAfterIndex + 1, 0, ...informationDocuments, ...generatedRules);
 
 fs.writeFileSync(dataPath, stringifyCsv(nextRows), "utf8");
 
 console.log(`information_documents=${informationDocuments.length}`);
+console.log(`alberta_reliability_standards=${albertaReliabilityStandards.length}`);
+console.log(
+  `alberta_reliability_standards_direct_downloads=${albertaReliabilityStandards.filter((row) => row.source_download_url).length}`
+);
 console.log(`iso_rules=${isoRules.length}`);
 console.log(`rem_iso_rules=${remRules.length}`);
 console.log(
-  `direct_downloads=${[...informationDocuments, ...generatedRules].filter((row) => row.source_download_url).length}`
+  `direct_downloads=${[
+    ...albertaReliabilityStandards,
+    ...informationDocuments,
+    ...generatedRules
+  ].filter((row) => row.source_download_url).length}`
 );
 console.log(
-  `missing_downloads=${generatedRules
+  `missing_downloads=${[...albertaReliabilityStandards, ...generatedRules]
     .filter((row) => !row.source_download_url)
     .map((row) => row.designation)
     .join("; ")}`
@@ -271,6 +294,172 @@ function parseInformationDocumentRows(html) {
   }
 
   return rows;
+}
+
+function parseAlbertaReliabilityStandardRows(html) {
+  const startMarker = "Individual Alberta Reliability Standards";
+  const endMarker = "Non-Applicable Alberta reliability standards";
+  const start = html.indexOf(startMarker);
+  const end = html.indexOf(endMarker, start);
+
+  if (start === -1 || end === -1) {
+    throw new Error("Could not find AESO Individual Alberta Reliability Standards section");
+  }
+
+  const segment = html.slice(start, end);
+  const liPattern =
+    /<li\b[^>]*>\s*<a href="([^"]+)" class="title">([\s\S]*?)<\/a>([\s\S]*?)<\/li>/g;
+  const rows = [];
+
+  for (const match of segment.matchAll(liPattern)) {
+    const rawTitle = decodeHtml(stripTags(match[2]));
+    const trailingHtml = match[3];
+    const downloadMatch = trailingHtml.match(
+      /<a href="([^"]+)" class="download[^"]*"><span class="command">Download<\/span>\s*current<\/a>/
+    );
+    const designation = rawTitle.split(/\s+/)[0];
+    const title = cleanArsTitle(designation, rawTitle);
+    const downloadUrl = absolutize(downloadMatch?.[1] ?? "");
+    const isRetired = /\bRetired\b/i.test(rawTitle);
+
+    rows.push({
+      standard_id: `AESO-ARS-${idSuffixFromDesignation(designation)}`,
+      designation,
+      title,
+      publisher: "AESO",
+      record_type: arsRecordType(designation, isRetired),
+      country_scope: "Canada - Alberta",
+      primary_category: `Alberta reliability standard - ${arsCategory(designation)}`,
+      latest_known_edition: editionFromArsTitle(rawTitle, downloadUrl),
+      applicability: arsApplicability(isRetired, Boolean(downloadUrl)),
+      summary: `${isRetired ? "Historical AESO-listed" : "AESO-listed"} Alberta Reliability Standard ${designation}: ${title}.`,
+      official_url: absolutize(match[1]),
+      source_download_url: downloadUrl,
+      notes: downloadUrl
+        ? "Extracted from AESO Individual Alberta Reliability Standards page current downloadable list."
+        : "Extracted from AESO Individual Alberta Reliability Standards page; no current PDF link was exposed for this row."
+    });
+  }
+
+  return rows;
+}
+
+function cleanArsTitle(designation, rawTitle) {
+  return rawTitle
+    .slice(designation.length)
+    .trim()
+    .replace(/^-\s*/, "")
+    .replace(/\s+-\s+Retired.*$/i, "")
+    .replace(/\s+Retired\s+.*$/i, "")
+    .trim();
+}
+
+function idSuffixFromDesignation(designation) {
+  return designation
+    .toUpperCase()
+    .replace(/&/g, "-")
+    .replace(/[^A-Z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function arsRecordType(designation, isRetired) {
+  if (isRetired) {
+    return "historical_standard";
+  }
+
+  if (designation.endsWith("-PLAN")) {
+    return "implementation_plan";
+  }
+
+  return "standard";
+}
+
+function arsApplicability(isRetired, hasDownload) {
+  if (isRetired) {
+    return "Historical retired Alberta reliability standard listed by AESO";
+  }
+
+  if (!hasDownload) {
+    return "AESO-listed Alberta reliability standard with no current download link exposed";
+  }
+
+  return "Binding reliability requirement in Alberta when applicable";
+}
+
+function editionFromArsTitle(rawTitle, downloadUrl) {
+  if (downloadUrl) {
+    return editionFromDownload(downloadUrl);
+  }
+
+  const retiredDate = rawTitle.match(
+    /\bRetired\s+(\d{4}-\d{2}-\d{2}|[A-Z][a-z]+\s+\d{1,2},\s+\d{4})/i
+  );
+
+  if (retiredDate) {
+    return `retired ${retiredDate[1]}`;
+  }
+
+  return "no current download listed";
+}
+
+function arsCategory(designation) {
+  if (designation.startsWith("BAL-")) {
+    return "Resource and Demand Balancing";
+  }
+
+  if (designation.startsWith("CIP-")) {
+    return "Critical Infrastructure Protection";
+  }
+
+  if (designation.startsWith("COM-")) {
+    return "Communications";
+  }
+
+  if (designation.startsWith("EOP-")) {
+    return "Emergency Preparedness and Operations";
+  }
+
+  if (designation.startsWith("FAC-")) {
+    return "Facilities Design Connections and Maintenance";
+  }
+
+  if (designation.startsWith("INT-")) {
+    return "Interchange Scheduling and Coordination";
+  }
+
+  if (designation.startsWith("IRO-")) {
+    return "Interconnection Reliability Operations and Coordination";
+  }
+
+  if (designation.startsWith("MOD-")) {
+    return "Modeling Data and Analysis";
+  }
+
+  if (designation.startsWith("PER-")) {
+    return "Personnel Performance Training and Qualifications";
+  }
+
+  if (designation.startsWith("PRC-")) {
+    return "Protection and Control";
+  }
+
+  if (designation.startsWith("TOP-")) {
+    return "Transmission Operations";
+  }
+
+  if (designation.startsWith("TPL-")) {
+    return "Transmission Planning";
+  }
+
+  if (designation.startsWith("VAR-")) {
+    return "Voltage and Reactive";
+  }
+
+  if (designation.startsWith("ADM-")) {
+    return "Administrative";
+  }
+
+  return "Other";
 }
 
 function parseRuleTitle(rawTitle, designationPrefix) {
