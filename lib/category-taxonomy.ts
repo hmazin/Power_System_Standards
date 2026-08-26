@@ -497,27 +497,59 @@ function getBcHydroCategoryPath(standard: StandardRecord): string[] {
 function getIeeeCategoryPath(standard: StandardRecord): string[] {
   const category = standard.primary_category;
 
-  if (category.startsWith("C57 transformer standards - ")) {
+  if (category.startsWith("C57 transformers regulators and reactors - ")) {
     return [
-      "Transformer Standards",
+      "Transformers Regulators and Reactors",
       "C57 Series",
-      category.replace("C57 transformer standards - ", "")
+      category.replace("C57 transformers regulators and reactors - ", "")
     ];
   }
 
-  if (category.startsWith("C37 switchgear and protection standards - ")) {
+  if (category.startsWith("C37 switchgear and protection equipment - ")) {
     return [
-      "Switchgear and Protection Standards",
+      "Switchgear and Protection Equipment",
       "C37 Series",
-      category.replace("C37 switchgear and protection standards - ", "")
+      category.replace("C37 switchgear and protection equipment - ", "")
     ];
   }
 
-  if (category.startsWith("C62 surge protection standards - ")) {
+  if (category.startsWith("C62 surge arresters and surge protective devices - ")) {
     return [
-      "Surge Protection Standards",
+      "Surge Arresters and Surge Protective Devices",
       "C62 Series",
-      category.replace("C62 surge protection standards - ", "")
+      category.replace("C62 surge arresters and surge protective devices - ", "")
+    ];
+  }
+
+  if (category.startsWith("1547 DER interconnection - ")) {
+    return [
+      "DER Interconnection",
+      "1547 Series",
+      category.replace("1547 DER interconnection - ", "")
+    ];
+  }
+
+  if (category.startsWith("2030 smart grid DERMS and microgrids - ")) {
+    return [
+      "Smart Grid DERMS and Microgrids",
+      "2030 Series",
+      category.replace("2030 smart grid DERMS and microgrids - ", "")
+    ];
+  }
+
+  if (category.startsWith("2800 inverter-based resource interconnection - ")) {
+    return [
+      "Inverter-Based Resource Interconnection",
+      "2800 Series",
+      category.replace("2800 inverter-based resource interconnection - ", "")
+    ];
+  }
+
+  if (category.startsWith("3000 industrial and commercial power systems - ")) {
+    return [
+      "Industrial and Commercial Power Systems",
+      "3000 Series",
+      category.replace("3000 industrial and commercial power systems - ", "")
     ];
   }
 

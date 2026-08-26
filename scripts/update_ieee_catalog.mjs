@@ -4,9 +4,12 @@ import path from "node:path";
 const IEEE_ROOT = "https://standards.ieee.org";
 const SITEMAP_INDEX_URL = `${IEEE_ROOT}/wp-sitemap.xml`;
 const DATA_PATH = path.join(process.cwd(), "data", "ieee_standards.csv");
-const FETCH_TIMEOUT_MS = 15000;
-const FETCH_ATTEMPTS = 3;
-const PAGE_CONCURRENCY = 8;
+const FETCH_TIMEOUT_MS = 30000;
+const FETCH_ATTEMPTS = 4;
+const PAGE_CONCURRENCY = 4;
+const SUPPLEMENTAL_STANDARD_URLS = [
+  "https://standards.ieee.org/ieee/C37.66/4937"
+];
 
 const CSV_HEADERS = [
   "standard_id",
@@ -28,25 +31,57 @@ const SERIES = new Map([
   [
     "C57",
     {
-      title: "Transformer Standards",
-      primaryPrefix: "C57 transformer standards",
+      title: "Transformers, Regulators, and Reactors",
+      primaryPrefix: "C57 transformers regulators and reactors",
       summaryTopic: "transformers, reactors, insulating liquids, bushings, and related transformer equipment"
     }
   ],
   [
     "C37",
     {
-      title: "Switchgear and Protection Standards",
-      primaryPrefix: "C37 switchgear and protection standards",
+      title: "Switchgear and Protection Equipment",
+      primaryPrefix: "C37 switchgear and protection equipment",
       summaryTopic: "switchgear, circuit breakers, relays, reclosers, and protection equipment"
     }
   ],
   [
     "C62",
     {
-      title: "Surge Protection Standards",
-      primaryPrefix: "C62 surge protection standards",
+      title: "Surge Arresters and Surge Protective Devices",
+      primaryPrefix: "C62 surge arresters and surge protective devices",
       summaryTopic: "surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection"
+    }
+  ],
+  [
+    "1547",
+    {
+      title: "DER Interconnection",
+      primaryPrefix: "1547 DER interconnection",
+      summaryTopic: "distributed energy resource interconnection, interoperability, conformance testing, and application guidance"
+    }
+  ],
+  [
+    "2030",
+    {
+      title: "Smart Grid, DERMS, and Microgrids",
+      primaryPrefix: "2030 smart grid DERMS and microgrids",
+      summaryTopic: "smart grid interoperability, microgrid controllers, DER management systems, and grid control automation"
+    }
+  ],
+  [
+    "2800",
+    {
+      title: "Inverter-Based Resource Interconnection",
+      primaryPrefix: "2800 inverter-based resource interconnection",
+      summaryTopic: "inverter-based resource interconnection, grid-forming capabilities, and bulk power system performance verification"
+    }
+  ],
+  [
+    "3000",
+    {
+      title: "Industrial and Commercial Power Systems",
+      primaryPrefix: "3000 industrial and commercial power systems",
+      summaryTopic: "industrial and commercial power systems design, analysis, grounding, protection, standby power, reliability, maintenance, operations, and safety"
     }
   ]
 ]);
@@ -58,7 +93,7 @@ const targetSeries = requestedSeries.length
 
 if (!targetSeries.length) {
   throw new Error(
-    `No supported IEEE series requested. Supported series: ${[...SERIES.keys()].join(", ")}`
+    `No supported IEEE family or series requested. Supported values: ${[...SERIES.keys()].join(", ")}`
   );
 }
 
@@ -144,7 +179,25 @@ async function discoverIeeeStandardUrls() {
     );
   }
 
-  return [...new Set(standardUrls)];
+  return [
+    ...new Set([
+      ...standardUrls,
+      ...SUPPLEMENTAL_STANDARD_URLS,
+      ...extractExistingIeeeUrls()
+    ])
+  ];
+}
+
+function extractExistingIeeeUrls() {
+  if (!fs.existsSync(DATA_PATH)) {
+    return [];
+  }
+
+  return [
+    ...fs
+      .readFileSync(DATA_PATH, "utf8")
+      .matchAll(/https:\/\/standards\.ieee\.org\/ieee\/[^,\r\n"]+/g)
+  ].map((match) => match[0]);
 }
 
 function parseIeeePage(url, html) {
@@ -195,7 +248,7 @@ function toStandardRow(record) {
     latest_known_edition: edition,
     applicability:
       "Consensus IEEE power and energy standard used where specified by law, code, authority having jurisdiction, utility requirement, project specification, or contract",
-    summary: `IEEE ${series} metadata record for ${config.summaryTopic}; this record points to the official IEEE SA page for ${record.designation}.`,
+    summary: `IEEE ${series} family metadata record for ${config.summaryTopic}; this record points to the official IEEE SA page for ${record.designation}.`,
     official_url: record.url,
     source_download_url: "",
     notes
@@ -297,6 +350,108 @@ function subcategoryFor(series, title, designation) {
     return "General Surge Protection Requirements";
   }
 
+  if (series === "1547") {
+    if (/energy storage|storage|battery/.test(haystack)) {
+      return "Energy Storage DER";
+    }
+
+    if (/test|testing|conformance|verification|commissioning|certification/.test(haystack)) {
+      return "Conformance Testing and Verification";
+    }
+
+    if (/application guide|guide|use of|background|implementation/.test(haystack)) {
+      return "Application Guides";
+    }
+
+    if (/secondary network|area network|spot network|network distribution/.test(haystack)) {
+      return "Secondary Networks";
+    }
+
+    if (/interconnection|interoperability|distributed energy resources|der/.test(haystack)) {
+      return "Interconnection Requirements";
+    }
+
+    return "General DER Interconnection";
+  }
+
+  if (series === "2030") {
+    if (/microgrid/.test(haystack)) {
+      return "Microgrids and Controllers";
+    }
+
+    if (/derms|distributed energy resources management|aggregation/.test(haystack)) {
+      return "DERMS and Aggregation";
+    }
+
+    if (/energy storage|storage system|ess/.test(haystack)) {
+      return "Energy Storage Integration";
+    }
+
+    if (/control|automation/.test(haystack)) {
+      return "Control and Automation";
+    }
+
+    if (/charging|electric vehicle|transportation|virtual power plant|vpp/.test(haystack)) {
+      return "EV Charging and Virtual Power Plants";
+    }
+
+    if (/smart grid|interoperability|reference model|information technology|communications/.test(haystack)) {
+      return "Smart Grid Interoperability";
+    }
+
+    return "General Smart Grid Integration";
+  }
+
+  if (series === "2800") {
+    if (/test|testing|verification|conformity|assessment/.test(haystack)) {
+      return "Test and Verification";
+    }
+
+    if (/grid forming|grid-forming|gfm/.test(haystack)) {
+      return "Grid-Forming IBR";
+    }
+
+    if (/amendment|corrigendum/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    return "Transmission IBR Interconnection";
+  }
+
+  if (series === "3000") {
+    const standardNumber = standardNumberFromDesignation(designation);
+
+    if (/^3001(?:\.|-)/.test(standardNumber)) {
+      return "Power Systems Design";
+    }
+
+    if (/^3002(?:\.|-)/.test(standardNumber)) {
+      return "Power Systems Analysis";
+    }
+
+    if (/^3003(?:\.|-)/.test(standardNumber)) {
+      return "Power Systems Grounding";
+    }
+
+    if (/^3004(?:\.|-)/.test(standardNumber)) {
+      return "Protection and Coordination";
+    }
+
+    if (/^3005(?:\.|-)/.test(standardNumber)) {
+      return "Energy and Standby Power";
+    }
+
+    if (/^3006(?:\.|-)/.test(standardNumber)) {
+      return "Reliability";
+    }
+
+    if (/^3007(?:\.|-)/.test(standardNumber)) {
+      return "Maintenance Operations and Safety";
+    }
+
+    return "General Industrial and Commercial Power Systems";
+  }
+
   return "General";
 }
 
@@ -323,12 +478,39 @@ function recordTypeFor(title, designation) {
 }
 
 function seriesMatchesUrl(series, url) {
-  return new RegExp(`/ieee/${series.replace("C", "[Cc]")}(?:[./_-]|$)`).test(url);
+  if (series === "3000") {
+    return /\/ieee\/300[0-7](?:[./_-]|$)/i.test(url);
+  }
+
+  const suffix = series.startsWith("C") ? "[./_-]|$" : "[a-z]|[./_-]|$";
+  return new RegExp(`/ieee/${series.replace("C", "[Cc]")}(?:${suffix})`, "i").test(url);
 }
 
 function seriesFromDesignation(designation) {
-  const match = designation.match(/\b(?:IEEE\s+(?:Std\s+)?)?(C(?:37|57|62))\b/i);
-  return match ? match[1].toUpperCase() : "";
+  const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62))\b/);
+
+  if (cSeriesMatch) {
+    return cSeriesMatch[1];
+  }
+
+  if (/^1547(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
+    return "1547";
+  }
+
+  if (/^2030(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
+    return "2030";
+  }
+
+  if (/^2800(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
+    return "2800";
+  }
+
+  if (/^300[0-7](?:\.\d+|-|$)/.test(standardNumber)) {
+    return "3000";
+  }
+
+  return "";
 }
 
 function editionFromDesignation(designation) {
@@ -347,7 +529,10 @@ function numericTokens(value) {
 }
 
 function standardNumberFromDesignation(value) {
-  return value.replace(/^IEEE\s+(?:Std\s+)?/i, "");
+  return value.replace(
+    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+    ""
+  );
 }
 
 function parseMetaTags(html) {
@@ -463,6 +648,10 @@ function decodeHtml(value) {
   return String(value)
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&trade;|&#8482;|&#x2122;/g, "")
+    .replace(/&reg;|&#174;|&#x00AE;/g, "")
     .replace(/&ndash;|&dash;|&#8211;|&#x2013;/g, "-")
     .replace(/&mdash;|&#8212;|&#x2014;/g, "-")
     .replace(/&rsquo;|&#8217;|&#x2019;/g, "'")
@@ -509,7 +698,8 @@ function csvCell(value) {
   const text = String(value)
     .replace(/[\u200B-\u200D\uFEFF]/g, "")
     .replace(/\u00A0/g, " ")
-    .replace(/\u2013|\u2014/g, "-")
+    .replace(/\u2010|\u2011|\u2012|\u2013|\u2014/g, "-")
+    .replace(/\u2122|\u00AE/g, "")
     .replace(/\u2018|\u2019/g, "'")
     .replace(/\u201C|\u201D/g, "\"");
 

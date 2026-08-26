@@ -1,6 +1,6 @@
 # IEEE Standards Research
 
-Source review date: 2026-08-25.
+Source review date: 2026-08-26.
 
 ## Scope
 
@@ -9,8 +9,22 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - C57 series - transformers, reactors, insulating liquids, bushings, and related transformer equipment
 - C37 series - switchgear, circuit breakers, relays, reclosers, and protection equipment
 - C62 series - surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection
+- 1547 series - distributed energy resource interconnection and conformance testing
+- 2030 series - smart grid interoperability, DERMS, microgrids, energy storage, and EV charging integration
+- 2800 series - inverter-based resource interconnection with transmission and bulk power systems
+- 3000 series - industrial and commercial power systems design, analysis, grounding, protection, reliability, maintenance, operations, and safety
 
 The current dataset is built from public IEEE SA metadata pages discovered through the official IEEE standards sitemap. Rows are kept only when the IEEE SA page reports `Active Standard`.
+
+Current active-record counts:
+
+- C57: 92
+- C37: 106
+- C62: 32
+- 1547: 6
+- 2030: 17
+- 2800: 2
+- 3000: 21
 
 ## Source Method
 
@@ -19,18 +33,22 @@ Primary source:
 - IEEE standards sitemap index: `https://standards.ieee.org/wp-sitemap.xml`
 - IEEE standard detail pages under `https://standards.ieee.org/ieee/...`
 
-The refresh script is `scripts/update_ieee_catalog.mjs`. By default it rebuilds all three current target series:
+The refresh script is `scripts/update_ieee_catalog.mjs`. By default it rebuilds all current target families and series:
 
 ```text
 node scripts/update_ieee_catalog.mjs
 ```
 
-Specific series can be refreshed during research:
+Specific families or series can be refreshed during research:
 
 ```text
 node scripts/update_ieee_catalog.mjs C57
 node scripts/update_ieee_catalog.mjs C37
 node scripts/update_ieee_catalog.mjs C62
+node scripts/update_ieee_catalog.mjs 1547
+node scripts/update_ieee_catalog.mjs 2030
+node scripts/update_ieee_catalog.mjs 2800
+node scripts/update_ieee_catalog.mjs 3000
 ```
 
 ## Public File Links
@@ -39,6 +57,6 @@ Most IEEE standards are not distributed as public PDF files from the IEEE SA met
 
 ## Next Review Ideas
 
-- Compare the sitemap-derived active list against IEEE Xplore search results for C57, C37, and C62.
+- Compare the sitemap-derived active list against IEEE Xplore search results for the current IEEE target families.
 - Add relationship fields later for amendments, corrigenda, and superseded editions.
 - Add topical tags for transformers, protection, switchgear, surge protection, DER, substations, testing, insulation, and maintenance when the data model is expanded.
