@@ -87,6 +87,7 @@ const SERIES = new Map([
 ]);
 
 const requestedSeries = process.argv.slice(2).map((value) => value.toUpperCase());
+const isPartialRefresh = requestedSeries.length > 0;
 const targetSeries = requestedSeries.length
   ? requestedSeries.filter((series) => SERIES.has(series))
   : [...SERIES.keys()];
@@ -130,16 +131,7 @@ async function main() {
     .filter((record) => targetSeries.includes(seriesFromDesignation(record.designation)))
     .map(toStandardRow);
 
-  const rows = dedupeBy(activeRows, (row) => row.standard_id).sort((a, b) => {
-    const seriesCompare =
-      targetSeries.indexOf(seriesFromDesignation(a.designation)) -
-      targetSeries.indexOf(seriesFromDesignation(b.designation));
-    if (seriesCompare) {
-      return seriesCompare;
-    }
-
-    return compareDesignation(a.designation, b.designation);
-  });
+  const rows = mergeWithExistingRows(activeRows);
 
   fs.writeFileSync(DATA_PATH, toCsv(rows), "utf8");
 
@@ -163,6 +155,51 @@ async function main() {
         .join(",")}`
     );
   }
+}
+
+function mergeWithExistingRows(refreshedRows) {
+  const existingRows = isPartialRefresh
+    ? readExistingRows().filter(
+      (row) => !targetSeries.includes(seriesFromDesignation(row.designation))
+    )
+    : [];
+
+  return dedupeBy([...existingRows, ...refreshedRows], (row) => row.standard_id)
+    .sort((a, b) => {
+      const seriesCompare =
+        seriesSortIndex(seriesFromDesignation(a.designation)) -
+        seriesSortIndex(seriesFromDesignation(b.designation));
+      if (seriesCompare) {
+        return seriesCompare;
+      }
+
+      return compareDesignation(a.designation, b.designation);
+    });
+}
+
+function readExistingRows() {
+  if (!fs.existsSync(DATA_PATH)) {
+    return [];
+  }
+
+  const csv = fs.readFileSync(DATA_PATH, "utf8").trim();
+
+  if (!csv) {
+    return [];
+  }
+
+  const [headerLine, ...lines] = csv.split(/\r?\n/);
+  const headers = parseCsvLine(headerLine);
+
+  return lines.filter(Boolean).map((line) => {
+    const values = parseCsvLine(line);
+
+    return CSV_HEADERS.reduce((row, header) => {
+      const index = headers.indexOf(header);
+      row[header] = index >= 0 ? values[index] ?? "" : "";
+      return row;
+    }, {});
+  });
 }
 
 async function discoverIeeeStandardUrls() {
@@ -524,6 +561,11 @@ function compareDesignation(a, b) {
   });
 }
 
+function seriesSortIndex(series) {
+  const index = [...SERIES.keys()].indexOf(series);
+  return index >= 0 ? index : Number.MAX_SAFE_INTEGER;
+}
+
 function numericTokens(value) {
   return standardNumberFromDesignation(value);
 }
@@ -692,6 +734,39 @@ function toCsv(rows) {
       CSV_HEADERS.map((header) => csvCell(row[header] ?? "")).join(",")
     )
   ].join("\n") + "\n";
+}
+
+function parseCsvLine(line) {
+  const values = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+    const nextChar = line[index + 1];
+
+    if (char === "\"" && inQuotes && nextChar === "\"") {
+      current += "\"";
+      index += 1;
+      continue;
+    }
+
+    if (char === "\"") {
+      inQuotes = !inQuotes;
+      continue;
+    }
+
+    if (char === "," && !inQuotes) {
+      values.push(current);
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  values.push(current);
+  return values;
 }
 
 function csvCell(value) {
