@@ -17,9 +17,85 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/837/10271",
   "https://standards.ieee.org/ieee/18/6773",
   "https://standards.ieee.org/ieee/824/10208",
-  "https://standards.ieee.org/ieee/1036/5912"
+  "https://standards.ieee.org/ieee/1036/5912",
+  "https://standards.ieee.org/ieee/48/6208",
+  "https://standards.ieee.org/ieee/82/10826",
+  "https://standards.ieee.org/ieee/383/7707",
+  "https://standards.ieee.org/ieee/386/7573",
+  "https://standards.ieee.org/ieee/400/7618",
+  "https://standards.ieee.org/ieee/400.1/6967",
+  "https://standards.ieee.org/ieee/400.2/11049",
+  "https://standards.ieee.org/ieee/400.3/5316",
+  "https://standards.ieee.org/ieee/400.5/6988",
+  "https://standards.ieee.org/ieee/404/10721",
+  "https://standards.ieee.org/ieee/525/7274",
+  "https://standards.ieee.org/ieee/532/5902",
+  "https://standards.ieee.org/ieee/592/7127",
+  "https://standards.ieee.org/ieee/634/7032",
+  "https://standards.ieee.org/ieee/690/11419",
+  "https://standards.ieee.org/ieee/835/1228",
+  "https://standards.ieee.org/ieee/1142/7302",
+  "https://standards.ieee.org/ieee/1186/11578",
+  "https://standards.ieee.org/ieee/1202/11003",
+  "https://standards.ieee.org/ieee/1210/6976",
+  "https://standards.ieee.org/ieee/1234/6771",
+  "https://standards.ieee.org/ieee/1235/10132",
+  "https://standards.ieee.org/ieee/1242/5001",
+  "https://standards.ieee.org/ieee/1406/5903",
+  "https://standards.ieee.org/ieee/1407/6171",
+  "https://standards.ieee.org/ieee/1493/10430",
+  "https://standards.ieee.org/ieee/1617/6674",
+  "https://standards.ieee.org/ieee/1637/10182",
+  "https://standards.ieee.org/ieee/1682/7752",
+  "https://standards.ieee.org/ieee/1717/7506",
+  "https://standards.ieee.org/ieee/1816/7606",
+  "https://standards.ieee.org/ieee/2780/12023",
+  "https://standards.ieee.org/ieee/2789/11172",
+  "https://standards.ieee.org/ieee/3150/10848"
 ];
-const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013"]);
+const CABLE_STANDARD_NUMBERS = [
+  "48",
+  "82",
+  "383",
+  "386",
+  "400",
+  "400.1",
+  "400.2",
+  "400.3",
+  "400.4",
+  "400.5",
+  "404",
+  "525",
+  "532",
+  "575",
+  "592",
+  "634",
+  "690",
+  "835",
+  "1142",
+  "1186",
+  "1202",
+  "1210",
+  "1234",
+  "1235",
+  "1242",
+  "1406",
+  "1407",
+  "1493",
+  "1511",
+  "1511.1",
+  "1511.2",
+  "1617",
+  "1637",
+  "1682",
+  "1717",
+  "1718",
+  "1816",
+  "2780",
+  "2789",
+  "3150"
+];
+const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013", "IEEE 835-1994"]);
 
 const CSV_HEADERS = [
   "standard_id",
@@ -117,6 +193,14 @@ const SERIES = new Map([
       primaryPrefix: "18/824/1036 capacitors and reactive compensation",
       summaryTopic: "shunt power capacitors, series capacitor banks, and shunt capacitor application"
     }
+  ],
+  [
+    "CABLES",
+    {
+      title: "Cable Systems and Insulated Conductors",
+      primaryPrefix: "cable systems and insulated conductors",
+      summaryTopic: "power cable systems, insulated conductors, joints, terminations, accessories, field testing, installation, fire performance, and condition assessment"
+    }
   ]
 ]);
 
@@ -135,7 +219,9 @@ if (!targetSeries.length) {
       "837",
       "18",
       "824",
-      "1036"
+      "1036",
+      "CABLE",
+      ...CABLE_STANDARD_NUMBERS
     ].join(", ")}`
   );
 }
@@ -587,6 +673,36 @@ function subcategoryFor(series, title, designation) {
     return "General Capacitors and Reactive Compensation";
   }
 
+  if (series === "CABLES") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (matchesStandardNumber(standardNumber, "835")) {
+      return "Ampacity and Thermal Reference";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["383", "690", "1186", "1682"])) {
+      return "Nuclear Cable Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["48", "386", "404", "592", "1493", "1637", "1816", "2780"])) {
+      return "Terminations Joints and Accessories";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["82", "400", "400.1", "400.2", "400.3", "400.4", "400.5", "1234", "1406", "1407", "1511", "1511.1", "1511.2", "1617", "3150"])) {
+      return "Testing Diagnostics and Condition Assessment";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["634", "1202", "1717"])) {
+      return "Fire Performance and Protection";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["525", "532", "575", "1142", "1210", "1235", "1242", "1718", "2789"])) {
+      return "Design Installation and Application";
+    }
+
+    return "General Cable Systems";
+  }
+
   return "General";
 }
 
@@ -619,6 +735,10 @@ function seriesMatchesUrl(series, url) {
 
   if (series === "CAPACITORS") {
     return /\/ieee\/(?:18|824|1036)(?:[./_-]|$)/i.test(url);
+  }
+
+  if (series === "CABLES") {
+    return matchesAnyIeeeUrlNumber(url, CABLE_STANDARD_NUMBERS);
   }
 
   if (series === "3000") {
@@ -665,6 +785,10 @@ function seriesFromDesignation(designation) {
     return "CAPACITORS";
   }
 
+  if (matchesAnyStandardNumber(standardNumber, CABLE_STANDARD_NUMBERS)) {
+    return "CABLES";
+  }
+
   return "";
 }
 
@@ -679,7 +803,35 @@ function normalizeSeriesArg(value) {
     return "CAPACITORS";
   }
 
+  if (
+    ["CABLE", "CABLES", "INSULATED_CONDUCTORS"].includes(normalized) ||
+    CABLE_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "CABLES";
+  }
+
   return normalized;
+}
+
+function matchesAnyIeeeUrlNumber(url, standardNumbers) {
+  return standardNumbers.some((standardNumber) =>
+    new RegExp(
+      `/ieee/${escapeRegExp(standardNumber)}(?:[a-z]|[./_-]|$)`,
+      "i"
+    ).test(url)
+  );
+}
+
+function matchesAnyStandardNumber(standardNumber, standardNumbers) {
+  return standardNumbers.some((candidate) =>
+    matchesStandardNumber(standardNumber, candidate)
+  );
+}
+
+function matchesStandardNumber(standardNumber, candidate) {
+  return new RegExp(
+    `^${escapeRegExp(candidate.toUpperCase())}(?:[A-Z]|-|/|$)`
+  ).test(standardNumber.toUpperCase());
 }
 
 function isInactiveReference(record) {

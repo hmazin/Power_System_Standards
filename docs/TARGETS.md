@@ -6,7 +6,7 @@ Source review date: 2026-08-29.
 
 - NERC - North American Electric Reliability Corporation: first official Reliability Standards ingestion added. Next pass should add jurisdiction-specific adoption pages and retired/historical records.
 - WECC - Western Electricity Coordinating Council: first official regional standards, variances, criteria, and standards procedure ingestion added. Next pass should separate BC adoption records and link WECC records to related NERC standards.
-- IEEE - Institute of Electrical and Electronics Engineers: C57, C37, C62, 1547, 1584 arc-flash, 2030, 2800, 3000, 80/81/837 grounding, and 18/824/1036 capacitors/reactive compensation metadata ingestion started from official IEEE SA pages.
+- IEEE - Institute of Electrical and Electronics Engineers: C57, C37, C62, 1547, 1584 arc-flash, 2030, 2800, 3000, 80/81/837 grounding, 18/824/1036 capacitors/reactive compensation, and cable systems/insulated conductors metadata ingestion started from official IEEE SA pages.
 
 ## Current Priority
 

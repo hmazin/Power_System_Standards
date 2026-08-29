@@ -31,6 +31,49 @@ const DIRECT_DOWNLOAD_FILTERS = [
   DIRECT_DOWNLOAD_AVAILABLE,
   DIRECT_DOWNLOAD_MISSING
 ];
+const IEEE_CABLE_STANDARD_NUMBERS = [
+  "48",
+  "82",
+  "383",
+  "386",
+  "400",
+  "400.1",
+  "400.2",
+  "400.3",
+  "400.4",
+  "400.5",
+  "404",
+  "525",
+  "532",
+  "575",
+  "592",
+  "634",
+  "690",
+  "835",
+  "1142",
+  "1186",
+  "1202",
+  "1210",
+  "1234",
+  "1235",
+  "1242",
+  "1406",
+  "1407",
+  "1493",
+  "1511",
+  "1511.1",
+  "1511.2",
+  "1617",
+  "1637",
+  "1682",
+  "1717",
+  "1718",
+  "1816",
+  "2780",
+  "2789",
+  "3150"
+];
+
 type FilterOption = {
   value: string;
   label: string;
@@ -359,7 +402,8 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE 2800",
     "IEEE 3000",
     "IEEE 80/81/837",
-    "IEEE 18/824/1036"
+    "IEEE 18/824/1036",
+    "IEEE Cable Systems"
   ];
   const values = Array.from(
     new Set(standards.map(getStandardFamilySeries).filter(Boolean))
@@ -485,9 +529,26 @@ function getStandardFamilySeries(standard: StandardRecord) {
     if (/^(?:18|824|1036)(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
       return "IEEE 18/824/1036";
     }
+
+    if (isIeeeCableStandard(designation)) {
+      return "IEEE Cable Systems";
+    }
   }
 
   return "";
+}
+
+function isIeeeCableStandard(designation: string) {
+  return IEEE_CABLE_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function FilterSelect({

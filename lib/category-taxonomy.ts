@@ -577,5 +577,13 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("cable systems and insulated conductors - ")) {
+    return [
+      "Cable Systems and Insulated Conductors",
+      "IEEE Cable Systems",
+      category.replace("cable systems and insulated conductors - ", "")
+    ];
+  }
+
   return ["Other IEEE Records", category.replace(/^IEEE\s+/, "") || "Uncategorized"];
 }
