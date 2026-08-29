@@ -553,5 +553,13 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("80/81/837 grounding and grounding connections - ")) {
+    return [
+      "Grounding and Grounding Connections",
+      "IEEE 80/81/837",
+      category.replace("80/81/837 grounding and grounding connections - ", "")
+    ];
+  }
+
   return ["Other IEEE Records", category.replace(/^IEEE\s+/, "") || "Uncategorized"];
 }

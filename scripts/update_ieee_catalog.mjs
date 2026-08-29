@@ -8,8 +8,12 @@ const FETCH_TIMEOUT_MS = 30000;
 const FETCH_ATTEMPTS = 4;
 const PAGE_CONCURRENCY = 4;
 const SUPPLEMENTAL_STANDARD_URLS = [
-  "https://standards.ieee.org/ieee/C37.66/4937"
+  "https://standards.ieee.org/ieee/C37.66/4937",
+  "https://standards.ieee.org/ieee/80/4089",
+  "https://standards.ieee.org/ieee/81/11218",
+  "https://standards.ieee.org/ieee/837/10271"
 ];
+const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013"]);
 
 const CSV_HEADERS = [
   "standard_id",
@@ -83,18 +87,31 @@ const SERIES = new Map([
       primaryPrefix: "3000 industrial and commercial power systems",
       summaryTopic: "industrial and commercial power systems design, analysis, grounding, protection, standby power, reliability, maintenance, operations, and safety"
     }
+  ],
+  [
+    "GROUNDING",
+    {
+      title: "Grounding and Grounding Connections",
+      primaryPrefix: "80/81/837 grounding and grounding connections",
+      summaryTopic: "AC substation grounding safety, grounding-system measurements, and permanent substation grounding connections"
+    }
   ]
 ]);
 
-const requestedSeries = process.argv.slice(2).map((value) => value.toUpperCase());
+const requestedSeries = process.argv.slice(2).map(normalizeSeriesArg);
 const isPartialRefresh = requestedSeries.length > 0;
 const targetSeries = requestedSeries.length
-  ? requestedSeries.filter((series) => SERIES.has(series))
+  ? [...new Set(requestedSeries.filter((series) => SERIES.has(series)))]
   : [...SERIES.keys()];
 
 if (!targetSeries.length) {
   throw new Error(
-    `No supported IEEE family or series requested. Supported values: ${[...SERIES.keys()].join(", ")}`
+    `No supported IEEE family or series requested. Supported values: ${[
+      ...SERIES.keys(),
+      "80",
+      "81",
+      "837"
+    ].join(", ")}`
   );
 }
 
@@ -125,7 +142,9 @@ async function main() {
   const failedRecords = pageRecords.filter((record) => record.error);
   const activeRows = pageRecords
     .filter((record) => !record.error)
-    .filter((record) => record.status === "Active Standard")
+    .filter(
+      (record) => record.status === "Active Standard" || isInactiveReference(record)
+    )
     .filter((record) => record.designation)
     .filter((record) => editionFromDesignation(record.designation))
     .filter((record) => targetSeries.includes(seriesFromDesignation(record.designation)))
@@ -285,7 +304,7 @@ function toStandardRow(record) {
     latest_known_edition: edition,
     applicability:
       "Consensus IEEE power and energy standard used where specified by law, code, authority having jurisdiction, utility requirement, project specification, or contract",
-    summary: `IEEE ${series} family metadata record for ${config.summaryTopic}; this record points to the official IEEE SA page for ${record.designation}.`,
+    summary: `IEEE ${config.title} metadata record for ${config.summaryTopic}; this record points to the official IEEE SA page for ${record.designation}.`,
     official_url: record.url,
     source_download_url: "",
     notes
@@ -489,6 +508,24 @@ function subcategoryFor(series, title, designation) {
     return "General Industrial and Commercial Power Systems";
   }
 
+  if (series === "GROUNDING") {
+    const standardNumber = standardNumberFromDesignation(designation);
+
+    if (/^80(?:\.|-|$)/.test(standardNumber)) {
+      return "Substation Grounding Safety";
+    }
+
+    if (/^81(?:\.|-|$)/.test(standardNumber)) {
+      return "Grounding Measurements";
+    }
+
+    if (/^837(?:\.|-|$)/.test(standardNumber)) {
+      return "Grounding Connections";
+    }
+
+    return "General Grounding";
+  }
+
   return "General";
 }
 
@@ -515,6 +552,10 @@ function recordTypeFor(title, designation) {
 }
 
 function seriesMatchesUrl(series, url) {
+  if (series === "GROUNDING") {
+    return /\/ieee\/(?:80|81|837)(?:[./_-]|$)/i.test(url);
+  }
+
   if (series === "3000") {
     return /\/ieee\/300[0-7](?:[./_-]|$)/i.test(url);
   }
@@ -547,7 +588,25 @@ function seriesFromDesignation(designation) {
     return "3000";
   }
 
+  if (/^(?:80|81|837)(?:\.\d+|-|$)/.test(standardNumber)) {
+    return "GROUNDING";
+  }
+
   return "";
+}
+
+function normalizeSeriesArg(value) {
+  const normalized = value.toUpperCase();
+
+  if (["80", "81", "837"].includes(normalized)) {
+    return "GROUNDING";
+  }
+
+  return normalized;
+}
+
+function isInactiveReference(record) {
+  return INACTIVE_REFERENCE_DESIGNATIONS.has(record.designation);
 }
 
 function editionFromDesignation(designation) {

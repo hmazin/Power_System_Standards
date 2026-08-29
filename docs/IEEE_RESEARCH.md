@@ -1,6 +1,6 @@
 # IEEE Standards Research
 
-Source review date: 2026-08-26.
+Source review date: 2026-08-29.
 
 ## Scope
 
@@ -13,10 +13,12 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - 2030 series - smart grid interoperability, DERMS, microgrids, energy storage, and EV charging integration
 - 2800 series - inverter-based resource interconnection with transmission and bulk power systems
 - 3000 series - industrial and commercial power systems design, analysis, grounding, protection, reliability, maintenance, operations, and safety
+- 80/81/837 grounding family - AC substation grounding safety, grounding-system measurements, and permanent substation grounding connections
 
 The current dataset is built from public IEEE SA metadata pages discovered through the official IEEE standards sitemap. Rows are kept only when the IEEE SA page reports `Active Standard`.
+IEEE 80-2013 is included as a narrow reference exception because it is a foundational grounding guide, while the IEEE SA page currently lists it as `Inactive-Reserved Standard` and shows an active P80 revision project.
 
-Current active-record counts:
+Current record counts:
 
 - C57: 92
 - C37: 106
@@ -25,6 +27,7 @@ Current active-record counts:
 - 2030: 17
 - 2800: 2
 - 3000: 21
+- 80/81/837 grounding: 3
 
 ## Source Method
 
@@ -49,6 +52,7 @@ node scripts/update_ieee_catalog.mjs 1547
 node scripts/update_ieee_catalog.mjs 2030
 node scripts/update_ieee_catalog.mjs 2800
 node scripts/update_ieee_catalog.mjs 3000
+node scripts/update_ieee_catalog.mjs GROUNDING
 ```
 
 ## Public File Links
