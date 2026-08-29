@@ -354,6 +354,7 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE C37",
     "IEEE C62",
     "IEEE 1547",
+    "IEEE 1584",
     "IEEE 2030",
     "IEEE 2800",
     "IEEE 3000",
@@ -458,6 +459,10 @@ function getStandardFamilySeries(standard: StandardRecord) {
 
     if (/^1547(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
       return "IEEE 1547";
+    }
+
+    if (/^1584(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
+      return "IEEE 1584";
     }
 
     if (/^2030(?:[a-z]|\.\d+|-|$)/i.test(designation)) {

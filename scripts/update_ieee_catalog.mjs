@@ -9,6 +9,9 @@ const FETCH_ATTEMPTS = 4;
 const PAGE_CONCURRENCY = 4;
 const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/C37.66/4937",
+  "https://standards.ieee.org/ieee/1584/5802",
+  "https://standards.ieee.org/ieee/1584.1/7468",
+  "https://standards.ieee.org/ieee/1584.2/11030",
   "https://standards.ieee.org/ieee/80/4089",
   "https://standards.ieee.org/ieee/81/11218",
   "https://standards.ieee.org/ieee/837/10271"
@@ -62,6 +65,14 @@ const SERIES = new Map([
       title: "DER Interconnection",
       primaryPrefix: "1547 DER interconnection",
       summaryTopic: "distributed energy resource interconnection, interoperability, conformance testing, and application guidance"
+    }
+  ],
+  [
+    "1584",
+    {
+      title: "Arc-Flash Hazard",
+      primaryPrefix: "1584 arc-flash hazard",
+      summaryTopic: "arc-flash hazard calculations, study scoping, deliverables, and data collection"
     }
   ],
   [
@@ -430,6 +441,24 @@ function subcategoryFor(series, title, designation) {
     return "General DER Interconnection";
   }
 
+  if (series === "1584") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/^1584\.2(?:\D|$)/.test(standardNumber)) {
+      return "Data Collection";
+    }
+
+    if (/^1584\.1(?:\D|$)/.test(standardNumber)) {
+      return "Study Scope and Deliverables";
+    }
+
+    if (/^1584[A-Z](?:\D|$)/.test(standardNumber) || /amendment|corrigendum|errata/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    return "Hazard Calculations";
+  }
+
   if (series === "2030") {
     if (/microgrid/.test(haystack)) {
       return "Microgrids and Controllers";
@@ -574,6 +603,10 @@ function seriesFromDesignation(designation) {
 
   if (/^1547(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
     return "1547";
+  }
+
+  if (/^1584(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
+    return "1584";
   }
 
   if (/^2030(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {

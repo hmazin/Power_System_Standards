@@ -529,6 +529,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("1584 arc-flash hazard - ")) {
+    return [
+      "Arc-Flash Hazard",
+      "1584 Series",
+      category.replace("1584 arc-flash hazard - ", "")
+    ];
+  }
+
   if (category.startsWith("2030 smart grid DERMS and microgrids - ")) {
     return [
       "Smart Grid DERMS and Microgrids",

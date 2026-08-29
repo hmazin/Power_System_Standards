@@ -10,6 +10,7 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - C37 series - switchgear, circuit breakers, relays, reclosers, and protection equipment
 - C62 series - surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection
 - 1547 series - distributed energy resource interconnection and conformance testing
+- 1584 family - arc-flash hazard calculations, study scoping, deliverables, and data collection
 - 2030 series - smart grid interoperability, DERMS, microgrids, energy storage, and EV charging integration
 - 2800 series - inverter-based resource interconnection with transmission and bulk power systems
 - 3000 series - industrial and commercial power systems design, analysis, grounding, protection, reliability, maintenance, operations, and safety
@@ -24,6 +25,7 @@ Current record counts:
 - C37: 106
 - C62: 32
 - 1547: 6
+- 1584: 3
 - 2030: 17
 - 2800: 2
 - 3000: 21
@@ -49,6 +51,7 @@ node scripts/update_ieee_catalog.mjs C57
 node scripts/update_ieee_catalog.mjs C37
 node scripts/update_ieee_catalog.mjs C62
 node scripts/update_ieee_catalog.mjs 1547
+node scripts/update_ieee_catalog.mjs 1584
 node scripts/update_ieee_catalog.mjs 2030
 node scripts/update_ieee_catalog.mjs 2800
 node scripts/update_ieee_catalog.mjs 3000
