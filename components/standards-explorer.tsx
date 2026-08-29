@@ -358,7 +358,8 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE 2030",
     "IEEE 2800",
     "IEEE 3000",
-    "IEEE 80/81/837"
+    "IEEE 80/81/837",
+    "IEEE 18/824/1036"
   ];
   const values = Array.from(
     new Set(standards.map(getStandardFamilySeries).filter(Boolean))
@@ -479,6 +480,10 @@ function getStandardFamilySeries(standard: StandardRecord) {
 
     if (/^(?:80|81|837)(?:\.\d+|-|$)/i.test(designation)) {
       return "IEEE 80/81/837";
+    }
+
+    if (/^(?:18|824|1036)(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
+      return "IEEE 18/824/1036";
     }
   }
 

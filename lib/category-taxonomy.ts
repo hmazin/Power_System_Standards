@@ -569,5 +569,13 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("18/824/1036 capacitors and reactive compensation - ")) {
+    return [
+      "Capacitors and Reactive Compensation",
+      "IEEE 18/824/1036",
+      category.replace("18/824/1036 capacitors and reactive compensation - ", "")
+    ];
+  }
+
   return ["Other IEEE Records", category.replace(/^IEEE\s+/, "") || "Uncategorized"];
 }

@@ -14,7 +14,10 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/1584.2/11030",
   "https://standards.ieee.org/ieee/80/4089",
   "https://standards.ieee.org/ieee/81/11218",
-  "https://standards.ieee.org/ieee/837/10271"
+  "https://standards.ieee.org/ieee/837/10271",
+  "https://standards.ieee.org/ieee/18/6773",
+  "https://standards.ieee.org/ieee/824/10208",
+  "https://standards.ieee.org/ieee/1036/5912"
 ];
 const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013"]);
 
@@ -106,6 +109,14 @@ const SERIES = new Map([
       primaryPrefix: "80/81/837 grounding and grounding connections",
       summaryTopic: "AC substation grounding safety, grounding-system measurements, and permanent substation grounding connections"
     }
+  ],
+  [
+    "CAPACITORS",
+    {
+      title: "Capacitors and Reactive Compensation",
+      primaryPrefix: "18/824/1036 capacitors and reactive compensation",
+      summaryTopic: "shunt power capacitors, series capacitor banks, and shunt capacitor application"
+    }
   ]
 ]);
 
@@ -121,7 +132,10 @@ if (!targetSeries.length) {
       ...SERIES.keys(),
       "80",
       "81",
-      "837"
+      "837",
+      "18",
+      "824",
+      "1036"
     ].join(", ")}`
   );
 }
@@ -555,6 +569,24 @@ function subcategoryFor(series, title, designation) {
     return "General Grounding";
   }
 
+  if (series === "CAPACITORS") {
+    const standardNumber = standardNumberFromDesignation(designation);
+
+    if (/^18(?:[A-Z]|\.\d+|-|$)/i.test(standardNumber)) {
+      return "Shunt Power Capacitors";
+    }
+
+    if (/^824(?:[A-Z]|\.\d+|-|$)/i.test(standardNumber)) {
+      return "Series Capacitor Banks";
+    }
+
+    if (/^1036(?:[A-Z]|\.\d+|-|$)/i.test(standardNumber)) {
+      return "Shunt Capacitor Application";
+    }
+
+    return "General Capacitors and Reactive Compensation";
+  }
+
   return "General";
 }
 
@@ -583,6 +615,10 @@ function recordTypeFor(title, designation) {
 function seriesMatchesUrl(series, url) {
   if (series === "GROUNDING") {
     return /\/ieee\/(?:80|81|837)(?:[./_-]|$)/i.test(url);
+  }
+
+  if (series === "CAPACITORS") {
+    return /\/ieee\/(?:18|824|1036)(?:[./_-]|$)/i.test(url);
   }
 
   if (series === "3000") {
@@ -625,6 +661,10 @@ function seriesFromDesignation(designation) {
     return "GROUNDING";
   }
 
+  if (/^(?:18|824|1036)(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
+    return "CAPACITORS";
+  }
+
   return "";
 }
 
@@ -633,6 +673,10 @@ function normalizeSeriesArg(value) {
 
   if (["80", "81", "837"].includes(normalized)) {
     return "GROUNDING";
+  }
+
+  if (["18", "824", "1036"].includes(normalized)) {
+    return "CAPACITORS";
   }
 
   return normalized;
