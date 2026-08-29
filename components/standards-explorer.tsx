@@ -396,6 +396,7 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE C57",
     "IEEE C37",
     "IEEE C62",
+    "IEEE C135",
     "IEEE 1547",
     "IEEE 1584",
     "IEEE 2030",
@@ -496,7 +497,7 @@ function getStandardFamilySeries(standard: StandardRecord) {
       /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE)\s+(?:Std\s+)?/i,
       ""
     );
-    const cSeriesMatch = designation.match(/^C(57|37|62)\b/i);
+    const cSeriesMatch = designation.match(/^C(57|37|62|135)\b/i);
 
     if (cSeriesMatch) {
       return `IEEE C${cSeriesMatch[1]}`;

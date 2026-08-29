@@ -9,6 +9,7 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - C57 series - transformers, reactors, insulating liquids, bushings, and related transformer equipment
 - C37 series - switchgear, circuit breakers, relays, reclosers, and protection equipment
 - C62 series - surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection
+- C135 family - overhead line hardware, pole-line hardware, fasteners, fittings, and related line-construction hardware
 - 1547 series - distributed energy resource interconnection and conformance testing
 - 1584 family - arc-flash hazard calculations, study scoping, deliverables, and data collection
 - 2030 series - smart grid interoperability, DERMS, microgrids, energy storage, and EV charging integration
@@ -26,6 +27,7 @@ Current record counts:
 - C57: 92
 - C37: 106
 - C62: 32
+- C135: 3
 - 1547: 6
 - 1584: 3
 - 2030: 17
@@ -54,6 +56,7 @@ Specific families or series can be refreshed during research:
 node scripts/update_ieee_catalog.mjs C57
 node scripts/update_ieee_catalog.mjs C37
 node scripts/update_ieee_catalog.mjs C62
+node scripts/update_ieee_catalog.mjs C135
 node scripts/update_ieee_catalog.mjs 1547
 node scripts/update_ieee_catalog.mjs 1584
 node scripts/update_ieee_catalog.mjs 2030

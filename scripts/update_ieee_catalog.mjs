@@ -28,6 +28,9 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/400.3/5316",
   "https://standards.ieee.org/ieee/400.5/6988",
   "https://standards.ieee.org/ieee/404/10721",
+  "https://standards.ieee.org/ieee/C135.80/10650",
+  "https://standards.ieee.org/ieee/C135.90/7759",
+  "https://standards.ieee.org/ieee/C135.100/10678",
   "https://standards.ieee.org/ieee/525/7274",
   "https://standards.ieee.org/ieee/532/5902",
   "https://standards.ieee.org/ieee/592/7127",
@@ -136,6 +139,14 @@ const SERIES = new Map([
       title: "Surge Arresters and Surge Protective Devices",
       primaryPrefix: "C62 surge arresters and surge protective devices",
       summaryTopic: "surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection"
+    }
+  ],
+  [
+    "C135",
+    {
+      title: "Overhead Line and Pole-Line Hardware",
+      primaryPrefix: "C135 overhead line and pole-line hardware",
+      summaryTopic: "overhead line hardware, pole-line hardware, fasteners, fittings, and mechanical testing for transmission and distribution line construction"
     }
   ],
   [
@@ -517,6 +528,26 @@ function subcategoryFor(series, title, designation) {
     return "General Surge Protection Requirements";
   }
 
+  if (series === "C135") {
+    if (/fastener|bolt|nut|lag screw|washer|staple/.test(haystack)) {
+      return "Fasteners";
+    }
+
+    if (/pole line|pole-line|wood pole/.test(haystack)) {
+      return "Pole-Line Hardware";
+    }
+
+    if (/test|testing|slip|pull-out|mechanical/.test(haystack)) {
+      return "Testing and Mechanical Performance";
+    }
+
+    if (/line hardware|clevis|fitting|socket|shackle|yoke|suspension|strain|deadend|dead-end/.test(haystack)) {
+      return "Line Hardware";
+    }
+
+    return "General Overhead Line Hardware";
+  }
+
   if (series === "1547") {
     if (/energy storage|storage|battery/.test(haystack)) {
       return "Energy Storage DER";
@@ -751,7 +782,7 @@ function seriesMatchesUrl(series, url) {
 
 function seriesFromDesignation(designation) {
   const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
-  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62))\b/);
+  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62|135))\b/);
 
   if (cSeriesMatch) {
     return cSeriesMatch[1];

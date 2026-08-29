@@ -521,6 +521,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("C135 overhead line and pole-line hardware - ")) {
+    return [
+      "Overhead Line and Pole-Line Hardware",
+      "C135 Series",
+      category.replace("C135 overhead line and pole-line hardware - ", "")
+    ];
+  }
+
   if (category.startsWith("1547 DER interconnection - ")) {
     return [
       "DER Interconnection",
