@@ -561,6 +561,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("battery and dc systems - ")) {
+    return [
+      "Batteries and DC Systems",
+      "IEEE Batteries and DC Systems",
+      category.replace("battery and dc systems - ", "")
+    ];
+  }
+
   if (category.startsWith("2800 inverter-based resource interconnection - ")) {
     return [
       "Inverter-Based Resource Interconnection",

@@ -98,6 +98,38 @@ const CABLE_STANDARD_NUMBERS = [
   "2789",
   "3150"
 ];
+const BATTERY_STANDARD_NUMBERS = [
+  "450",
+  "484",
+  "485",
+  "937",
+  "946",
+  "1013",
+  "1106",
+  "1115",
+  "1184",
+  "1187",
+  "1188",
+  "1189",
+  "1375",
+  "1491",
+  "1561",
+  "1562",
+  "1578",
+  "1635",
+  "1657",
+  "1660",
+  "1661",
+  "1679",
+  "1679.1",
+  "1679.2",
+  "1679.3",
+  "1881",
+  "2405",
+  "2686",
+  "2962",
+  "2993"
+];
 const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013", "IEEE 835-1994"]);
 
 const CSV_HEADERS = [
@@ -182,6 +214,14 @@ const SERIES = new Map([
     }
   ],
   [
+    "BATTERIES",
+    {
+      title: "Batteries and DC Systems",
+      primaryPrefix: "battery and dc systems",
+      summaryTopic: "stationary batteries, battery energy storage technologies, battery monitoring, chargers, ventilation, safety, and related DC power systems"
+    }
+  ],
+  [
     "2800",
     {
       title: "Inverter-Based Resource Interconnection",
@@ -239,6 +279,8 @@ if (!targetSeries.length) {
       "18",
       "824",
       "1036",
+      "BATTERIES",
+      ...BATTERY_STANDARD_NUMBERS,
       "CABLE",
       ...CABLE_STANDARD_NUMBERS
     ].join(", ")}`
@@ -654,6 +696,56 @@ function subcategoryFor(series, title, designation) {
     return "General Smart Grid Integration";
   }
 
+  if (series === "BATTERIES") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (matchesAnyStandardNumber(standardNumber, ["450", "484", "485"])) {
+      return "Vented Lead-Acid Batteries";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1187", "1188", "1189"])) {
+      return "Valve-Regulated Lead-Acid Batteries";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1106", "1115"])) {
+      return "Nickel-Cadmium Batteries";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1184")) {
+      return "UPS Battery Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["937", "1013", "1561", "1562", "1661"])) {
+      return "PV and Remote Hybrid Battery Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["946", "2405"])) {
+      return "DC Power Systems and Chargers";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1375", "1491", "2686"])) {
+      return "Monitoring Protection and Management";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1578", "1635", "1657", "1881"])) {
+      return "Safety Ventilation and Terminology";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1660", "1679", "1679.1", "1679.2", "1679.3", "2962", "2993"])) {
+      return "Stationary Energy Storage Technologies";
+    }
+
+    if (/battery charger|rectifier|dc power/.test(haystack)) {
+      return "DC Power Systems and Chargers";
+    }
+
+    if (/lithium|sodium|flow|energy storage|storage technolog/.test(haystack)) {
+      return "Stationary Energy Storage Technologies";
+    }
+
+    return "General Batteries and DC Systems";
+  }
+
   if (series === "2800") {
     if (/test|testing|verification|conformity|assessment/.test(haystack)) {
       return "Test and Verification";
@@ -808,6 +900,10 @@ function seriesMatchesUrl(series, url) {
     return matchesAnyIeeeUrlNumber(url, CABLE_STANDARD_NUMBERS);
   }
 
+  if (series === "BATTERIES") {
+    return matchesAnyIeeeUrlNumber(url, BATTERY_STANDARD_NUMBERS);
+  }
+
   if (series === "3000") {
     return /\/ieee\/300[0-7](?:[./_-]|$)/i.test(url);
   }
@@ -834,6 +930,10 @@ function seriesFromDesignation(designation) {
 
   if (/^2030(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
     return "2030";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, BATTERY_STANDARD_NUMBERS)) {
+    return "BATTERIES";
   }
 
   if (/^2800(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
@@ -875,6 +975,13 @@ function normalizeSeriesArg(value) {
     CABLE_STANDARD_NUMBERS.includes(normalized)
   ) {
     return "CABLES";
+  }
+
+  if (
+    ["BATTERY", "BATTERIES", "DC", "DC_SYSTEMS"].includes(normalized) ||
+    BATTERY_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "BATTERIES";
   }
 
   return normalized;

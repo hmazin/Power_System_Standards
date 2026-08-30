@@ -14,6 +14,7 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - 1547 series - distributed energy resource interconnection and conformance testing
 - 1584 family - arc-flash hazard calculations, study scoping, deliverables, and data collection
 - 2030 series - smart grid interoperability, DERMS, microgrids, energy storage, and EV charging integration
+- Batteries and DC systems family - stationary batteries, battery energy storage technologies, battery monitoring, chargers, ventilation, safety, and related DC power systems
 - 2800 series - inverter-based resource interconnection with transmission and bulk power systems
 - 3000 series - industrial and commercial power systems design, analysis, grounding, protection, reliability, maintenance, operations, and safety
 - 80/81/837 grounding family - AC substation grounding safety, grounding-system measurements, and permanent substation grounding connections
@@ -33,6 +34,7 @@ Current record counts:
 - 1547: 6
 - 1584: 3
 - 2030: 17
+- Batteries and DC systems: 24
 - 2800: 2
 - 3000: 21
 - 80/81/837 grounding: 3
@@ -63,6 +65,7 @@ node scripts/update_ieee_catalog.mjs C135
 node scripts/update_ieee_catalog.mjs 1547
 node scripts/update_ieee_catalog.mjs 1584
 node scripts/update_ieee_catalog.mjs 2030
+node scripts/update_ieee_catalog.mjs BATTERIES
 node scripts/update_ieee_catalog.mjs 2800
 node scripts/update_ieee_catalog.mjs 3000
 node scripts/update_ieee_catalog.mjs GROUNDING
