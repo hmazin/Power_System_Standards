@@ -69,7 +69,19 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/1402/6050",
   "https://standards.ieee.org/ieee/1427/6231",
   "https://standards.ieee.org/ieee/1527/4976",
-  "https://standards.ieee.org/ieee/1818/7128"
+  "https://standards.ieee.org/ieee/1818/7128",
+  "https://standards.ieee.org/ieee/519/10677",
+  "https://standards.ieee.org/ieee/1159/6124",
+  "https://standards.ieee.org/ieee/1159.3/10437",
+  "https://standards.ieee.org/ieee/1250/7009",
+  "https://standards.ieee.org/ieee/1409/5214",
+  "https://standards.ieee.org/ieee/1453/10459",
+  "https://standards.ieee.org/ieee/1459/7578",
+  "https://standards.ieee.org/ieee/1531/6729",
+  "https://standards.ieee.org/ieee/1564/4156",
+  "https://standards.ieee.org/ieee/1668/6798",
+  "https://standards.ieee.org/ieee/2426/10919",
+  "https://standards.ieee.org/ieee/2938/10408"
 ];
 const CABLE_STANDARD_NUMBERS = [
   "48",
@@ -162,7 +174,26 @@ const SUBSTATION_STANDARD_NUMBERS = [
   "1527",
   "1818"
 ];
-const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013", "IEEE 835-1994"]);
+const POWER_QUALITY_STANDARD_NUMBERS = [
+  "519",
+  "1159",
+  "1159.3",
+  "1250",
+  "1409",
+  "1453",
+  "1459",
+  "1531",
+  "1564",
+  "1668",
+  "2426",
+  "2938"
+];
+const INACTIVE_REFERENCE_DESIGNATIONS = new Set([
+  "IEEE 80-2013",
+  "IEEE 835-1994",
+  "IEEE 1409-2012",
+  "IEEE 1564-2014"
+]);
 
 const CSV_HEADERS = [
   "standard_id",
@@ -300,6 +331,14 @@ const SERIES = new Map([
       primaryPrefix: "substation design and operations",
       summaryTopic: "electric power substation design, construction, operation, safety, environmental compatibility, fire protection, physical security, oil containment, bus design, seismic design, HVDC converter stations, auxiliary systems, and lightning shielding"
     }
+  ],
+  [
+    "POWER_QUALITY",
+    {
+      title: "Power Quality and Harmonics",
+      primaryPrefix: "power quality and harmonics",
+      summaryTopic: "power quality monitoring, harmonics, harmonic filters, voltage quality, flicker, voltage sags, ride-through testing, nonsinusoidal power measurement, and transient overvoltage measurement"
+    }
   ]
 ]);
 
@@ -324,7 +363,9 @@ if (!targetSeries.length) {
       "CABLE",
       ...CABLE_STANDARD_NUMBERS,
       "SUBSTATIONS",
-      ...SUBSTATION_STANDARD_NUMBERS
+      ...SUBSTATION_STANDARD_NUMBERS,
+      "POWER_QUALITY",
+      ...POWER_QUALITY_STANDARD_NUMBERS
     ].join(", ")}`
   );
 }
@@ -970,6 +1011,44 @@ function subcategoryFor(series, title, designation) {
     return "General Substation Design and Operations";
   }
 
+  if (series === "POWER_QUALITY") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (matchesAnyStandardNumber(standardNumber, ["519", "1531"])) {
+      return "Harmonics and Harmonic Filters";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1159", "1159.3"])) {
+      return "Monitoring and Data Exchange";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1250")) {
+      return "Voltage Quality";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1409")) {
+      return "Power Quality Improvement";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1453")) {
+      return "Flicker and Voltage Fluctuations";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1459")) {
+      return "Nonsinusoidal and Unbalanced Power Measurement";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1564", "1668", "2938"])) {
+      return "Voltage Sags and Ride-Through";
+    }
+
+    if (matchesStandardNumber(standardNumber, "2426")) {
+      return "Transient Overvoltage Measurement";
+    }
+
+    return "General Power Quality";
+  }
+
   return "General";
 }
 
@@ -1014,6 +1093,10 @@ function seriesMatchesUrl(series, url) {
 
   if (series === "SUBSTATIONS") {
     return matchesAnyIeeeUrlNumber(url, SUBSTATION_STANDARD_NUMBERS);
+  }
+
+  if (series === "POWER_QUALITY") {
+    return matchesAnyIeeeUrlNumber(url, POWER_QUALITY_STANDARD_NUMBERS);
   }
 
   if (series === "3000") {
@@ -1072,6 +1155,10 @@ function seriesFromDesignation(designation) {
     return "SUBSTATIONS";
   }
 
+  if (matchesAnyStandardNumber(standardNumber, POWER_QUALITY_STANDARD_NUMBERS)) {
+    return "POWER_QUALITY";
+  }
+
   return "";
 }
 
@@ -1105,6 +1192,13 @@ function normalizeSeriesArg(value) {
     SUBSTATION_STANDARD_NUMBERS.includes(normalized)
   ) {
     return "SUBSTATIONS";
+  }
+
+  if (
+    ["POWER_QUALITY", "POWERQUALITY", "PQ", "HARMONICS"].includes(normalized) ||
+    POWER_QUALITY_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "POWER_QUALITY";
   }
 
   return normalized;

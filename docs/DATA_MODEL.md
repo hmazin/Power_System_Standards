@@ -137,6 +137,7 @@ Examples:
 - Grounding
 - Protection and control
 - DER interconnection
+- Power quality
 - Solar PV
 - BESS
 - EV charging

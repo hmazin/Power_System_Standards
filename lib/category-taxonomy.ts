@@ -617,5 +617,13 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("power quality and harmonics - ")) {
+    return [
+      "Power Quality and Harmonics",
+      "IEEE Power Quality",
+      category.replace("power quality and harmonics - ", "")
+    ];
+  }
+
   return ["Other IEEE Records", category.replace(/^IEEE\s+/, "") || "Uncategorized"];
 }

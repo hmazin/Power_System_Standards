@@ -130,6 +130,20 @@ const IEEE_SUBSTATION_STANDARD_NUMBERS = [
   "C37.122.8",
   "C37.123"
 ];
+const IEEE_POWER_QUALITY_STANDARD_NUMBERS = [
+  "519",
+  "1159",
+  "1159.3",
+  "1250",
+  "1409",
+  "1453",
+  "1459",
+  "1531",
+  "1564",
+  "1668",
+  "2426",
+  "2938"
+];
 
 type FilterOption = {
   value: string;
@@ -461,6 +475,7 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE 3000",
     "IEEE 80/81/837",
     "IEEE 18/824/1036",
+    "IEEE Power Quality and Harmonics",
     "IEEE Cable Systems",
     "IEEE Substations"
   ];
@@ -601,6 +616,10 @@ function getStandardFamilySeries(standard: StandardRecord) {
       return "IEEE 3000";
     }
 
+    if (isIeeePowerQualityStandard(designation)) {
+      return "IEEE Power Quality and Harmonics";
+    }
+
     if (/^(?:80|81|837)(?:\.\d+|-|$)/i.test(designation)) {
       return "IEEE 80/81/837";
     }
@@ -646,6 +665,15 @@ function isIeeeSubstationStandard(standard: StandardRecord) {
   );
 
   return IEEE_SUBSTATION_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeePowerQualityStandard(designation: string) {
+  return IEEE_POWER_QUALITY_STANDARD_NUMBERS.some((standardNumber) =>
     new RegExp(
       `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
       "i"
