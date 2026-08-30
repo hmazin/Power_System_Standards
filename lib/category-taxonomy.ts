@@ -609,5 +609,13 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("substation design and operations - ")) {
+    return [
+      "Substations",
+      "IEEE Substations",
+      category.replace("substation design and operations - ", "")
+    ];
+  }
+
   return ["Other IEEE Records", category.replace(/^IEEE\s+/, "") || "Uncategorized"];
 }

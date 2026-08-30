@@ -54,7 +54,22 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/1816/7606",
   "https://standards.ieee.org/ieee/2780/12023",
   "https://standards.ieee.org/ieee/2789/11172",
-  "https://standards.ieee.org/ieee/3150/10848"
+  "https://standards.ieee.org/ieee/3150/10848",
+  "https://standards.ieee.org/ieee/605/5908",
+  "https://standards.ieee.org/ieee/693/4996",
+  "https://standards.ieee.org/ieee/979/7242",
+  "https://standards.ieee.org/ieee/980/7038",
+  "https://standards.ieee.org/ieee/998/6860",
+  "https://standards.ieee.org/ieee/1127/7039",
+  "https://standards.ieee.org/ieee/1246/11053",
+  "https://standards.ieee.org/ieee/1264/10562",
+  "https://standards.ieee.org/ieee/1267/5030",
+  "https://standards.ieee.org/ieee/1268/5230",
+  "https://standards.ieee.org/ieee/1378/6945",
+  "https://standards.ieee.org/ieee/1402/6050",
+  "https://standards.ieee.org/ieee/1427/6231",
+  "https://standards.ieee.org/ieee/1527/4976",
+  "https://standards.ieee.org/ieee/1818/7128"
 ];
 const CABLE_STANDARD_NUMBERS = [
   "48",
@@ -129,6 +144,23 @@ const BATTERY_STANDARD_NUMBERS = [
   "2686",
   "2962",
   "2993"
+];
+const SUBSTATION_STANDARD_NUMBERS = [
+  "605",
+  "693",
+  "979",
+  "980",
+  "998",
+  "1127",
+  "1246",
+  "1264",
+  "1267",
+  "1268",
+  "1378",
+  "1402",
+  "1427",
+  "1527",
+  "1818"
 ];
 const INACTIVE_REFERENCE_DESIGNATIONS = new Set(["IEEE 80-2013", "IEEE 835-1994"]);
 
@@ -260,6 +292,14 @@ const SERIES = new Map([
       primaryPrefix: "cable systems and insulated conductors",
       summaryTopic: "power cable systems, insulated conductors, joints, terminations, accessories, field testing, installation, fire performance, and condition assessment"
     }
+  ],
+  [
+    "SUBSTATIONS",
+    {
+      title: "Substations",
+      primaryPrefix: "substation design and operations",
+      summaryTopic: "electric power substation design, construction, operation, safety, environmental compatibility, fire protection, physical security, oil containment, bus design, seismic design, HVDC converter stations, auxiliary systems, and lightning shielding"
+    }
   ]
 ]);
 
@@ -282,7 +322,9 @@ if (!targetSeries.length) {
       "BATTERIES",
       ...BATTERY_STANDARD_NUMBERS,
       "CABLE",
-      ...CABLE_STANDARD_NUMBERS
+      ...CABLE_STANDARD_NUMBERS,
+      "SUBSTATIONS",
+      ...SUBSTATION_STANDARD_NUMBERS
     ].join(", ")}`
   );
 }
@@ -862,6 +904,72 @@ function subcategoryFor(series, title, designation) {
     return "General Cable Systems";
   }
 
+  if (series === "SUBSTATIONS") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (matchesStandardNumber(standardNumber, "605")) {
+      return "Bus Design and Buswork";
+    }
+
+    if (matchesStandardNumber(standardNumber, "693")) {
+      return "Seismic Design and Equipment Qualification";
+    }
+
+    if (matchesStandardNumber(standardNumber, "979")) {
+      return "Fire Protection";
+    }
+
+    if (matchesStandardNumber(standardNumber, "980")) {
+      return "Oil Spill Containment";
+    }
+
+    if (matchesStandardNumber(standardNumber, "998")) {
+      return "Lightning Shielding";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1127")) {
+      return "Community and Environmental Compatibility";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1246")) {
+      return "Temporary Protective Grounding";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1264")) {
+      return "Animal Mitigation";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1267")) {
+      return "Project Specifications and Turnkey Delivery";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1268")) {
+      return "Mobile Substation Installation";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1378")) {
+      return "HVDC Converter Stations";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1402")) {
+      return "Physical Security";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1427")) {
+      return "Clearances and Insulation Levels";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1527")) {
+      return "Seismic Buswork";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1818")) {
+      return "Low-Voltage Auxiliary Systems";
+    }
+
+    return "General Substation Design and Operations";
+  }
+
   return "General";
 }
 
@@ -902,6 +1010,10 @@ function seriesMatchesUrl(series, url) {
 
   if (series === "BATTERIES") {
     return matchesAnyIeeeUrlNumber(url, BATTERY_STANDARD_NUMBERS);
+  }
+
+  if (series === "SUBSTATIONS") {
+    return matchesAnyIeeeUrlNumber(url, SUBSTATION_STANDARD_NUMBERS);
   }
 
   if (series === "3000") {
@@ -956,6 +1068,10 @@ function seriesFromDesignation(designation) {
     return "CABLES";
   }
 
+  if (matchesAnyStandardNumber(standardNumber, SUBSTATION_STANDARD_NUMBERS)) {
+    return "SUBSTATIONS";
+  }
+
   return "";
 }
 
@@ -982,6 +1098,13 @@ function normalizeSeriesArg(value) {
     BATTERY_STANDARD_NUMBERS.includes(normalized)
   ) {
     return "BATTERIES";
+  }
+
+  if (
+    ["SUBSTATION", "SUBSTATIONS"].includes(normalized) ||
+    SUBSTATION_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "SUBSTATIONS";
   }
 
   return normalized;

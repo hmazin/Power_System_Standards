@@ -20,9 +20,11 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - 80/81/837 grounding family - AC substation grounding safety, grounding-system measurements, and permanent substation grounding connections
 - 18/824/1036 capacitor and reactive compensation family - shunt power capacitors, series capacitor banks, and shunt capacitor application
 - Cable systems and insulated conductors family - power cable systems, insulated conductors, joints, terminations, accessories, field testing, installation, fire performance, and condition assessment
+- Substations family - electric power substation design, construction, operation, safety, environmental compatibility, fire protection, physical security, oil containment, bus design, seismic design, HVDC converter stations, auxiliary systems, and lightning shielding
 
 The current dataset is built from public IEEE SA metadata pages discovered through the official IEEE standards sitemap. Rows are kept only when the IEEE SA page reports `Active Standard`.
 IEEE 80-2013 and IEEE 835-1994 are included as narrow reference exceptions because they are foundational grounding and cable ampacity references, while the IEEE SA pages currently list them as `Inactive-Reserved Standard`.
+IEEE 525-2025 is retained in the cable systems family as its primary category, but the webapp also surfaces it through the `IEEE Substations` family filter because its scope is substation cable systems. IEEE 1119-1988 is not included in the active public dataset because IEEE SA lists it as `Inactive-Withdrawn Standard`.
 
 Current record counts:
 
@@ -40,6 +42,7 @@ Current record counts:
 - 80/81/837 grounding: 3
 - 18/824/1036 capacitors and reactive compensation: 3
 - Cable systems and insulated conductors: 34
+- Substations: 16
 
 ## Source Method
 
@@ -71,6 +74,7 @@ node scripts/update_ieee_catalog.mjs 3000
 node scripts/update_ieee_catalog.mjs GROUNDING
 node scripts/update_ieee_catalog.mjs CAPACITORS
 node scripts/update_ieee_catalog.mjs CABLES
+node scripts/update_ieee_catalog.mjs SUBSTATIONS
 ```
 
 ## Public File Links

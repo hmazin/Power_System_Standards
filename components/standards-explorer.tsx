@@ -73,6 +73,63 @@ const IEEE_CABLE_STANDARD_NUMBERS = [
   "2789",
   "3150"
 ];
+const IEEE_BATTERY_STANDARD_NUMBERS = [
+  "450",
+  "484",
+  "485",
+  "937",
+  "946",
+  "1013",
+  "1106",
+  "1115",
+  "1184",
+  "1187",
+  "1188",
+  "1189",
+  "1375",
+  "1491",
+  "1561",
+  "1562",
+  "1578",
+  "1635",
+  "1657",
+  "1660",
+  "1661",
+  "1679",
+  "1679.1",
+  "1679.2",
+  "1679.3",
+  "1881",
+  "2405",
+  "2686",
+  "2962",
+  "2993"
+];
+const IEEE_SUBSTATION_STANDARD_NUMBERS = [
+  "525",
+  "605",
+  "693",
+  "979",
+  "980",
+  "998",
+  "1127",
+  "1246",
+  "1264",
+  "1267",
+  "1268",
+  "1378",
+  "1402",
+  "1427",
+  "1527",
+  "1818",
+  "C37.121",
+  "C37.122",
+  "C37.122.2",
+  "C37.122.3",
+  "C37.122.7",
+  "C37.122.8",
+  "C37.123"
+];
 
 type FilterOption = {
   value: string;
@@ -102,7 +159,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
     () =>
       baseOptionStandards.filter(
         (standard) =>
-          familySeries === ALL || getStandardFamilySeries(standard) === familySeries
+          matchesFamilySeries(standard, familySeries)
       ),
     [baseOptionStandards, familySeries]
   );
@@ -168,8 +225,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         (!search || searchable.includes(search)) &&
         (country === ALL || standard.country_scope === country) &&
         (publisher === ALL || standard.publisher === publisher) &&
-        (familySeries === ALL ||
-          getStandardFamilySeries(standard) === familySeries) &&
+        matchesFamilySeries(standard, familySeries) &&
         matchesCategory(standard, category, subcategory) &&
         (directDownload === ALL ||
           (directDownload === DIRECT_DOWNLOAD_AVAILABLE && hasDirectDownload) ||
@@ -400,15 +456,21 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE 1547",
     "IEEE 1584",
     "IEEE 2030",
+    "IEEE Batteries and DC Systems",
     "IEEE 2800",
     "IEEE 3000",
     "IEEE 80/81/837",
     "IEEE 18/824/1036",
-    "IEEE Cable Systems"
+    "IEEE Cable Systems",
+    "IEEE Substations"
   ];
-  const values = Array.from(
-    new Set(standards.map(getStandardFamilySeries).filter(Boolean))
-  );
+  const valueSet = new Set(standards.map(getStandardFamilySeries).filter(Boolean));
+
+  if (standards.some(isIeeeSubstationStandard)) {
+    valueSet.add("IEEE Substations");
+  }
+
+  const values = Array.from(valueSet);
 
   return [
     { value: ALL, label: ALL },
@@ -491,6 +553,18 @@ function hasOption(options: FilterOption[], value: string) {
   return options.some((option) => option.value === value);
 }
 
+function matchesFamilySeries(standard: StandardRecord, selectedFamilySeries: string) {
+  if (selectedFamilySeries === ALL) {
+    return true;
+  }
+
+  if (selectedFamilySeries === "IEEE Substations") {
+    return isIeeeSubstationStandard(standard);
+  }
+
+  return getStandardFamilySeries(standard) === selectedFamilySeries;
+}
+
 function getStandardFamilySeries(standard: StandardRecord) {
   if (standard.publisher === "IEEE") {
     const designation = standard.designation.replace(
@@ -513,6 +587,10 @@ function getStandardFamilySeries(standard: StandardRecord) {
 
     if (/^2030(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
       return "IEEE 2030";
+    }
+
+    if (isIeeeBatteryStandard(designation)) {
+      return "IEEE Batteries and DC Systems";
     }
 
     if (/^2800(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
@@ -541,6 +619,33 @@ function getStandardFamilySeries(standard: StandardRecord) {
 
 function isIeeeCableStandard(designation: string) {
   return IEEE_CABLE_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeBatteryStandard(designation: string) {
+  return IEEE_BATTERY_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeSubstationStandard(standard: StandardRecord) {
+  if (standard.publisher !== "IEEE") {
+    return false;
+  }
+
+  const designation = standard.designation.replace(
+    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+    ""
+  );
+
+  return IEEE_SUBSTATION_STANDARD_NUMBERS.some((standardNumber) =>
     new RegExp(
       `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
       "i"
