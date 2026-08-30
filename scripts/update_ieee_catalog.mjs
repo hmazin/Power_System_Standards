@@ -31,6 +31,36 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/C135.80/10650",
   "https://standards.ieee.org/ieee/C135.90/7759",
   "https://standards.ieee.org/ieee/C135.100/10678",
+  "https://standards.ieee.org/ieee/430/4959",
+  "https://standards.ieee.org/ieee/516/5911",
+  "https://standards.ieee.org/ieee/524/4813",
+  "https://standards.ieee.org/ieee/539/7581",
+  "https://standards.ieee.org/ieee/644/6732",
+  "https://standards.ieee.org/ieee/738/10207",
+  "https://standards.ieee.org/ieee/987/10480",
+  "https://standards.ieee.org/ieee/1048/3895",
+  "https://standards.ieee.org/ieee/1138/10325",
+  "https://standards.ieee.org/ieee/1222/7507",
+  "https://standards.ieee.org/ieee/1227/7582",
+  "https://standards.ieee.org/ieee/1542/6774",
+  "https://standards.ieee.org/ieee/1591.1/7470",
+  "https://standards.ieee.org/ieee/1591.4/7596",
+  "https://standards.ieee.org/ieee/1594/7076",
+  "https://standards.ieee.org/ieee/1808/10588",
+  "https://standards.ieee.org/ieee/1863/10507",
+  "https://standards.ieee.org/ieee/1936.2/10521",
+  "https://standards.ieee.org/ieee/1936.3/11009",
+  "https://standards.ieee.org/ieee/2445/7190",
+  "https://standards.ieee.org/ieee/2655/7365",
+  "https://standards.ieee.org/ieee/2746/7263",
+  "https://standards.ieee.org/ieee/2797/7463",
+  "https://standards.ieee.org/ieee/2821/7642",
+  "https://standards.ieee.org/ieee/2828/7689",
+  "https://standards.ieee.org/ieee/2833/7692",
+  "https://standards.ieee.org/ieee/2954/10410",
+  "https://standards.ieee.org/ieee/3133/10754",
+  "https://standards.ieee.org/ieee/3134/10755",
+  "https://standards.ieee.org/ieee/3336/11132",
   "https://standards.ieee.org/ieee/525/7274",
   "https://standards.ieee.org/ieee/532/5902",
   "https://standards.ieee.org/ieee/592/7127",
@@ -81,7 +111,45 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/1564/4156",
   "https://standards.ieee.org/ieee/1668/6798",
   "https://standards.ieee.org/ieee/2426/10919",
-  "https://standards.ieee.org/ieee/2938/10408"
+  "https://standards.ieee.org/ieee/2938/10408",
+  "https://standards.ieee.org/ieee/C50.12/7280",
+  "https://standards.ieee.org/ieee/C50.13/5266",
+  "https://standards.ieee.org/ieee/43/4791",
+  "https://standards.ieee.org/ieee/56/5526",
+  "https://standards.ieee.org/ieee/62.2/6970",
+  "https://standards.ieee.org/ieee/67/3278",
+  "https://standards.ieee.org/ieee/95/3142",
+  "https://standards.ieee.org/ieee/112/4807",
+  "https://standards.ieee.org/ieee/115/6673",
+  "https://standards.ieee.org/ieee/252/7433",
+  "https://standards.ieee.org/ieee/286/7705",
+  "https://standards.ieee.org/ieee/303/10130",
+  "https://standards.ieee.org/ieee/334/7576",
+  "https://standards.ieee.org/ieee/421.1/6698",
+  "https://standards.ieee.org/ieee/421.2/4597",
+  "https://standards.ieee.org/ieee/433/6826",
+  "https://standards.ieee.org/ieee/421.4/5228",
+  "https://standards.ieee.org/ieee/434/3679",
+  "https://standards.ieee.org/ieee/522/6940",
+  "https://standards.ieee.org/ieee/492/723",
+  "https://standards.ieee.org/ieee/620/7434",
+  "https://standards.ieee.org/ieee/810/5212",
+  "https://standards.ieee.org/ieee/841/10131",
+  "https://standards.ieee.org/ieee/841.1/10674",
+  "https://standards.ieee.org/ieee/1068/5899",
+  "https://standards.ieee.org/ieee/1095/4063",
+  "https://standards.ieee.org/ieee/1129/5584",
+  "https://standards.ieee.org/ieee/1248/5901",
+  "https://standards.ieee.org/ieee/1310/5411",
+  "https://standards.ieee.org/ieee/1349/10559",
+  "https://standards.ieee.org/ieee/1665/6853",
+  "https://standards.ieee.org/ieee/1553/6085",
+  "https://standards.ieee.org/ieee/1799/7751",
+  "https://standards.ieee.org/ieee/1812/6854",
+  "https://standards.ieee.org/ieee/2420/6143",
+  "https://standards.ieee.org/ieee/2455/7186",
+  "https://standards.ieee.org/ieee/2465/11257",
+  "https://standards.ieee.org/ieee/63332-387/10356"
 ];
 const CABLE_STANDARD_NUMBERS = [
   "48",
@@ -188,11 +256,113 @@ const POWER_QUALITY_STANDARD_NUMBERS = [
   "2426",
   "2938"
 ];
+const ROTATING_MACHINE_STANDARD_NUMBERS = [
+  "C50.12",
+  "C50.13",
+  "43",
+  "56",
+  "62.2",
+  "67",
+  "95",
+  "112",
+  "115",
+  "117",
+  "252",
+  "286",
+  "303",
+  "334",
+  "421.1",
+  "421.2",
+  "421.3",
+  "421.4",
+  "421.5",
+  "421.6",
+  "433",
+  "434",
+  "492",
+  "522",
+  "620",
+  "810",
+  "841",
+  "841.1",
+  "1068",
+  "1095",
+  "1129",
+  "1248",
+  "1310",
+  "1349",
+  "1434",
+  "1553",
+  "1665",
+  "1776",
+  "1799",
+  "1812",
+  "2420",
+  "2455",
+  "2465",
+  "63332-387"
+];
+const OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS = [
+  "430",
+  "516",
+  "524",
+  "539",
+  "644",
+  "656",
+  "738",
+  "987",
+  "1048",
+  "1138",
+  "1222",
+  "1227",
+  "1542",
+  "1591.1",
+  "1591.2",
+  "1591.3",
+  "1591.4",
+  "1594",
+  "1595",
+  "1808",
+  "1829",
+  "1863",
+  "1897",
+  "1936.2",
+  "1936.3",
+  "2445",
+  "2655",
+  "2683",
+  "2746",
+  "2797",
+  "2819",
+  "2821",
+  "2828",
+  "2833",
+  "2954",
+  "3133",
+  "3134",
+  "3336"
+];
 const INACTIVE_REFERENCE_DESIGNATIONS = new Set([
   "IEEE 80-2013",
   "IEEE 835-1994",
   "IEEE 1409-2012",
-  "IEEE 1564-2014"
+  "IEEE 1564-2014",
+  "IEEE 43-2013",
+  "IEEE C50.13-2014",
+  "IEEE 67-2005",
+  "IEEE 95-2002",
+  "IEEE 1068-2015",
+  "IEEE 1095-2012",
+  "IEEE 1129-2014",
+  "IEEE 117-2015",
+  "IEEE 810-2015",
+  "IEEE 1310-2012",
+  "IEEE 1434-2014",
+  "IEEE 421.2-2014",
+  "IEEE 421.4-2014",
+  "IEEE 434-2006",
+  "IEEE 492-1999",
+  "IEEE 1776-2008"
 ]);
 
 const CSV_HEADERS = [
@@ -250,6 +420,14 @@ const SERIES = new Map([
       title: "Overhead Line and Pole-Line Hardware",
       primaryPrefix: "C135 overhead line and pole-line hardware",
       summaryTopic: "overhead line hardware, pole-line hardware, fasteners, fittings, and mechanical testing for transmission and distribution line construction"
+    }
+  ],
+  [
+    "OVERHEAD_TRANSMISSION_LINES",
+    {
+      title: "Overhead Transmission Lines",
+      primaryPrefix: "overhead transmission lines",
+      summaryTopic: "overhead transmission line design, conductors, line ratings, structures, insulation, field effects, grounding, construction, inspection, maintenance, and overhead utility fiber"
     }
   ],
   [
@@ -339,6 +517,14 @@ const SERIES = new Map([
       primaryPrefix: "power quality and harmonics",
       summaryTopic: "power quality monitoring, harmonics, harmonic filters, voltage quality, flicker, voltage sags, ride-through testing, nonsinusoidal power measurement, and transient overvoltage measurement"
     }
+  ],
+  [
+    "ROTATING_MACHINES",
+    {
+      title: "Electric Machinery and Rotating Machines",
+      primaryPrefix: "electric machinery and rotating machines",
+      summaryTopic: "generators, motors, synchronous machines, induction machines, excitation systems, rotating-machine testing, insulation diagnostics, commissioning, and repair"
+    }
   ]
 ]);
 
@@ -365,7 +551,16 @@ if (!targetSeries.length) {
       "SUBSTATIONS",
       ...SUBSTATION_STANDARD_NUMBERS,
       "POWER_QUALITY",
-      ...POWER_QUALITY_STANDARD_NUMBERS
+      ...POWER_QUALITY_STANDARD_NUMBERS,
+      "ROTATING_MACHINES",
+      "ELECTRIC_MACHINERY",
+      "MACHINES",
+      ...ROTATING_MACHINE_STANDARD_NUMBERS,
+      "OVERHEAD_TRANSMISSION_LINES",
+      "OVERHEAD_LINES",
+      "TRANSMISSION_LINES",
+      "OHL",
+      ...OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS
     ].join(", ")}`
   );
 }
@@ -434,7 +629,7 @@ async function main() {
 function mergeWithExistingRows(refreshedRows) {
   const existingRows = isPartialRefresh
     ? readExistingRows().filter(
-      (row) => !targetSeries.includes(seriesFromDesignation(row.designation))
+      (row) => !targetSeries.some((series) => rowBelongsToSeries(row, series))
     )
     : [];
 
@@ -449,6 +644,18 @@ function mergeWithExistingRows(refreshedRows) {
 
       return compareDesignation(a.designation, b.designation);
     });
+}
+
+function rowBelongsToSeries(row, series) {
+  if (seriesFromDesignation(row.designation) === series) {
+    return true;
+  }
+
+  const config = SERIES.get(series);
+
+  return Boolean(
+    config && row.primary_category?.startsWith(`${config.primaryPrefix} - `)
+  );
 }
 
 function readExistingRows() {
@@ -679,6 +886,48 @@ function subcategoryFor(series, title, designation) {
     }
 
     return "General Overhead Line Hardware";
+  }
+
+  if (series === "OVERHEAD_TRANSMISSION_LINES") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1863", "2954"])) {
+      return "Line Design and Criteria";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["524", "738"])) {
+      return "Conductors Ratings and Installation";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["987", "2833"])) {
+      return "Insulators and Line Supports";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["2445", "2655", "2683"])) {
+      return "Structures and Corrosion";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["430", "539", "644", "656", "1227", "1829", "1897", "2746", "2819"])) {
+      return "Corona Field Effects and Interference";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["516", "1048", "1542", "1808"])) {
+      return "Maintenance Grounding and Field Work";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1936.2", "1936.3", "2797", "2821", "2828", "3133", "3134", "3336"])) {
+      return "Inspection Survey and Weather Monitoring";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1138", "1222", "1591.1", "1591.2", "1591.3", "1591.4", "1594", "1595"])) {
+      return "Overhead Utility Fiber";
+    }
+
+    return "General Overhead Transmission Lines";
   }
 
   if (series === "C95") {
@@ -1049,6 +1298,56 @@ function subcategoryFor(series, title, designation) {
     return "General Power Quality";
   }
 
+  if (series === "ROTATING_MACHINES") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["421.1", "421.2", "421.3", "421.4", "421.5", "421.6"])) {
+      return "Excitation Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["C50.12", "C50.13"])) {
+      return "Synchronous Generator Requirements";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["63332-387", "2420"])) {
+      return "Standby Generator Units";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["841", "841.1"])) {
+      return "Severe Duty Induction Motors";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["112", "115", "252", "620", "1812"])) {
+      return "Machine Test Procedures and Performance";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["43", "56", "62.2", "95", "117", "286", "433", "434", "522", "1310", "1434", "1553", "1776", "1799", "2465"])) {
+      return "Insulation Testing and Diagnostics";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["67", "492", "1068", "1129", "1665", "2455"])) {
+      return "Maintenance Repair and Monitoring";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["334"])) {
+      return "Nuclear Safety-Related Motors";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["810", "1095", "1248"])) {
+      return "Hydroelectric Installation and Commissioning";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["303", "1349"])) {
+      return "Hazardous Location Applications";
+    }
+
+    return "General Electric Machinery";
+  }
+
   return "General";
 }
 
@@ -1097,6 +1396,14 @@ function seriesMatchesUrl(series, url) {
 
   if (series === "POWER_QUALITY") {
     return matchesAnyIeeeUrlNumber(url, POWER_QUALITY_STANDARD_NUMBERS);
+  }
+
+  if (series === "ROTATING_MACHINES") {
+    return matchesAnyIeeeUrlNumber(url, ROTATING_MACHINE_STANDARD_NUMBERS);
+  }
+
+  if (series === "OVERHEAD_TRANSMISSION_LINES") {
+    return matchesAnyIeeeUrlNumber(url, OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS);
   }
 
   if (series === "3000") {
@@ -1159,6 +1466,14 @@ function seriesFromDesignation(designation) {
     return "POWER_QUALITY";
   }
 
+  if (matchesAnyStandardNumber(standardNumber, OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS)) {
+    return "OVERHEAD_TRANSMISSION_LINES";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, ROTATING_MACHINE_STANDARD_NUMBERS)) {
+    return "ROTATING_MACHINES";
+  }
+
   return "";
 }
 
@@ -1199,6 +1514,20 @@ function normalizeSeriesArg(value) {
     POWER_QUALITY_STANDARD_NUMBERS.includes(normalized)
   ) {
     return "POWER_QUALITY";
+  }
+
+  if (
+    ["ELECTRIC_MACHINERY", "MACHINERY", "MACHINES", "MOTORS", "GENERATORS", "ROTATING_MACHINES"].includes(normalized) ||
+    ROTATING_MACHINE_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "ROTATING_MACHINES";
+  }
+
+  if (
+    ["OVERHEAD_TRANSMISSION_LINES", "OVERHEAD_LINES", "TRANSMISSION_LINES", "TRANSMISSION_LINE", "OHL"].includes(normalized) ||
+    OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "OVERHEAD_TRANSMISSION_LINES";
   }
 
   return normalized;
@@ -1251,7 +1580,7 @@ function numericTokens(value) {
 
 function standardNumberFromDesignation(value) {
   return value.replace(
-    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE)\s+(?:Std\s+)?/i,
     ""
   );
 }

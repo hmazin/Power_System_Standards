@@ -537,6 +537,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("overhead transmission lines - ")) {
+    return [
+      "Overhead Transmission Lines",
+      "IEEE Overhead Transmission Lines",
+      category.replace("overhead transmission lines - ", "")
+    ];
+  }
+
   if (category.startsWith("1547 DER interconnection - ")) {
     return [
       "DER Interconnection",
@@ -622,6 +630,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
       "Power Quality and Harmonics",
       "IEEE Power Quality",
       category.replace("power quality and harmonics - ", "")
+    ];
+  }
+
+  if (category.startsWith("electric machinery and rotating machines - ")) {
+    return [
+      "Electric Machinery and Rotating Machines",
+      "IEEE Electric Machinery and Rotating Machines",
+      category.replace("electric machinery and rotating machines - ", "")
     ];
   }
 

@@ -29,7 +29,7 @@ Priority groups:
 - CAISO tariff business practice manuals and operating procedures
 - CSA Canadian Electrical Code and key C22.2 product standards
 - NFPA NEC, 70E, 70B, 855, and related electrical/fire standards
-- IEEE power families including C57, C37, C62, C135 overhead line hardware, 1547, 1584 arc flash, 2030, 2800, 3000, 80/81/837 grounding, 18/824/1036 capacitors/reactive compensation, cable systems/insulated conductors, substations, and power quality/harmonics, followed by safety families outside those series
+- IEEE power families including C57, C37, C62, C135 overhead line hardware, overhead transmission lines, 1547, 1584 arc flash, 2030, 2800, 3000, 80/81/837 grounding, 18/824/1036 capacitors/reactive compensation, cable systems/insulated conductors, substations, power quality/harmonics, and electric machinery/rotating machines, followed by safety families outside those series
 - UL standards for DER, BESS, PV, EV charging, and equipment certification
 - NEMA equipment standards
 - Province and state adoption records for CEC and NEC

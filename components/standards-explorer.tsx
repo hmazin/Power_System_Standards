@@ -144,6 +144,92 @@ const IEEE_POWER_QUALITY_STANDARD_NUMBERS = [
   "2426",
   "2938"
 ];
+const IEEE_ROTATING_MACHINE_STANDARD_NUMBERS = [
+  "C50.12",
+  "C50.13",
+  "43",
+  "56",
+  "62.2",
+  "67",
+  "95",
+  "112",
+  "115",
+  "117",
+  "252",
+  "286",
+  "303",
+  "334",
+  "421.1",
+  "421.2",
+  "421.3",
+  "421.4",
+  "421.5",
+  "421.6",
+  "433",
+  "434",
+  "492",
+  "522",
+  "620",
+  "810",
+  "841",
+  "841.1",
+  "1068",
+  "1095",
+  "1129",
+  "1248",
+  "1310",
+  "1349",
+  "1434",
+  "1553",
+  "1665",
+  "1776",
+  "1799",
+  "1812",
+  "2420",
+  "2455",
+  "2465",
+  "63332-387"
+];
+const IEEE_OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS = [
+  "430",
+  "516",
+  "524",
+  "539",
+  "644",
+  "656",
+  "738",
+  "987",
+  "1048",
+  "1138",
+  "1222",
+  "1227",
+  "1542",
+  "1591.1",
+  "1591.2",
+  "1591.3",
+  "1591.4",
+  "1594",
+  "1595",
+  "1808",
+  "1829",
+  "1863",
+  "1897",
+  "1936.2",
+  "1936.3",
+  "2445",
+  "2655",
+  "2683",
+  "2746",
+  "2797",
+  "2819",
+  "2821",
+  "2828",
+  "2833",
+  "2954",
+  "3133",
+  "3134",
+  "3336"
+];
 
 type FilterOption = {
   value: string;
@@ -467,6 +553,7 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE C37",
     "IEEE C62",
     "IEEE C135",
+    "IEEE Overhead Transmission Lines",
     "IEEE 1547",
     "IEEE 1584",
     "IEEE 2030",
@@ -475,6 +562,7 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE 3000",
     "IEEE 80/81/837",
     "IEEE 18/824/1036",
+    "IEEE Electric Machinery and Rotating Machines",
     "IEEE Power Quality and Harmonics",
     "IEEE Cable Systems",
     "IEEE Substations"
@@ -583,7 +671,7 @@ function matchesFamilySeries(standard: StandardRecord, selectedFamilySeries: str
 function getStandardFamilySeries(standard: StandardRecord) {
   if (standard.publisher === "IEEE") {
     const designation = standard.designation.replace(
-      /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+      /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE)\s+(?:Std\s+)?/i,
       ""
     );
     const cSeriesMatch = designation.match(/^C(57|37|62|135)\b/i);
@@ -614,6 +702,14 @@ function getStandardFamilySeries(standard: StandardRecord) {
 
     if (/^300[0-7](?:\.\d+|-|$)/i.test(designation)) {
       return "IEEE 3000";
+    }
+
+    if (isIeeeOverheadTransmissionLineStandard(designation)) {
+      return "IEEE Overhead Transmission Lines";
+    }
+
+    if (isIeeeRotatingMachineStandard(designation)) {
+      return "IEEE Electric Machinery and Rotating Machines";
     }
 
     if (isIeeePowerQualityStandard(designation)) {
@@ -660,7 +756,7 @@ function isIeeeSubstationStandard(standard: StandardRecord) {
   }
 
   const designation = standard.designation.replace(
-    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE)\s+(?:Std\s+)?/i,
     ""
   );
 
@@ -674,6 +770,24 @@ function isIeeeSubstationStandard(standard: StandardRecord) {
 
 function isIeeePowerQualityStandard(designation: string) {
   return IEEE_POWER_QUALITY_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeRotatingMachineStandard(designation: string) {
+  return IEEE_ROTATING_MACHINE_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeOverheadTransmissionLineStandard(designation: string) {
+  return IEEE_OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS.some((standardNumber) =>
     new RegExp(
       `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
       "i"
