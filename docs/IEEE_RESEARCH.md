@@ -1,6 +1,6 @@
 # IEEE Standards Research
 
-Source review date: 2026-08-29.
+Source review date: 2026-08-30.
 
 ## Scope
 
@@ -9,6 +9,7 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - C57 series - transformers, reactors, insulating liquids, bushings, and related transformer equipment
 - C37 series - switchgear, circuit breakers, relays, reclosers, and protection equipment
 - C62 series - surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection
+- C95 family - human exposure limits, electromagnetic field measurement and computation, RF safety programs, and hazard communication
 - C135 family - overhead line hardware, pole-line hardware, fasteners, fittings, and related line-construction hardware
 - 1547 series - distributed energy resource interconnection and conformance testing
 - 1584 family - arc-flash hazard calculations, study scoping, deliverables, and data collection
@@ -27,6 +28,7 @@ Current record counts:
 - C57: 92
 - C37: 106
 - C62: 32
+- C95: 6
 - C135: 3
 - 1547: 6
 - 1584: 3
@@ -56,6 +58,7 @@ Specific families or series can be refreshed during research:
 node scripts/update_ieee_catalog.mjs C57
 node scripts/update_ieee_catalog.mjs C37
 node scripts/update_ieee_catalog.mjs C62
+node scripts/update_ieee_catalog.mjs C95
 node scripts/update_ieee_catalog.mjs C135
 node scripts/update_ieee_catalog.mjs 1547
 node scripts/update_ieee_catalog.mjs 1584

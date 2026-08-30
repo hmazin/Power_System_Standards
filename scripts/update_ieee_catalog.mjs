@@ -142,6 +142,14 @@ const SERIES = new Map([
     }
   ],
   [
+    "C95",
+    {
+      title: "Electromagnetic Field Human Exposure Safety",
+      primaryPrefix: "C95 electromagnetic field human exposure safety",
+      summaryTopic: "human exposure limits, electromagnetic field measurements, safety programs, symbols, and hazard communication"
+    }
+  ],
+  [
     "C135",
     {
       title: "Overhead Line and Pole-Line Hardware",
@@ -548,6 +556,34 @@ function subcategoryFor(series, title, designation) {
     return "General Overhead Line Hardware";
   }
 
+  if (series === "C95") {
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (/military workplace|force health/.test(haystack)) {
+      return "Military Workplace Exposure";
+    }
+
+    if (/measurement|computation|dosimetry|assessment/.test(haystack)) {
+      return "Measurement and Computation";
+    }
+
+    if (/symbol|sign|label|hazard communication/.test(haystack)) {
+      return "Symbols and Hazard Communication";
+    }
+
+    if (/safety program/.test(haystack)) {
+      return "Safety Programs";
+    }
+
+    if (/safety levels|exposure/.test(haystack)) {
+      return "Human Exposure Limits";
+    }
+
+    return "General EMF Safety";
+  }
+
   if (series === "1547") {
     if (/energy storage|storage|battery/.test(haystack)) {
       return "Energy Storage DER";
@@ -740,7 +776,7 @@ function subcategoryFor(series, title, designation) {
 function recordTypeFor(title, designation) {
   const haystack = `${designation} ${title}`.toLowerCase();
 
-  if (/corrigendum/.test(haystack)) {
+  if (/corrigendum|corrigenda/.test(haystack)) {
     return "corrigendum";
   }
 
@@ -782,7 +818,7 @@ function seriesMatchesUrl(series, url) {
 
 function seriesFromDesignation(designation) {
   const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
-  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62|135))\b/);
+  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62|95|135))\b/);
 
   if (cSeriesMatch) {
     return cSeriesMatch[1];
@@ -824,7 +860,7 @@ function seriesFromDesignation(designation) {
 }
 
 function normalizeSeriesArg(value) {
-  const normalized = value.toUpperCase();
+  const normalized = value.toUpperCase().replace(/^C-95$/, "C95");
 
   if (["80", "81", "837"].includes(normalized)) {
     return "GROUNDING";

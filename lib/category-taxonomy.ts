@@ -521,6 +521,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("C95 electromagnetic field human exposure safety - ")) {
+    return [
+      "Electromagnetic Field Human Exposure Safety",
+      "C95 Series",
+      category.replace("C95 electromagnetic field human exposure safety - ", "")
+    ];
+  }
+
   if (category.startsWith("C135 overhead line and pole-line hardware - ")) {
     return [
       "Overhead Line and Pole-Line Hardware",
