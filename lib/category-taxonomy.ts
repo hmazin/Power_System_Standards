@@ -497,6 +497,18 @@ function getBcHydroCategoryPath(standard: StandardRecord): string[] {
 function getIeeeCategoryPath(standard: StandardRecord): string[] {
   const category = standard.primary_category;
 
+  if (category === "Utility safety code") {
+    return ["Electrical Safety Codes", "IEEE C2", "National Electrical Safety Code"];
+  }
+
+  if (category.startsWith("electrical safety codes - ")) {
+    return [
+      "Electrical Safety Codes",
+      "IEEE C2",
+      category.replace("electrical safety codes - ", "")
+    ];
+  }
+
   if (category.startsWith("C57 transformers regulators and reactors - ")) {
     return [
       "Transformers Regulators and Reactors",
@@ -518,6 +530,14 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
       "Surge Arresters and Surge Protective Devices",
       "C62 Series",
       category.replace("C62 surge arresters and surge protective devices - ", "")
+    ];
+  }
+
+  if (category.startsWith("C63 electromagnetic compatibility and radio-noise measurements - ")) {
+    return [
+      "Electromagnetic Compatibility and Radio-Noise Measurements",
+      "C63 Series",
+      category.replace("C63 electromagnetic compatibility and radio-noise measurements - ", "")
     ];
   }
 
@@ -545,6 +565,22 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("transportation and traction power - ")) {
+    return [
+      "Transportation and Traction Power",
+      "IEEE Transportation and Traction Power",
+      category.replace("transportation and traction power - ", "")
+    ];
+  }
+
+  if (category.startsWith("communications SCADA and IED cybersecurity - ")) {
+    return [
+      "Communications SCADA and IED Cybersecurity",
+      "IEEE Communications SCADA and IED Cybersecurity",
+      category.replace("communications SCADA and IED cybersecurity - ", "")
+    ];
+  }
+
   if (category.startsWith("1547 DER interconnection - ")) {
     return [
       "DER Interconnection",
@@ -553,11 +589,11 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
-  if (category.startsWith("1584 arc-flash hazard - ")) {
+  if (category.startsWith("arc flash hazard analysis - ")) {
     return [
-      "Arc-Flash Hazard",
-      "1584 Series",
-      category.replace("1584 arc-flash hazard - ", "")
+      "Arc Flash Hazard Analysis",
+      "IEEE Arc Flash Hazard Analysis",
+      category.replace("arc flash hazard analysis - ", "")
     ];
   }
 
@@ -593,19 +629,51 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
+  if (category.startsWith("reliability and availability - ")) {
+    return [
+      "Reliability and Availability",
+      "IEEE Reliability and Availability",
+      category.replace("reliability and availability - ", "")
+    ];
+  }
+
+  if (category.startsWith("grounding and grounding connections - ")) {
+    return [
+      "Grounding and Grounding Connections",
+      "IEEE Grounding",
+      category.replace("grounding and grounding connections - ", "")
+    ];
+  }
+
   if (category.startsWith("80/81/837 grounding and grounding connections - ")) {
     return [
       "Grounding and Grounding Connections",
-      "IEEE 80/81/837",
+      "IEEE Grounding",
       category.replace("80/81/837 grounding and grounding connections - ", "")
     ];
   }
 
-  if (category.startsWith("18/824/1036 capacitors and reactive compensation - ")) {
+  if (category.startsWith("capacitors - ")) {
     return [
-      "Capacitors and Reactive Compensation",
-      "IEEE 18/824/1036",
-      category.replace("18/824/1036 capacitors and reactive compensation - ", "")
+      "Capacitors",
+      "IEEE Capacitors",
+      category.replace("capacitors - ", "")
+    ];
+  }
+
+  if (category.startsWith("reactive power compensation - ")) {
+    return [
+      "Reactive Power Compensation",
+      "IEEE Reactive Power Compensation",
+      category.replace("reactive power compensation - ", "")
+    ];
+  }
+
+  if (category.startsWith("heat tracing - ")) {
+    return [
+      "Heat Tracing",
+      "IEEE Heat Tracing",
+      category.replace("heat tracing - ", "")
     ];
   }
 
@@ -633,11 +701,35 @@ function getIeeeCategoryPath(standard: StandardRecord): string[] {
     ];
   }
 
-  if (category.startsWith("electric machinery and rotating machines - ")) {
+  if (category.startsWith("nuclear power electrical equipment - ")) {
     return [
-      "Electric Machinery and Rotating Machines",
-      "IEEE Electric Machinery and Rotating Machines",
-      category.replace("electric machinery and rotating machines - ", "")
+      "Nuclear Power Electrical Equipment",
+      "IEEE Nuclear Power Electrical Equipment",
+      category.replace("nuclear power electrical equipment - ", "")
+    ];
+  }
+
+  if (category.startsWith("electric generators and excitation systems - ")) {
+    return [
+      "Electric Generators and Excitation Systems",
+      "IEEE Electric Generators",
+      category.replace("electric generators and excitation systems - ", "")
+    ];
+  }
+
+  if (category.startsWith("electric motors and motor applications - ")) {
+    return [
+      "Electric Motors and Motor Applications",
+      "IEEE Electric Motors",
+      category.replace("electric motors and motor applications - ", "")
+    ];
+  }
+
+  if (category.startsWith("rotating machine testing insulation and diagnostics - ")) {
+    return [
+      "Rotating Machine Testing Insulation and Diagnostics",
+      "IEEE Rotating Machine Testing",
+      category.replace("rotating machine testing insulation and diagnostics - ", "")
     ];
   }
 

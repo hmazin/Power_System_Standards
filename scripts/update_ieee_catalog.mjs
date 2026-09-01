@@ -8,16 +8,35 @@ const FETCH_TIMEOUT_MS = 30000;
 const FETCH_ATTEMPTS = 4;
 const PAGE_CONCURRENCY = 4;
 const SUPPLEMENTAL_STANDARD_URLS = [
+  "https://standards.ieee.org/ieee/C2/10814",
   "https://standards.ieee.org/ieee/C37.66/4937",
+  "https://standards.ieee.org/ieee/C63.2/11340",
+  "https://standards.ieee.org/ieee/C63.4/5841",
+  "https://standards.ieee.org/ieee/C63.9/11615",
+  "https://standards.ieee.org/ieee/C63.10/10445",
+  "https://standards.ieee.org/ieee/C63.10a/11614",
+  "https://standards.ieee.org/ieee/C63.10-2020_Cor1/10915",
+  "https://standards.ieee.org/ieee/C63.14/10910",
+  "https://standards.ieee.org/ieee/C63.22/2912",
+  "https://standards.ieee.org/ieee/C63.24/10513",
+  "https://standards.ieee.org/ieee/C63.25.2/11463",
+  "https://standards.ieee.org/ieee/C63.27/10662",
   "https://standards.ieee.org/ieee/1584/5802",
   "https://standards.ieee.org/ieee/1584.1/7468",
   "https://standards.ieee.org/ieee/1584.2/11030",
+  "https://standards.ieee.org/ieee/493/3402",
+  "https://standards.ieee.org/ieee/762/6856",
+  "https://standards.ieee.org/ieee/859/6196",
+  "https://standards.ieee.org/ieee/1240/1888",
+  "https://standards.ieee.org/ieee/1366/7243",
   "https://standards.ieee.org/ieee/80/4089",
   "https://standards.ieee.org/ieee/81/11218",
   "https://standards.ieee.org/ieee/837/10271",
   "https://standards.ieee.org/ieee/18/6773",
   "https://standards.ieee.org/ieee/824/10208",
   "https://standards.ieee.org/ieee/1036/5912",
+  "https://standards.ieee.org/ieee/1052/5530",
+  "https://standards.ieee.org/ieee/1623/7756",
   "https://standards.ieee.org/ieee/48/6208",
   "https://standards.ieee.org/ieee/82/10826",
   "https://standards.ieee.org/ieee/383/7707",
@@ -31,6 +50,53 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/C135.80/10650",
   "https://standards.ieee.org/ieee/C135.90/7759",
   "https://standards.ieee.org/ieee/C135.100/10678",
+  "https://standards.ieee.org/ieee/16/7356",
+  "https://standards.ieee.org/ieee/1474.1/6959",
+  "https://standards.ieee.org/ieee/1474.2/7438",
+  "https://standards.ieee.org/ieee/1474.3/7439",
+  "https://standards.ieee.org/ieee/1474.4/11421",
+  "https://standards.ieee.org/ieee/1627/7224",
+  "https://standards.ieee.org/ieee/1653.1/10259",
+  "https://standards.ieee.org/ieee/1653.2/7215",
+  "https://standards.ieee.org/ieee/1653.3/6790",
+  "https://standards.ieee.org/ieee/1653.5/6080",
+  "https://standards.ieee.org/ieee/1653.6/7216",
+  "https://standards.ieee.org/ieee/1791/5894",
+  "https://standards.ieee.org/ieee/1833/10196",
+  "https://standards.ieee.org/ieee/1896/5930",
+  "https://standards.ieee.org/ieee/2720/6802",
+  "https://standards.ieee.org/ieee/2753/7267",
+  "https://standards.ieee.org/ieee/2839/7666",
+  "https://standards.ieee.org/ieee/2853/10159",
+  "https://standards.ieee.org/ieee/2950/10412",
+  "https://standards.ieee.org/ieee/2956/10413",
+  "https://standards.ieee.org/ieee/3143/11518",
+  "https://standards.ieee.org/ieee/3175/10974",
+  "https://standards.ieee.org/ieee/3351/11658",
+  "https://standards.ieee.org/ieee/3352/11659",
+  "https://standards.ieee.org/ieee/487/5662",
+  "https://standards.ieee.org/ieee/487.1/5711",
+  "https://standards.ieee.org/ieee/487.2/11558",
+  "https://standards.ieee.org/ieee/487.3/5587",
+  "https://standards.ieee.org/ieee/487.4/5381",
+  "https://standards.ieee.org/ieee/487.5/5382",
+  "https://standards.ieee.org/ieee/643/892",
+  "https://standards.ieee.org/ieee/776/7241",
+  "https://standards.ieee.org/ieee/820/10326",
+  "https://standards.ieee.org/ieee/999/1377",
+  "https://standards.ieee.org/ieee/1137/7206",
+  "https://standards.ieee.org/ieee/1379/2070",
+  "https://standards.ieee.org/ieee/1613/10454",
+  "https://standards.ieee.org/ieee/1615/5591",
+  "https://standards.ieee.org/ieee/1646/3461",
+  "https://standards.ieee.org/ieee/1686/7207",
+  "https://standards.ieee.org/ieee/1686-2022_Cor_1/11847",
+  "https://standards.ieee.org/ieee/1692/10979",
+  "https://standards.ieee.org/ieee/1711.1/7053",
+  "https://standards.ieee.org/ieee/1711.2/5714",
+  "https://standards.ieee.org/ieee/1815/5414",
+  "https://standards.ieee.org/ieee/1815.1/5699",
+  "https://standards.ieee.org/ieee/1815.2/7731",
   "https://standards.ieee.org/ieee/430/4959",
   "https://standards.ieee.org/ieee/516/5911",
   "https://standards.ieee.org/ieee/524/4813",
@@ -242,6 +308,32 @@ const SUBSTATION_STANDARD_NUMBERS = [
   "1527",
   "1818"
 ];
+const CAPACITOR_STANDARD_NUMBERS = [
+  "18",
+  "824",
+  "1036",
+  "1726"
+];
+const REACTIVE_COMPENSATION_STANDARD_NUMBERS = [
+  "1031",
+  "1052",
+  "1303",
+  "1585",
+  "1623"
+];
+const HEAT_TRACING_STANDARD_NUMBERS = [
+  "515",
+  "515.1",
+  "62395-1",
+  "62395-2",
+  "60079-30-1",
+  "60079-30-2",
+  "844",
+  "844.1",
+  "844.2",
+  "844.3",
+  "844.4"
+];
 const POWER_QUALITY_STANDARD_NUMBERS = [
   "519",
   "1159",
@@ -256,51 +348,116 @@ const POWER_QUALITY_STANDARD_NUMBERS = [
   "2426",
   "2938"
 ];
-const ROTATING_MACHINE_STANDARD_NUMBERS = [
+const NUCLEAR_POWER_ELECTRICAL_EQUIPMENT_STANDARD_NUMBERS = [
+  "7-4.3.2",
+  "308",
+  "317",
+  "323",
+  "334",
+  "336",
+  "338",
+  "344",
+  "352",
+  "379",
+  "382",
+  "383",
+  "384",
+  "387",
+  "415",
+  "420",
+  "494",
+  "500",
+  "572",
+  "577",
+  "603",
+  "622",
+  "627",
+  "638",
+  "649",
+  "650",
+  "690",
+  "741",
+  "765",
+  "805",
+  "833",
+  "845",
+  "934",
+  "1023",
+  "1082",
+  "1186",
+  "1205",
+  "1290",
+  "1682",
+  "2420",
+  "63332-387",
+  "C37.81",
+  "C37.82",
+  "C37.98",
+  "C37.105"
+];
+const GENERATOR_AND_EXCITATION_STANDARD_NUMBERS = [
   "C50.12",
   "C50.13",
-  "43",
-  "56",
-  "62.2",
+  "387",
   "67",
-  "95",
-  "112",
   "115",
-  "117",
-  "252",
-  "286",
-  "303",
-  "334",
   "421.1",
   "421.2",
   "421.3",
   "421.4",
   "421.5",
   "421.6",
-  "433",
-  "434",
   "492",
-  "522",
-  "620",
   "810",
-  "841",
-  "841.1",
-  "1068",
   "1095",
   "1129",
   "1248",
+  "1553",
+  "1665",
+  "2420",
+  "63332-387"
+];
+const ELECTRIC_MOTOR_STANDARD_NUMBERS = [
+  "252",
+  "303",
+  "334",
+  "841",
+  "841.1",
+  "1068"
+];
+const ROTATING_MACHINE_TESTING_STANDARD_NUMBERS = [
+  "43",
+  "56",
+  "62.2",
+  "95",
+  "112",
+  "117",
+  "286",
+  "433",
+  "434",
+  "522",
+  "620",
   "1310",
   "1349",
   "1434",
-  "1553",
-  "1665",
   "1776",
   "1799",
   "1812",
-  "2420",
   "2455",
-  "2465",
-  "63332-387"
+  "2465"
+];
+const ROTATING_MACHINE_STANDARD_NUMBERS = [
+  ...GENERATOR_AND_EXCITATION_STANDARD_NUMBERS,
+  ...ELECTRIC_MOTOR_STANDARD_NUMBERS,
+  ...ROTATING_MACHINE_TESTING_STANDARD_NUMBERS
+];
+const RELIABILITY_AND_AVAILABILITY_STANDARD_NUMBERS = [
+  "3006",
+  "493",
+  "762",
+  "859",
+  "1240",
+  "1366"
 ];
 const OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS = [
   "430",
@@ -342,11 +499,85 @@ const OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS = [
   "3134",
   "3336"
 ];
+const TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS = [
+  "16",
+  "1474.1",
+  "1474.2",
+  "1474.3",
+  "1474.4",
+  "1627",
+  "1628",
+  "1629",
+  "1630",
+  "1653.1",
+  "1653.2",
+  "1653.3",
+  "1653.4",
+  "1653.5",
+  "1653.6",
+  "1791",
+  "1833",
+  "1896",
+  "2720",
+  "2753",
+  "2839",
+  "2853",
+  "2950",
+  "2956",
+  "3143",
+  "3175",
+  "3351",
+  "3352"
+];
+const COMMUNICATIONS_SCADA_CYBERSECURITY_STANDARD_NUMBERS = [
+  "487",
+  "487.1",
+  "487.2",
+  "487.3",
+  "487.4",
+  "487.5",
+  "643",
+  "776",
+  "820",
+  "999",
+  "1137",
+  "1379",
+  "1613",
+  "1613.1",
+  "1615",
+  "1646",
+  "1686",
+  "1692",
+  "1711.1",
+  "1711.2",
+  "1815",
+  "1815.1",
+  "1815.2"
+];
+const ELECTRICAL_SAFETY_CODE_STANDARD_NUMBERS = [
+  "C2"
+];
 const INACTIVE_REFERENCE_DESIGNATIONS = new Set([
   "IEEE 80-2013",
   "IEEE 835-1994",
   "IEEE 1409-2012",
   "IEEE 1564-2014",
+  "IEEE 493-2007",
+  "IEEE 1240-2000",
+  "IEEE 487-2015",
+  "IEEE 487.1-2014",
+  "IEEE 487.3-2014",
+  "IEEE 487.3a-2022",
+  "IEEE 487.4-2013",
+  "IEEE 487.5-2013",
+  "IEEE 643-2004",
+  "IEEE 999-1992",
+  "IEEE 1379-2000",
+  "IEEE 1613.1-2013",
+  "IEEE 1646-2004",
+  "IEEE 1815-2012",
+  "IEEE 1815.1-2015",
+  "IEEE 1815.1-2015/Cor 1-2016",
   "IEEE 43-2013",
   "IEEE C50.13-2014",
   "IEEE 67-2005",
@@ -383,6 +614,14 @@ const CSV_HEADERS = [
 
 const SERIES = new Map([
   [
+    "C2",
+    {
+      title: "Electrical Safety Codes",
+      primaryPrefix: "electrical safety codes",
+      summaryTopic: "National Electrical Safety Code requirements for electric supply stations, overhead and underground supply and communications lines, and related utility work rules"
+    }
+  ],
+  [
     "C57",
     {
       title: "Transformers, Regulators, and Reactors",
@@ -404,6 +643,14 @@ const SERIES = new Map([
       title: "Surge Arresters and Surge Protective Devices",
       primaryPrefix: "C62 surge arresters and surge protective devices",
       summaryTopic: "surge arresters, surge protective devices, insulation coordination, and transient overvoltage protection"
+    }
+  ],
+  [
+    "C63",
+    {
+      title: "Electromagnetic Compatibility and Radio-Noise Measurements",
+      primaryPrefix: "C63 electromagnetic compatibility and radio-noise measurements",
+      summaryTopic: "electromagnetic compatibility, radio-noise emissions measurements, EMI instrumentation, antenna calibration, test-site validation, RF immunity, ESD, wireless coexistence, and compliance testing"
     }
   ],
   [
@@ -431,6 +678,22 @@ const SERIES = new Map([
     }
   ],
   [
+    "TRANSPORTATION_TRACTION_POWER",
+    {
+      title: "Transportation and Traction Power",
+      primaryPrefix: "transportation and traction power",
+      summaryTopic: "rail transit traction power, overhead contact systems, rail vehicle electrical equipment, communications-based train control, rail potential, stray-current mitigation, high-speed rail, and maglev vehicle systems"
+    }
+  ],
+  [
+    "COMMUNICATIONS_SCADA_CYBERSECURITY",
+    {
+      title: "Communications, SCADA, and IED Cybersecurity",
+      primaryPrefix: "communications SCADA and IED cybersecurity",
+      summaryTopic: "power-system communications, SCADA protocols, substation network communication, DNP3 profiles, secure SCADA serial links, IED cybersecurity, communications facility protection, and electric-supply/telecommunications coordination"
+    }
+  ],
+  [
     "1547",
     {
       title: "DER Interconnection",
@@ -441,8 +704,8 @@ const SERIES = new Map([
   [
     "1584",
     {
-      title: "Arc-Flash Hazard",
-      primaryPrefix: "1584 arc-flash hazard",
+      title: "Arc Flash Hazard Analysis",
+      primaryPrefix: "arc flash hazard analysis",
       summaryTopic: "arc-flash hazard calculations, study scoping, deliverables, and data collection"
     }
   ],
@@ -475,23 +738,47 @@ const SERIES = new Map([
     {
       title: "Industrial and Commercial Power Systems",
       primaryPrefix: "3000 industrial and commercial power systems",
-      summaryTopic: "industrial and commercial power systems design, analysis, grounding, protection, standby power, reliability, maintenance, operations, and safety"
+      summaryTopic: "industrial and commercial power systems design, analysis, grounding, protection, standby power, maintenance, operations, and safety"
+    }
+  ],
+  [
+    "RELIABILITY_AND_AVAILABILITY",
+    {
+      title: "Reliability and Availability",
+      primaryPrefix: "reliability and availability",
+      summaryTopic: "power-system reliability planning, reliable industrial and commercial power systems, reliability indices, outage reporting, generating-unit availability and productivity, reliability data analysis, and HVDC converter station reliability"
     }
   ],
   [
     "GROUNDING",
     {
       title: "Grounding and Grounding Connections",
-      primaryPrefix: "80/81/837 grounding and grounding connections",
-      summaryTopic: "AC substation grounding safety, grounding-system measurements, and permanent substation grounding connections"
+      primaryPrefix: "grounding and grounding connections",
+      summaryTopic: "AC substation grounding safety, grounding-system measurements, permanent substation grounding connections, and neutral grounding in electrical utility systems"
     }
   ],
   [
     "CAPACITORS",
     {
-      title: "Capacitors and Reactive Compensation",
-      primaryPrefix: "18/824/1036 capacitors and reactive compensation",
-      summaryTopic: "shunt power capacitors, series capacitor banks, and shunt capacitor application"
+      title: "Capacitors",
+      primaryPrefix: "capacitors",
+      summaryTopic: "shunt power capacitors, series capacitor banks, fixed-series capacitor banks, and shunt capacitor application"
+    }
+  ],
+  [
+    "REACTIVE_COMPENSATION",
+    {
+      title: "Reactive Power Compensation",
+      primaryPrefix: "reactive power compensation",
+      summaryTopic: "static var compensators, STATCOM systems, electronic voltage fluctuation compensation devices, and related reactive power compensation equipment"
+    }
+  ],
+  [
+    "HEAT_TRACING",
+    {
+      title: "Heat Tracing",
+      primaryPrefix: "heat tracing",
+      summaryTopic: "electrical resistance trace heating, explosive-atmosphere trace heating, skin effect trace heating, and impedance heating for pipelines, vessels, equipment, structures, and commercial applications"
     }
   ],
   [
@@ -519,16 +806,40 @@ const SERIES = new Map([
     }
   ],
   [
-    "ROTATING_MACHINES",
+    "NUCLEAR_POWER_ELECTRICAL_EQUIPMENT",
     {
-      title: "Electric Machinery and Rotating Machines",
-      primaryPrefix: "electric machinery and rotating machines",
-      summaryTopic: "generators, motors, synchronous machines, induction machines, excitation systems, rotating-machine testing, insulation diagnostics, commissioning, and repair"
+      title: "Nuclear Power Electrical Equipment",
+      primaryPrefix: "nuclear power electrical equipment",
+      summaryTopic: "Class 1E equipment, safety systems, nuclear facility electrical power systems, nuclear cables and splices, standby power supplies, safety-related motors, switchgear, relays, and controls"
+    }
+  ],
+  [
+    "GENERATORS_AND_EXCITATION",
+    {
+      title: "Electric Generators and Excitation Systems",
+      primaryPrefix: "electric generators and excitation systems",
+      summaryTopic: "synchronous generators, hydro generators, turbine generators, generator-motors, excitation systems, standby generator units, generator monitoring, generator rewind, and hydroelectric commissioning"
+    }
+  ],
+  [
+    "ELECTRIC_MOTORS",
+    {
+      title: "Electric Motors and Motor Applications",
+      primaryPrefix: "electric motors and motor applications",
+      summaryTopic: "induction motors, severe-duty process-industry motors, nuclear safety-related motors, motor auxiliary devices, and AC motor repair and rewinding"
+    }
+  ],
+  [
+    "ROTATING_MACHINE_TESTING",
+    {
+      title: "Rotating Machine Testing, Insulation, and Diagnostics",
+      primaryPrefix: "rotating machine testing insulation and diagnostics",
+      summaryTopic: "shared rotating-machine testing, insulation maintenance, insulation diagnostics, thermal evaluation, partial discharge measurement, permanent magnet machine testing, and DC electric machine maintenance"
     }
   ]
 ]);
 
-const requestedSeries = process.argv.slice(2).map(normalizeSeriesArg);
+const requestedSeries = process.argv.slice(2).flatMap(normalizeSeriesArg);
 const isPartialRefresh = requestedSeries.length > 0;
 const targetSeries = requestedSeries.length
   ? [...new Set(requestedSeries.filter((series) => SERIES.has(series)))]
@@ -538,12 +849,29 @@ if (!targetSeries.length) {
   throw new Error(
     `No supported IEEE family or series requested. Supported values: ${[
       ...SERIES.keys(),
+      "GROUND",
       "80",
       "81",
       "837",
-      "18",
-      "824",
-      "1036",
+      "C62.92",
+      "NESC",
+      "ELECTRICAL_SAFETY_CODES",
+      "SAFETY_CODES",
+      "UTILITY_SAFETY",
+      "C63",
+      "EMC",
+      "ELECTROMAGNETIC_COMPATIBILITY",
+      "RADIO_NOISE",
+      "CAPACITOR",
+      ...CAPACITOR_STANDARD_NUMBERS,
+      "REACTIVE_COMPENSATION",
+      "REACTIVE_POWER_COMPENSATION",
+      "VAR_COMPENSATION",
+      ...REACTIVE_COMPENSATION_STANDARD_NUMBERS,
+      "HEAT_TRACING",
+      "TRACE_HEATING",
+      "ELECTRIC_HEAT_TRACING",
+      ...HEAT_TRACING_STANDARD_NUMBERS,
       "BATTERIES",
       ...BATTERY_STANDARD_NUMBERS,
       "CABLE",
@@ -552,15 +880,53 @@ if (!targetSeries.length) {
       ...SUBSTATION_STANDARD_NUMBERS,
       "POWER_QUALITY",
       ...POWER_QUALITY_STANDARD_NUMBERS,
+      "RELIABILITY",
+      "AVAILABILITY",
+      "POWER_SYSTEM_RELIABILITY",
+      ...RELIABILITY_AND_AVAILABILITY_STANDARD_NUMBERS,
+      "NUCLEAR",
+      "NUCLEAR_POWER",
+      "CLASS_1E",
+      ...NUCLEAR_POWER_ELECTRICAL_EQUIPMENT_STANDARD_NUMBERS,
       "ROTATING_MACHINES",
       "ELECTRIC_MACHINERY",
       "MACHINES",
+      "GENERATORS",
+      "GENERATION",
+      "GENERATORS_AND_EXCITATION",
+      "ELECTRIC_GENERATORS",
+      ...GENERATOR_AND_EXCITATION_STANDARD_NUMBERS,
+      "MOTORS",
+      "ELECTRIC_MOTORS",
+      "MOTOR_APPLICATIONS",
+      ...ELECTRIC_MOTOR_STANDARD_NUMBERS,
+      "ROTATING_MACHINE_TESTING",
+      "MACHINE_TESTING",
+      "MACHINE_DIAGNOSTICS",
       ...ROTATING_MACHINE_STANDARD_NUMBERS,
       "OVERHEAD_TRANSMISSION_LINES",
       "OVERHEAD_LINES",
       "TRANSMISSION_LINES",
       "OHL",
-      ...OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS
+      ...OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS,
+      "TRANSPORTATION",
+      "TRACTION",
+      "TRACTION_POWER",
+      "TRANSPORTATION_TRACTION_POWER",
+      "RAIL",
+      "RAIL_TRANSIT",
+      "OCS",
+      "CBTC",
+      ...TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS,
+      "COMMUNICATIONS_SCADA_CYBERSECURITY",
+      "COMMUNICATIONS",
+      "SCADA",
+      "IED_CYBERSECURITY",
+      "CYBERSECURITY",
+      "DNP3",
+      "PSCC",
+      ...COMMUNICATIONS_SCADA_CYBERSECURITY_STANDARD_NUMBERS,
+      ...ELECTRICAL_SAFETY_CODE_STANDARD_NUMBERS
     ].join(", ")}`
   );
 }
@@ -776,6 +1142,14 @@ function toStandardRow(record) {
 function subcategoryFor(series, title, designation) {
   const haystack = `${designation} ${title}`.toLowerCase();
 
+  if (series === "C2") {
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    return "National Electrical Safety Code";
+  }
+
   if (series === "C57") {
     if (/terminology|definitions|nomenclature/.test(haystack)) {
       return "Terminology and Reference";
@@ -868,6 +1242,76 @@ function subcategoryFor(series, title, designation) {
     return "General Surge Protection Requirements";
   }
 
+  if (series === "C63") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.2")) {
+      return "EMI Instrumentation";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.4")) {
+      return "Radio-Noise Emissions Measurements";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.5")) {
+      return "Antenna Calibration";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["C63.6", "C63.7", "C63.25.1", "C63.25.2"])) {
+      return "Radiated Emission Test Sites";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["C63.011", "C63.022", "C63.29"])) {
+      return "Radio-Disturbance Characteristics";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["C63.9", "C63.15", "C63.18", "C63.24"])) {
+      return "RF Immunity Testing";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["C63.10", "C63.17", "C63.26"])) {
+      return "Wireless Device Compliance Testing";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.27")) {
+      return "Wireless Coexistence";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.19")) {
+      return "Hearing Aid Compatibility";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.22")) {
+      return "Automated EMI Measurements";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.23")) {
+      return "EMC Measurement Uncertainty";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.12")) {
+      return "Electromagnetic Compatibility Limits";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.13")) {
+      return "EMI Power-Line Filters";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.14")) {
+      return "EMC Dictionary";
+    }
+
+    if (matchesStandardNumber(standardNumber, "C63.16")) {
+      return "ESD Test Methodologies";
+    }
+
+    return "General Electromagnetic Compatibility";
+  }
+
   if (series === "C135") {
     if (/fastener|bolt|nut|lag screw|washer|staple/.test(haystack)) {
       return "Fasteners";
@@ -928,6 +1372,106 @@ function subcategoryFor(series, title, designation) {
     }
 
     return "General Overhead Transmission Lines";
+  }
+
+  if (series === "TRANSPORTATION_TRACTION_POWER") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1474.1", "1474.2", "1474.3", "1474.4", "2839"])) {
+      return "Train Control and Rail Safety Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["16", "2956"])) {
+      return "Rail Vehicle Electrical Equipment";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1627", "1628", "1629", "1630", "1791", "1833", "1896", "2753"])) {
+      return "Overhead Contact Systems and Current Collection";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1653.1", "1653.2", "1653.3", "1653.4", "1653.5", "1653.6"])) {
+      return "Traction Power Substations and Distribution Facilities";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["2720", "2853", "3175"])) {
+      return "Rail Potential Grounding and Stray Current";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["2950", "3143", "3351", "3352"])) {
+      return "High-Speed Rail and Maglev Systems";
+    }
+
+    return "General Transportation and Traction Power";
+  }
+
+  if (series === "COMMUNICATIONS_SCADA_CYBERSECURITY") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["487", "487.1", "487.2", "487.3", "487.4", "487.5", "1692"])) {
+      return "Communications Facility Protection";
+    }
+
+    if (matchesStandardNumber(standardNumber, "643")) {
+      return "Power-Line Carrier";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["776", "1137"])) {
+      return "Electric Supply and Communication Line Coordination";
+    }
+
+    if (matchesStandardNumber(standardNumber, "820")) {
+      return "Telephone Loop Performance";
+    }
+
+    if (matchesStandardNumber(standardNumber, "999")) {
+      return "Master Remote SCADA Communications";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1379")) {
+      return "RTU and IED Data Communications";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1613", "1613.1"])) {
+      return "Communications Device Environmental Testing";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1615")) {
+      return "Substation Network Communication";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1646")) {
+      return "Substation Automation Communication Timing";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1686")) {
+      return "IED Cybersecurity";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["1711.1", "1711.2"])) {
+      return "Secure SCADA Serial Links";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1815.2")) {
+      return "DER DNP3 Profiles";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1815.1")) {
+      return "IEC 61850 and DNP3 Mapping";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1815")) {
+      return "DNP3 Communications";
+    }
+
+    return "General Communications SCADA and IED Cybersecurity";
   }
 
   if (series === "C95") {
@@ -1128,8 +1672,42 @@ function subcategoryFor(series, title, designation) {
     return "General Industrial and Commercial Power Systems";
   }
 
+  if (series === "RELIABILITY_AND_AVAILABILITY") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/^3006(?:\.|-|$)/.test(standardNumber)) {
+      return "Power Systems Reliability";
+    }
+
+    if (/^493(?:[A-Z]|-|$)/.test(standardNumber)) {
+      return "Gold Book Reliable Industrial and Commercial Power Systems";
+    }
+
+    if (/^1366(?:[A-Z]|-|$)/.test(standardNumber)) {
+      return "Distribution Reliability Indices";
+    }
+
+    if (/^762(?:[A-Z]|-|$)/.test(standardNumber)) {
+      return "Generating Unit Reliability Availability and Productivity";
+    }
+
+    if (/^859(?:[A-Z]|-|$)/.test(standardNumber)) {
+      return "Transmission Facility Outage Reporting and Analysis";
+    }
+
+    if (/^1240(?:[A-Z]|-|$)/.test(standardNumber)) {
+      return "HVDC Converter Station Reliability";
+    }
+
+    return "General Reliability and Availability";
+  }
+
   if (series === "GROUNDING") {
     const standardNumber = standardNumberFromDesignation(designation);
+
+    if (/^C62\.92(?:\.|-|$)/.test(standardNumber)) {
+      return "Neutral Grounding in Electrical Utility Systems";
+    }
 
     if (/^80(?:\.|-|$)/.test(standardNumber)) {
       return "Substation Grounding Safety";
@@ -1149,19 +1727,71 @@ function subcategoryFor(series, title, designation) {
   if (series === "CAPACITORS") {
     const standardNumber = standardNumberFromDesignation(designation);
 
-    if (/^18(?:[A-Z]|\.\d+|-|$)/i.test(standardNumber)) {
+    if (matchesStandardNumber(standardNumber, "18")) {
       return "Shunt Power Capacitors";
     }
 
-    if (/^824(?:[A-Z]|\.\d+|-|$)/i.test(standardNumber)) {
+    if (matchesStandardNumber(standardNumber, "824")) {
       return "Series Capacitor Banks";
     }
 
-    if (/^1036(?:[A-Z]|\.\d+|-|$)/i.test(standardNumber)) {
+    if (matchesStandardNumber(standardNumber, "1036")) {
       return "Shunt Capacitor Application";
     }
 
-    return "General Capacitors and Reactive Compensation";
+    if (matchesStandardNumber(standardNumber, "1726")) {
+      return "Fixed-Series Capacitor Banks";
+    }
+
+    return "General Capacitors";
+  }
+
+  if (series === "REACTIVE_COMPENSATION") {
+    const standardNumber = standardNumberFromDesignation(designation);
+
+    if (matchesStandardNumber(standardNumber, "1031")) {
+      return "Transmission Static Var Compensators";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1052")) {
+      return "STATCOM Systems";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1303")) {
+      return "Static Var Compensator Field Tests";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1585")) {
+      return "Series Devices for Voltage Fluctuation Compensation";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1623")) {
+      return "Dynamic Voltage Compensation Devices";
+    }
+
+    return "General Reactive Power Compensation";
+  }
+
+  if (series === "HEAT_TRACING") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (matchesAnyStandardNumber(standardNumber, ["515", "515.1", "62395-1", "62395-2"])) {
+      return "Electrical Resistance Trace Heating";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["60079-30-1", "60079-30-2"])) {
+      return "Explosive Atmosphere Trace Heating";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["844", "844.1", "844.2"])) {
+      return "Skin Effect Trace Heating";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["844.3", "844.4"])) {
+      return "Impedance Heating";
+    }
+
+    return "General Heat Tracing";
   }
 
   if (series === "CABLES") {
@@ -1298,7 +1928,69 @@ function subcategoryFor(series, title, designation) {
     return "General Power Quality";
   }
 
-  if (series === "ROTATING_MACHINES") {
+  if (series === "NUCLEAR_POWER_ELECTRICAL_EQUIPMENT") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesStandardNumber(standardNumber, "7-4.3.2")) {
+      return "Digital Computers in Nuclear Safety Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["308", "765"])) {
+      return "Class 1E Power Systems and Preferred Power Supply";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["323", "344", "382", "627", "1205"])) {
+      return "Class 1E Equipment Qualification and Aging";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["317", "383", "572", "628", "690", "1186", "1682"])) {
+      return "Nuclear Cables Penetrations and Raceway Systems";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["C37.81", "C37.82", "C37.98", "C37.105", "649"])) {
+      return "Class 1E Switchgear and Protective Relays";
+    }
+
+    if (matchesStandardNumber(standardNumber, "334")) {
+      return "Class 1E Motors";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["387", "2420", "63332-387"])) {
+      return "Nuclear Standby Power Supplies";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["603", "338", "352", "379", "577"])) {
+      return "Nuclear Safety Systems Criteria and Reliability";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["384", "415", "420", "494", "500", "741", "805", "833", "845", "934", "1023", "1082", "1290"])) {
+      return "Nuclear Electrical Equipment Programs and Controls";
+    }
+
+    if (matchesStandardNumber(standardNumber, "336")) {
+      return "Nuclear Facility Installation Inspection and Testing";
+    }
+
+    if (matchesStandardNumber(standardNumber, "622")) {
+      return "Electric Heat Tracing for Nuclear Power Generating Stations";
+    }
+
+    if (matchesStandardNumber(standardNumber, "638")) {
+      return "Class 1E Transformers";
+    }
+
+    if (matchesStandardNumber(standardNumber, "650")) {
+      return "Class 1E Static Chargers and Inverters";
+    }
+
+    return "General Nuclear Power Electrical Equipment";
+  }
+
+  if (series === "GENERATORS_AND_EXCITATION") {
     const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
 
     if (/corrigendum|corrigenda|amendment/.test(haystack)) {
@@ -1313,39 +2005,83 @@ function subcategoryFor(series, title, designation) {
       return "Synchronous Generator Requirements";
     }
 
-    if (matchesAnyStandardNumber(standardNumber, ["63332-387", "2420"])) {
+    if (matchesAnyStandardNumber(standardNumber, ["387", "63332-387", "2420"])) {
       return "Standby Generator Units";
     }
 
-    if (matchesAnyStandardNumber(standardNumber, ["841", "841.1"])) {
-      return "Severe Duty Induction Motors";
+    if (matchesStandardNumber(standardNumber, "115")) {
+      return "Synchronous Machine Test Procedures";
     }
 
-    if (matchesAnyStandardNumber(standardNumber, ["112", "115", "252", "620", "1812"])) {
-      return "Machine Test Procedures and Performance";
+    if (matchesStandardNumber(standardNumber, "1553")) {
+      return "Generator Insulation Testing";
     }
 
-    if (matchesAnyStandardNumber(standardNumber, ["43", "56", "62.2", "95", "117", "286", "433", "434", "522", "1310", "1434", "1553", "1776", "1799", "2465"])) {
-      return "Insulation Testing and Diagnostics";
-    }
-
-    if (matchesAnyStandardNumber(standardNumber, ["67", "492", "1068", "1129", "1665", "2455"])) {
-      return "Maintenance Repair and Monitoring";
-    }
-
-    if (matchesAnyStandardNumber(standardNumber, ["334"])) {
-      return "Nuclear Safety-Related Motors";
+    if (matchesAnyStandardNumber(standardNumber, ["67", "492", "1129", "1665"])) {
+      return "Generator Maintenance Repair and Monitoring";
     }
 
     if (matchesAnyStandardNumber(standardNumber, ["810", "1095", "1248"])) {
       return "Hydroelectric Installation and Commissioning";
     }
 
-    if (matchesAnyStandardNumber(standardNumber, ["303", "1349"])) {
-      return "Hazardous Location Applications";
+    return "General Electric Generators";
+  }
+
+  if (series === "ELECTRIC_MOTORS") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
     }
 
-    return "General Electric Machinery";
+    if (matchesAnyStandardNumber(standardNumber, ["841", "841.1"])) {
+      return "Severe Duty Induction Motors";
+    }
+
+    if (matchesStandardNumber(standardNumber, "252")) {
+      return "Induction Motor Test Procedures";
+    }
+
+    if (matchesStandardNumber(standardNumber, "334")) {
+      return "Nuclear Safety-Related Motors";
+    }
+
+    if (matchesStandardNumber(standardNumber, "303")) {
+      return "Motor Auxiliary Devices in Classified Locations";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1068")) {
+      return "AC Motor Repair and Rewinding";
+    }
+
+    return "General Electric Motors";
+  }
+
+  if (series === "ROTATING_MACHINE_TESTING") {
+    const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
+
+    if (/corrigendum|corrigenda|amendment/.test(haystack)) {
+      return "Amendments and Corrections";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["112", "620", "1812"])) {
+      return "Machine Test Procedures and Performance";
+    }
+
+    if (matchesAnyStandardNumber(standardNumber, ["43", "56", "62.2", "95", "117", "286", "433", "434", "522", "1310", "1434", "1776", "1799", "2465"])) {
+      return "Insulation Testing and Diagnostics";
+    }
+
+    if (matchesStandardNumber(standardNumber, "2455")) {
+      return "DC Electric Machine Repair and Maintenance";
+    }
+
+    if (matchesStandardNumber(standardNumber, "1349")) {
+      return "Hazardous Location Electric Machine Applications";
+    }
+
+    return "General Rotating Machine Testing";
   }
 
   return "General";
@@ -1374,12 +2110,24 @@ function recordTypeFor(title, designation) {
 }
 
 function seriesMatchesUrl(series, url) {
+  if (series === "C2") {
+    return matchesAnyIeeeUrlNumber(url, ELECTRICAL_SAFETY_CODE_STANDARD_NUMBERS);
+  }
+
   if (series === "GROUNDING") {
-    return /\/ieee\/(?:80|81|837)(?:[./_-]|$)/i.test(url);
+    return /\/ieee\/(?:80|81|837|C62\.92)(?:[./_-]|$)/i.test(url);
   }
 
   if (series === "CAPACITORS") {
-    return /\/ieee\/(?:18|824|1036)(?:[./_-]|$)/i.test(url);
+    return matchesAnyIeeeUrlNumber(url, CAPACITOR_STANDARD_NUMBERS);
+  }
+
+  if (series === "REACTIVE_COMPENSATION") {
+    return matchesAnyIeeeUrlNumber(url, REACTIVE_COMPENSATION_STANDARD_NUMBERS);
+  }
+
+  if (series === "HEAT_TRACING") {
+    return matchesAnyIeeeUrlNumber(url, HEAT_TRACING_STANDARD_NUMBERS);
   }
 
   if (series === "CABLES") {
@@ -1398,12 +2146,36 @@ function seriesMatchesUrl(series, url) {
     return matchesAnyIeeeUrlNumber(url, POWER_QUALITY_STANDARD_NUMBERS);
   }
 
-  if (series === "ROTATING_MACHINES") {
-    return matchesAnyIeeeUrlNumber(url, ROTATING_MACHINE_STANDARD_NUMBERS);
+  if (series === "NUCLEAR_POWER_ELECTRICAL_EQUIPMENT") {
+    return matchesAnyIeeeUrlNumber(url, NUCLEAR_POWER_ELECTRICAL_EQUIPMENT_STANDARD_NUMBERS);
+  }
+
+  if (series === "GENERATORS_AND_EXCITATION") {
+    return matchesAnyIeeeUrlNumber(url, GENERATOR_AND_EXCITATION_STANDARD_NUMBERS);
+  }
+
+  if (series === "ELECTRIC_MOTORS") {
+    return matchesAnyIeeeUrlNumber(url, ELECTRIC_MOTOR_STANDARD_NUMBERS);
+  }
+
+  if (series === "ROTATING_MACHINE_TESTING") {
+    return matchesAnyIeeeUrlNumber(url, ROTATING_MACHINE_TESTING_STANDARD_NUMBERS);
   }
 
   if (series === "OVERHEAD_TRANSMISSION_LINES") {
     return matchesAnyIeeeUrlNumber(url, OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS);
+  }
+
+  if (series === "TRANSPORTATION_TRACTION_POWER") {
+    return matchesAnyIeeeUrlNumber(url, TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS);
+  }
+
+  if (series === "COMMUNICATIONS_SCADA_CYBERSECURITY") {
+    return matchesAnyIeeeUrlNumber(url, COMMUNICATIONS_SCADA_CYBERSECURITY_STANDARD_NUMBERS);
+  }
+
+  if (series === "RELIABILITY_AND_AVAILABILITY") {
+    return /\/ieee\/(?:3006(?:\.\d+)?|493|762|859|1240|1366)(?:[./_-]|$)/i.test(url);
   }
 
   if (series === "3000") {
@@ -1416,7 +2188,19 @@ function seriesMatchesUrl(series, url) {
 
 function seriesFromDesignation(designation) {
   const standardNumber = standardNumberFromDesignation(designation).toUpperCase();
-  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62|95|135))\b/);
+  const cSeriesMatch = standardNumber.match(/^(C(?:37|57|62|63|95|135))\b/);
+
+  if (matchesAnyStandardNumber(standardNumber, ELECTRICAL_SAFETY_CODE_STANDARD_NUMBERS)) {
+    return "C2";
+  }
+
+  if (/^C62\.92(?:\.|-|$)/.test(standardNumber)) {
+    return "GROUNDING";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, NUCLEAR_POWER_ELECTRICAL_EQUIPMENT_STANDARD_NUMBERS)) {
+    return "NUCLEAR_POWER_ELECTRICAL_EQUIPMENT";
+  }
 
   if (cSeriesMatch) {
     return cSeriesMatch[1];
@@ -1442,6 +2226,10 @@ function seriesFromDesignation(designation) {
     return "2800";
   }
 
+  if (isReliabilityAndAvailabilityStandardNumber(standardNumber)) {
+    return "RELIABILITY_AND_AVAILABILITY";
+  }
+
   if (/^300[0-7](?:\.\d+|-|$)/.test(standardNumber)) {
     return "3000";
   }
@@ -1450,8 +2238,16 @@ function seriesFromDesignation(designation) {
     return "GROUNDING";
   }
 
-  if (/^(?:18|824|1036)(?:[A-Z]|\.\d+|-|$)/.test(standardNumber)) {
+  if (matchesAnyStandardNumber(standardNumber, CAPACITOR_STANDARD_NUMBERS)) {
     return "CAPACITORS";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, REACTIVE_COMPENSATION_STANDARD_NUMBERS)) {
+    return "REACTIVE_COMPENSATION";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, HEAT_TRACING_STANDARD_NUMBERS)) {
+    return "HEAT_TRACING";
   }
 
   if (matchesAnyStandardNumber(standardNumber, CABLE_STANDARD_NUMBERS)) {
@@ -1470,8 +2266,24 @@ function seriesFromDesignation(designation) {
     return "OVERHEAD_TRANSMISSION_LINES";
   }
 
-  if (matchesAnyStandardNumber(standardNumber, ROTATING_MACHINE_STANDARD_NUMBERS)) {
-    return "ROTATING_MACHINES";
+  if (matchesAnyStandardNumber(standardNumber, TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS)) {
+    return "TRANSPORTATION_TRACTION_POWER";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, COMMUNICATIONS_SCADA_CYBERSECURITY_STANDARD_NUMBERS)) {
+    return "COMMUNICATIONS_SCADA_CYBERSECURITY";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, GENERATOR_AND_EXCITATION_STANDARD_NUMBERS)) {
+    return "GENERATORS_AND_EXCITATION";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, ELECTRIC_MOTOR_STANDARD_NUMBERS)) {
+    return "ELECTRIC_MOTORS";
+  }
+
+  if (matchesAnyStandardNumber(standardNumber, ROTATING_MACHINE_TESTING_STANDARD_NUMBERS)) {
+    return "ROTATING_MACHINE_TESTING";
   }
 
   return "";
@@ -1480,12 +2292,53 @@ function seriesFromDesignation(designation) {
 function normalizeSeriesArg(value) {
   const normalized = value.toUpperCase().replace(/^C-95$/, "C95");
 
-  if (["80", "81", "837"].includes(normalized)) {
+  if (
+    ["NESC", "ELECTRICAL_SAFETY_CODES", "SAFETY_CODES", "UTILITY_SAFETY"].includes(normalized) ||
+    matchesAnyStandardNumber(normalized, ELECTRICAL_SAFETY_CODE_STANDARD_NUMBERS)
+  ) {
+    return "C2";
+  }
+
+  if (
+    ["GROUND", "GROUNDING", "80", "81", "837", "C62.92"].includes(normalized) ||
+    /^C62\.92(?:\.|-|$)/.test(normalized)
+  ) {
     return "GROUNDING";
   }
 
-  if (["18", "824", "1036"].includes(normalized)) {
+  if (
+    ["EMC", "ELECTROMAGNETIC_COMPATIBILITY", "RADIO_NOISE", "RADIO_NOISE_MEASUREMENTS"].includes(normalized) ||
+    /^C63(?:[A-Z]|\.\d+|-|\/|$)/.test(normalized)
+  ) {
+    return "C63";
+  }
+
+  if (
+    ["CAPACITOR", "CAPACITORS"].includes(normalized) ||
+    CAPACITOR_STANDARD_NUMBERS.includes(normalized)
+  ) {
     return "CAPACITORS";
+  }
+
+  if (
+    ["REACTIVE", "REACTIVE_COMPENSATION", "REACTIVE_POWER_COMPENSATION", "SVC", "STATCOM", "VAR_COMPENSATION"].includes(normalized) ||
+    REACTIVE_COMPENSATION_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "REACTIVE_COMPENSATION";
+  }
+
+  if (
+    ["HEAT_TRACING", "TRACE_HEATING", "ELECTRIC_HEAT_TRACING"].includes(normalized) ||
+    HEAT_TRACING_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "HEAT_TRACING";
+  }
+
+  if (
+    ["NUCLEAR", "NUCLEAR_POWER", "NUCLEAR_POWER_ELECTRICAL_EQUIPMENT", "CLASS_1E"].includes(normalized) ||
+    NUCLEAR_POWER_ELECTRICAL_EQUIPMENT_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "NUCLEAR_POWER_ELECTRICAL_EQUIPMENT";
   }
 
   if (
@@ -1517,10 +2370,43 @@ function normalizeSeriesArg(value) {
   }
 
   if (
-    ["ELECTRIC_MACHINERY", "MACHINERY", "MACHINES", "MOTORS", "GENERATORS", "ROTATING_MACHINES"].includes(normalized) ||
+    ["RELIABILITY", "RELIABILITY_AND_AVAILABILITY", "AVAILABILITY", "POWER_SYSTEM_RELIABILITY"].includes(normalized) ||
+    isReliabilityAndAvailabilityStandardNumber(normalized)
+  ) {
+    return "RELIABILITY_AND_AVAILABILITY";
+  }
+
+  if (
+    ["ELECTRIC_MACHINERY", "MACHINERY", "MACHINES", "ROTATING_MACHINES"].includes(normalized)
+  ) {
+    return ["GENERATORS_AND_EXCITATION", "ELECTRIC_MOTORS", "ROTATING_MACHINE_TESTING"];
+  }
+
+  if (
+    ["GENERATOR", "GENERATORS", "GENERATION", "ELECTRIC_GENERATORS", "GENERATORS_AND_EXCITATION", "EXCITATION"].includes(normalized) ||
+    GENERATOR_AND_EXCITATION_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "GENERATORS_AND_EXCITATION";
+  }
+
+  if (
+    ["MOTOR", "MOTORS", "ELECTRIC_MOTORS", "MOTOR_APPLICATIONS"].includes(normalized) ||
+    ELECTRIC_MOTOR_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "ELECTRIC_MOTORS";
+  }
+
+  if (
+    ["ROTATING_MACHINE_TESTING", "MACHINE_TESTING", "MACHINE_DIAGNOSTICS", "INSULATION_DIAGNOSTICS"].includes(normalized) ||
+    ROTATING_MACHINE_TESTING_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "ROTATING_MACHINE_TESTING";
+  }
+
+  if (
     ROTATING_MACHINE_STANDARD_NUMBERS.includes(normalized)
   ) {
-    return "ROTATING_MACHINES";
+    return ["GENERATORS_AND_EXCITATION", "ELECTRIC_MOTORS", "ROTATING_MACHINE_TESTING"];
   }
 
   if (
@@ -1528,6 +2414,20 @@ function normalizeSeriesArg(value) {
     OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS.includes(normalized)
   ) {
     return "OVERHEAD_TRANSMISSION_LINES";
+  }
+
+  if (
+    ["TRANSPORTATION", "TRACTION", "TRACTION_POWER", "TRANSPORTATION_TRACTION_POWER", "RAIL", "RAIL_TRANSIT", "OCS", "CBTC"].includes(normalized) ||
+    TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "TRANSPORTATION_TRACTION_POWER";
+  }
+
+  if (
+    ["COMMUNICATIONS_SCADA_CYBERSECURITY", "COMMUNICATIONS", "SCADA", "IED_CYBERSECURITY", "CYBERSECURITY", "DNP3", "PSCC"].includes(normalized) ||
+    COMMUNICATIONS_SCADA_CYBERSECURITY_STANDARD_NUMBERS.includes(normalized)
+  ) {
+    return "COMMUNICATIONS_SCADA_CYBERSECURITY";
   }
 
   return normalized;
@@ -1546,6 +2446,13 @@ function matchesAnyStandardNumber(standardNumber, standardNumbers) {
   return standardNumbers.some((candidate) =>
     matchesStandardNumber(standardNumber, candidate)
   );
+}
+
+function isReliabilityAndAvailabilityStandardNumber(standardNumber) {
+  const normalized = standardNumber.toUpperCase();
+
+  return /^3006(?:\.|-|$)/.test(normalized) ||
+    matchesAnyStandardNumber(normalized, RELIABILITY_AND_AVAILABILITY_STANDARD_NUMBERS);
 }
 
 function matchesStandardNumber(standardNumber, candidate) {
@@ -1580,7 +2487,7 @@ function numericTokens(value) {
 
 function standardNumberFromDesignation(value) {
   return value.replace(
-    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+    /^(?:IEEE\/ANSI\/USEMCSC|ANSI\/IEEE|IEEE\/ANSI|ANSI\/USEMCSC|IEEE\/IEC|IEC\/IEEE|IEEE\/CSA|CSA\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE|ANSI)\s+(?:Std\s+)?/i,
     ""
   );
 }

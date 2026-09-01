@@ -31,6 +31,32 @@ const DIRECT_DOWNLOAD_FILTERS = [
   DIRECT_DOWNLOAD_AVAILABLE,
   DIRECT_DOWNLOAD_MISSING
 ];
+const IEEE_CAPACITOR_STANDARD_NUMBERS = [
+  "18",
+  "824",
+  "1036",
+  "1726"
+];
+const IEEE_REACTIVE_COMPENSATION_STANDARD_NUMBERS = [
+  "1031",
+  "1052",
+  "1303",
+  "1585",
+  "1623"
+];
+const IEEE_HEAT_TRACING_STANDARD_NUMBERS = [
+  "515",
+  "515.1",
+  "62395-1",
+  "62395-2",
+  "60079-30-1",
+  "60079-30-2",
+  "844",
+  "844.1",
+  "844.2",
+  "844.3",
+  "844.4"
+];
 const IEEE_CABLE_STANDARD_NUMBERS = [
   "48",
   "82",
@@ -144,51 +170,56 @@ const IEEE_POWER_QUALITY_STANDARD_NUMBERS = [
   "2426",
   "2938"
 ];
-const IEEE_ROTATING_MACHINE_STANDARD_NUMBERS = [
+const IEEE_GENERATOR_AND_EXCITATION_STANDARD_NUMBERS = [
   "C50.12",
   "C50.13",
-  "43",
-  "56",
-  "62.2",
+  "387",
   "67",
-  "95",
-  "112",
   "115",
-  "117",
-  "252",
-  "286",
-  "303",
-  "334",
   "421.1",
   "421.2",
   "421.3",
   "421.4",
   "421.5",
   "421.6",
-  "433",
-  "434",
   "492",
-  "522",
-  "620",
   "810",
-  "841",
-  "841.1",
-  "1068",
   "1095",
   "1129",
   "1248",
+  "1553",
+  "1665",
+  "2420",
+  "63332-387"
+];
+const IEEE_ELECTRIC_MOTOR_STANDARD_NUMBERS = [
+  "252",
+  "303",
+  "334",
+  "841",
+  "841.1",
+  "1068"
+];
+const IEEE_ROTATING_MACHINE_TESTING_STANDARD_NUMBERS = [
+  "43",
+  "56",
+  "62.2",
+  "95",
+  "112",
+  "117",
+  "286",
+  "433",
+  "434",
+  "522",
+  "620",
   "1310",
   "1349",
   "1434",
-  "1553",
-  "1665",
   "1776",
   "1799",
   "1812",
-  "2420",
   "2455",
-  "2465",
-  "63332-387"
+  "2465"
 ];
 const IEEE_OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS = [
   "430",
@@ -229,6 +260,36 @@ const IEEE_OVERHEAD_TRANSMISSION_LINE_STANDARD_NUMBERS = [
   "3133",
   "3134",
   "3336"
+];
+const IEEE_TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS = [
+  "16",
+  "1474.1",
+  "1474.2",
+  "1474.3",
+  "1474.4",
+  "1627",
+  "1628",
+  "1629",
+  "1630",
+  "1653.1",
+  "1653.2",
+  "1653.3",
+  "1653.4",
+  "1653.5",
+  "1653.6",
+  "1791",
+  "1833",
+  "1896",
+  "2720",
+  "2753",
+  "2839",
+  "2853",
+  "2950",
+  "2956",
+  "3143",
+  "3175",
+  "3351",
+  "3352"
 ];
 
 type FilterOption = {
@@ -552,17 +613,22 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
     "IEEE C57",
     "IEEE C37",
     "IEEE C62",
+    "IEEE C63",
     "IEEE C135",
     "IEEE Overhead Transmission Lines",
+    "IEEE Transportation and Traction Power",
     "IEEE 1547",
     "IEEE 1584",
     "IEEE 2030",
     "IEEE Batteries and DC Systems",
     "IEEE 2800",
     "IEEE 3000",
-    "IEEE 80/81/837",
-    "IEEE 18/824/1036",
-    "IEEE Electric Machinery and Rotating Machines",
+    "IEEE Grounding",
+    "IEEE Capacitors",
+    "IEEE Reactive Power Compensation",
+    "IEEE Electric Generators and Excitation Systems",
+    "IEEE Electric Motors and Motor Applications",
+    "IEEE Rotating Machine Testing",
     "IEEE Power Quality and Harmonics",
     "IEEE Cable Systems",
     "IEEE Substations"
@@ -671,10 +737,14 @@ function matchesFamilySeries(standard: StandardRecord, selectedFamilySeries: str
 function getStandardFamilySeries(standard: StandardRecord) {
   if (standard.publisher === "IEEE") {
     const designation = standard.designation.replace(
-      /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+      /^(?:IEEE\/ANSI\/USEMCSC|ANSI\/IEEE|IEEE\/ANSI|ANSI\/USEMCSC|IEEE\/IEC|IEC\/IEEE|IEEE\/CSA|CSA\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE|ANSI)\s+(?:Std\s+)?/i,
       ""
     );
-    const cSeriesMatch = designation.match(/^C(57|37|62|135)\b/i);
+    if (isIeeeGroundingStandard(designation)) {
+      return "IEEE Grounding";
+    }
+
+    const cSeriesMatch = designation.match(/^C(57|37|62|63|135)\b/i);
 
     if (cSeriesMatch) {
       return `IEEE C${cSeriesMatch[1]}`;
@@ -708,20 +778,36 @@ function getStandardFamilySeries(standard: StandardRecord) {
       return "IEEE Overhead Transmission Lines";
     }
 
-    if (isIeeeRotatingMachineStandard(designation)) {
-      return "IEEE Electric Machinery and Rotating Machines";
+    if (isIeeeTransportationTractionPowerStandard(designation)) {
+      return "IEEE Transportation and Traction Power";
+    }
+
+    if (isIeeeGeneratorAndExcitationStandard(designation)) {
+      return "IEEE Electric Generators and Excitation Systems";
+    }
+
+    if (isIeeeElectricMotorStandard(designation)) {
+      return "IEEE Electric Motors and Motor Applications";
+    }
+
+    if (isIeeeRotatingMachineTestingStandard(designation)) {
+      return "IEEE Rotating Machine Testing";
     }
 
     if (isIeeePowerQualityStandard(designation)) {
       return "IEEE Power Quality and Harmonics";
     }
 
-    if (/^(?:80|81|837)(?:\.\d+|-|$)/i.test(designation)) {
-      return "IEEE 80/81/837";
+    if (isIeeeCapacitorStandard(designation)) {
+      return "IEEE Capacitors";
     }
 
-    if (/^(?:18|824|1036)(?:[a-z]|\.\d+|-|$)/i.test(designation)) {
-      return "IEEE 18/824/1036";
+    if (isIeeeReactiveCompensationStandard(designation)) {
+      return "IEEE Reactive Power Compensation";
+    }
+
+    if (isIeeeHeatTracingStandard(designation)) {
+      return "IEEE Heat Tracing";
     }
 
     if (isIeeeCableStandard(designation)) {
@@ -732,8 +818,40 @@ function getStandardFamilySeries(standard: StandardRecord) {
   return "";
 }
 
+function isIeeeGroundingStandard(designation: string) {
+  return /^(?:80|81|837)(?:\.\d+|-|$)/i.test(designation) ||
+    /^C62\.92(?:\.|-|$)/i.test(designation);
+}
+
 function isIeeeCableStandard(designation: string) {
   return IEEE_CABLE_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeCapacitorStandard(designation: string) {
+  return IEEE_CAPACITOR_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeReactiveCompensationStandard(designation: string) {
+  return IEEE_REACTIVE_COMPENSATION_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeHeatTracingStandard(designation: string) {
+  return IEEE_HEAT_TRACING_STANDARD_NUMBERS.some((standardNumber) =>
     new RegExp(
       `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
       "i"
@@ -756,7 +874,7 @@ function isIeeeSubstationStandard(standard: StandardRecord) {
   }
 
   const designation = standard.designation.replace(
-    /^(?:ANSI\/IEEE|IEEE\/ANSI|IEEE\/IEC|IEC\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE)\s+(?:Std\s+)?/i,
+    /^(?:IEEE\/ANSI\/USEMCSC|ANSI\/IEEE|IEEE\/ANSI|ANSI\/USEMCSC|IEEE\/IEC|IEC\/IEEE|IEEE\/CSA|CSA\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE|ANSI)\s+(?:Std\s+)?/i,
     ""
   );
 
@@ -777,8 +895,35 @@ function isIeeePowerQualityStandard(designation: string) {
   );
 }
 
-function isIeeeRotatingMachineStandard(designation: string) {
-  return IEEE_ROTATING_MACHINE_STANDARD_NUMBERS.some((standardNumber) =>
+function isIeeeTransportationTractionPowerStandard(designation: string) {
+  return IEEE_TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeGeneratorAndExcitationStandard(designation: string) {
+  return IEEE_GENERATOR_AND_EXCITATION_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeElectricMotorStandard(designation: string) {
+  return IEEE_ELECTRIC_MOTOR_STANDARD_NUMBERS.some((standardNumber) =>
+    new RegExp(
+      `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
+      "i"
+    ).test(designation)
+  );
+}
+
+function isIeeeRotatingMachineTestingStandard(designation: string) {
+  return IEEE_ROTATING_MACHINE_TESTING_STANDARD_NUMBERS.some((standardNumber) =>
     new RegExp(
       `^${escapeRegExp(standardNumber)}(?:[a-z]|-|/|$)`,
       "i"
