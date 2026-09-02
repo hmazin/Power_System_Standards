@@ -70,9 +70,11 @@ For the earliest prototype, a CSV or JSON seed dataset is enough. The database s
 ## Data Files
 
 - `data/standards_seed.csv` - starter metadata records
+- `data/nfpa_electrical_standards.csv` - NFPA electrical public metadata records
 - `data/README.md` - data rules and contribution notes
 - `docs/DATA_MODEL.md` - logical data model
 - `docs/ROADMAP.md` - phased project roadmap
+- `docs/NFPA_ELECTRICAL_STANDARDS_RESEARCH.md` - NFPA electrical catalog scope and source notes
 - `docs/NFPA_STANDARDS_LIBRARY_ORGANIZATION.md` - public-safe NFPA library organization procedure
 - `database/schema.sql` - draft PostgreSQL schema
 

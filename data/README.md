@@ -16,6 +16,8 @@ WECC regional standards, criteria, and standards procedure records can be refres
 
 IEEE family and series records can be refreshed from official IEEE SA standards pages discovered through the public IEEE standards sitemap with `scripts/update_ieee_catalog.mjs`.
 
+NFPA electrical records are stored in `data/nfpa_electrical_standards.csv`. Keep this file public-safe: use official NFPA/public catalog metadata only, and do not add private Drive links or licensed PDF inventory details.
+
 For IEEE rows, `primary_category` is the stable source-family classification
 written by the refresh script. The app maps that source classification into the
 numbered engineering taxonomy and may expose one standard through multiple
