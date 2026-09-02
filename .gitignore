@@ -19,6 +19,10 @@ npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
+# Private/generated NFPA library working files
+outputs/nfpa_index/
+tmp/nfpa_index/
+
 # OS/editor files
 .DS_Store
 Thumbs.db

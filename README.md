@@ -73,6 +73,7 @@ For the earliest prototype, a CSV or JSON seed dataset is enough. The database s
 - `data/README.md` - data rules and contribution notes
 - `docs/DATA_MODEL.md` - logical data model
 - `docs/ROADMAP.md` - phased project roadmap
+- `docs/NFPA_STANDARDS_LIBRARY_ORGANIZATION.md` - public-safe NFPA library organization procedure
 - `database/schema.sql` - draft PostgreSQL schema
 
 ## Verification Rule
