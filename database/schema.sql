@@ -28,6 +28,27 @@ create table standards (
     unique (designation, publisher_id)
 );
 
+create table categories (
+    id text primary key,
+    name text not null,
+    parent_category_id text references categories(id) on delete cascade,
+    sort_order integer not null default 0,
+    description text,
+    unique (parent_category_id, name)
+);
+
+create table standard_categories (
+    standard_id text not null references standards(id) on delete cascade,
+    category_id text not null references categories(id) on delete cascade,
+    is_primary boolean not null default false,
+    notes text,
+    primary key (standard_id, category_id)
+);
+
+create unique index idx_standard_categories_one_primary
+    on standard_categories (standard_id)
+    where is_primary;
+
 create table standard_editions (
     id text primary key,
     standard_id text not null references standards(id) on delete cascade,
@@ -118,6 +139,8 @@ create table standard_relationships (
 
 create index idx_standards_designation on standards (designation);
 create index idx_standards_publisher on standards (publisher_id);
+create index idx_categories_parent on categories (parent_category_id);
+create index idx_standard_categories_category on standard_categories (category_id);
 create index idx_editions_standard on standard_editions (standard_id);
 create index idx_adoptions_standard on adoptions (standard_id);
 create index idx_adoptions_jurisdiction on adoptions (jurisdiction_id);

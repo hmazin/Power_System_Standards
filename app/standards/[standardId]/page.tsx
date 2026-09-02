@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, FileDown, FileText } from "lucide-react";
 import { notFound } from "next/navigation";
-import { formatCategoryPath, getCategoryPath } from "@/lib/category-taxonomy";
+import { formatCategoryPath, getCategoryPaths } from "@/lib/category-taxonomy";
 import { getStandardById, getStandards } from "@/lib/standards";
 
 type StandardPageProps = {
@@ -89,7 +89,10 @@ export default async function StandardPage({ params }: StandardPageProps) {
       <section className="detail-grid" aria-label="Standard metadata">
         <MetadataItem label="Latest Edition" value={standard.latest_known_edition} />
         <MetadataItem label="Country Scope" value={standard.country_scope} />
-        <MetadataItem label="Category" value={formatCategoryPath(getCategoryPath(standard))} />
+        <MetadataItem
+          label="Categories"
+          value={getCategoryPaths(standard).map(formatCategoryPath).join("; ")}
+        />
         <MetadataItem label="Record Type" value={standard.record_type} />
         <MetadataItem label="Applicability" value={standard.applicability} />
       </section>

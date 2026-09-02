@@ -13,9 +13,10 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import {
   CATEGORY_PATH_DELIMITER,
+  IEEE_ENGINEERING_CATEGORIES,
   formatCategoryPath,
   getCategoryKey,
-  getCategoryPath
+  getCategoryPaths
 } from "@/lib/category-taxonomy";
 import type { StandardRecord } from "@/lib/standards";
 
@@ -371,7 +372,7 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
         standard.title,
         standard.publisher,
         standard.primary_category,
-        formatCategoryPath(getCategoryPath(standard)),
+        getCategoryPaths(standard).map(formatCategoryPath).join(" "),
         standard.country_scope,
         standard.latest_known_edition,
         standard.applicability,
@@ -406,7 +407,9 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
 
   const publisherCount = new Set(standards.map((standard) => standard.publisher)).size;
   const categoryCount = new Set(
-    standards.map((standard) => getCategoryKey(getCategoryPath(standard)))
+    standards.flatMap((standard) =>
+      getCategoryPaths(standard).map((path) => getCategoryKey(path))
+    )
   ).size;
 
   function resetFilters() {
@@ -527,7 +530,9 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
             </div>
 
             {filteredStandards.map((standard) => {
-              const categoryLabel = formatCategoryPath(getCategoryPath(standard));
+              const categoryPaths = getCategoryPaths(standard);
+              const categoryLabel = formatCategoryPath(categoryPaths[0]);
+              const additionalCategoryCount = categoryPaths.length - 1;
 
               return (
                 <article className="standard-row" key={standard.standard_id} role="row">
@@ -535,7 +540,12 @@ export function StandardsExplorer({ standards }: StandardsExplorerProps) {
                     <Link href={`/standards/${encodeURIComponent(standard.standard_id)}`}>
                       {standard.designation}
                     </Link>
-                    <span>{categoryLabel}</span>
+                    <span>
+                      {categoryLabel}
+                      {additionalCategoryCount > 0
+                        ? ` +${additionalCategoryCount} more`
+                        : ""}
+                    </span>
                   </div>
                   <div className="title-cell" role="cell">
                     <strong>{standard.title}</strong>
@@ -660,7 +670,14 @@ function makeFamilySeriesOptions(standards: StandardRecord[]) {
 }
 
 function makeTopCategoryOptions(standards: StandardRecord[]) {
-  return makeOptions(standards.map((standard) => getCategoryPath(standard)[0]));
+  return makeOptions(
+    [
+      ...IEEE_ENGINEERING_CATEGORIES,
+      ...standards.flatMap((standard) =>
+        getCategoryPaths(standard).map((path) => path[0])
+      )
+    ]
+  );
 }
 
 function makeSubcategoryOptions(standards: StandardRecord[], selectedCategory: string) {
@@ -671,16 +688,16 @@ function makeSubcategoryOptions(standards: StandardRecord[], selectedCategory: s
   }
 
   standards.forEach((standard) => {
-    const path = getCategoryPath(standard);
+    getCategoryPaths(standard).forEach((path) => {
+      if (path[0] !== selectedCategory) {
+        return;
+      }
 
-    if (path[0] !== selectedCategory) {
-      return;
-    }
-
-    for (let depth = 2; depth <= path.length; depth += 1) {
-      const nodePath = path.slice(0, depth);
-      nodes.set(getCategoryKey(nodePath), nodePath);
-    }
+      for (let depth = 2; depth <= path.length; depth += 1) {
+        const nodePath = path.slice(0, depth);
+        nodes.set(getCategoryKey(nodePath), nodePath);
+      }
+    });
   });
 
   return [
@@ -701,21 +718,21 @@ function matchesCategory(
   selectedCategory: string,
   selectedSubcategory: string
 ) {
-  const path = getCategoryPath(standard);
+  return getCategoryPaths(standard).some((path) => {
+    if (selectedCategory !== ALL && path[0] !== selectedCategory) {
+      return false;
+    }
 
-  if (selectedCategory !== ALL && path[0] !== selectedCategory) {
-    return false;
-  }
+    if (selectedSubcategory === ALL) {
+      return true;
+    }
 
-  if (selectedSubcategory === ALL) {
-    return true;
-  }
-
-  const categoryKey = getCategoryKey(path);
-  return (
-    categoryKey === selectedSubcategory ||
-    categoryKey.startsWith(`${selectedSubcategory}${CATEGORY_PATH_DELIMITER}`)
-  );
+    const categoryKey = getCategoryKey(path);
+    return (
+      categoryKey === selectedSubcategory ||
+      categoryKey.startsWith(`${selectedSubcategory}${CATEGORY_PATH_DELIMITER}`)
+    );
+  });
 }
 
 function hasOption(options: FilterOption[], value: string) {

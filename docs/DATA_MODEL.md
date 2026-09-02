@@ -32,6 +32,10 @@ Suggested fields:
 - `created_at`
 - `updated_at`
 
+`primary_category` is retained in the CSV prototype as the publisher/family
+classification used by source refresh scripts. It is not the complete set of
+engineering categories shown by the app.
+
 ## Edition
 
 An edition is a version of a standard.
@@ -143,6 +147,27 @@ Examples:
 - EV charging
 - Arc flash
 - Cybersecurity
+
+## Category
+
+Categories are hierarchical engineering filing and discovery paths. A standard
+may belong to more than one category without duplicating the standard record.
+For example, IEEE 525 can remain a cable-system standard while also appearing
+under Substations, and IEEE C57.13 can appear under both Transformers and Power
+System Instrumentation.
+
+Suggested fields:
+
+- `id`
+- `name`
+- `parent_category_id`
+- `sort_order`
+- `description`
+
+The `standard_categories` join stores each many-to-many assignment and marks at
+most one path as canonical with `is_primary`. The canonical path follows the
+library filing decision; additional paths are discovery views for legitimate
+cross-disciplinary use.
 
 ## Asset Type
 

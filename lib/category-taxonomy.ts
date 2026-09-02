@@ -3,6 +3,18 @@ import type { StandardRecord } from "@/lib/standards";
 export const CATEGORY_PATH_DELIMITER = " > ";
 
 export function getCategoryPath(standard: StandardRecord): string[] {
+  return getCategoryPaths(standard)[0];
+}
+
+export function getCategoryPaths(standard: StandardRecord): string[][] {
+  if (standard.publisher === "IEEE") {
+    return getIeeeCategoryPaths(standard);
+  }
+
+  return [getSingleCategoryPath(standard)];
+}
+
+function getSingleCategoryPath(standard: StandardRecord): string[] {
   if (standard.publisher === "AESO") {
     return getAesoCategoryPath(standard);
   }
@@ -25,10 +37,6 @@ export function getCategoryPath(standard: StandardRecord): string[] {
 
   if (standard.publisher === "BC Hydro") {
     return getBcHydroCategoryPath(standard);
-  }
-
-  if (standard.publisher === "IEEE") {
-    return getIeeeCategoryPath(standard);
   }
 
   return [standard.primary_category || "Uncategorized"];
@@ -494,7 +502,323 @@ function getBcHydroCategoryPath(standard: StandardRecord): string[] {
   ];
 }
 
-function getIeeeCategoryPath(standard: StandardRecord): string[] {
+export const IEEE_ENGINEERING_CATEGORIES = [
+  "01 - Power System Planning, Design, Studies, and Ratings",
+  "02 - Power System Reliability, Availability, and Resilience",
+  "03 - Power Generation and Nuclear Plant Electrical Systems",
+  "04 - DER and Grid Interconnection",
+  "05 - Batteries, Energy Storage, and DC Systems",
+  "06 - Power Electronics, HVDC, and FACTS",
+  "07 - Electric Machinery and Excitation Systems",
+  "08 - Transformers, Regulators, and Reactors",
+  "09 - Substations",
+  "10 - Switchgear, Protection, and Relaying",
+  "11 - Transmission and Distribution Lines",
+  "12 - Cable Systems and Insulated Conductors",
+  "13 - Grounding and Bonding",
+  "14 - Insulation, Surge Protection, and High-Voltage Testing",
+  "15 - Capacitors and Reactive Power Compensation",
+  "16 - Power Quality",
+  "17 - Power System Instrumentation, Measurement, and Metering",
+  "18 - Communications, SCADA, IEDs, and Cybersecurity",
+  "19 - Electrical Safety Codes and Work Practices",
+  "20 - Industrial, Commercial, and Special Applications",
+  "21 - Transportation and Traction Power",
+  "22 - Electrical Documentation and Symbols",
+  "23 - EMC, EMI, and EMF Safety",
+  "24 - Software and Systems Engineering"
+] as const;
+
+const IEEE_CATEGORY = {
+  planning: IEEE_ENGINEERING_CATEGORIES[0],
+  reliability: IEEE_ENGINEERING_CATEGORIES[1],
+  generation: IEEE_ENGINEERING_CATEGORIES[2],
+  interconnection: IEEE_ENGINEERING_CATEGORIES[3],
+  batteries: IEEE_ENGINEERING_CATEGORIES[4],
+  powerElectronics: IEEE_ENGINEERING_CATEGORIES[5],
+  machinery: IEEE_ENGINEERING_CATEGORIES[6],
+  transformers: IEEE_ENGINEERING_CATEGORIES[7],
+  substations: IEEE_ENGINEERING_CATEGORIES[8],
+  switchgear: IEEE_ENGINEERING_CATEGORIES[9],
+  lines: IEEE_ENGINEERING_CATEGORIES[10],
+  cables: IEEE_ENGINEERING_CATEGORIES[11],
+  grounding: IEEE_ENGINEERING_CATEGORIES[12],
+  insulation: IEEE_ENGINEERING_CATEGORIES[13],
+  capacitors: IEEE_ENGINEERING_CATEGORIES[14],
+  powerQuality: IEEE_ENGINEERING_CATEGORIES[15],
+  instrumentation: IEEE_ENGINEERING_CATEGORIES[16],
+  communications: IEEE_ENGINEERING_CATEGORIES[17],
+  safety: IEEE_ENGINEERING_CATEGORIES[18],
+  applications: IEEE_ENGINEERING_CATEGORIES[19],
+  transportation: IEEE_ENGINEERING_CATEGORIES[20],
+  documentation: IEEE_ENGINEERING_CATEGORIES[21],
+  emc: IEEE_ENGINEERING_CATEGORIES[22],
+  software: IEEE_ENGINEERING_CATEGORIES[23]
+} as const;
+
+const IEEE_SUBSTATION_CROSS_CATEGORY_NUMBERS = [
+  "80",
+  "525",
+  "837",
+  "C37.121",
+  "C37.122",
+  "C37.122.1",
+  "C37.122.2",
+  "C37.122.3",
+  "C37.122.5",
+  "C37.122.7",
+  "C37.122.8",
+  "C37.123"
+];
+
+const IEEE_POWER_ELECTRONICS_CROSS_CATEGORY_NUMBERS = [
+  "857",
+  "1031",
+  "1052",
+  "1124",
+  "1158",
+  "1204",
+  "1240",
+  "1303",
+  "1378",
+  "1409",
+  "1534",
+  "1585",
+  "1623",
+  "1676"
+];
+
+function getIeeeCategoryPaths(standard: StandardRecord): string[][] {
+  const familyPath = getIeeeFamilyPath(standard);
+  const designation = ieeeDesignationWithoutPublisher(standard.designation);
+  const category = standard.primary_category;
+  const categoryLower = category.toLowerCase();
+  const categories = [getIeeePrimaryEngineeringCategory(category)];
+
+  if (
+    IEEE_SUBSTATION_CROSS_CATEGORY_NUMBERS.some((standardNumber) =>
+      matchesIeeeStandardNumber(designation, standardNumber)
+    )
+  ) {
+    categories.push(IEEE_CATEGORY.substations);
+  }
+
+  if (matchesIeeeStandardNumber(designation, "1246")) {
+    categories.push(IEEE_CATEGORY.grounding);
+  }
+
+  if (
+    categoryLower.includes("instrument transformers") ||
+    ["C37.118", "1459", "644"].some((standardNumber) =>
+      matchesIeeeStandardNumber(designation, standardNumber)
+    ) ||
+    (/^C(?:63|95)\b/i.test(designation) &&
+      /measurement|instrumentation|computation/.test(categoryLower))
+  ) {
+    categories.push(IEEE_CATEGORY.instrumentation);
+  }
+
+  if (
+    IEEE_POWER_ELECTRONICS_CROSS_CATEGORY_NUMBERS.some((standardNumber) =>
+      matchesIeeeStandardNumber(designation, standardNumber)
+    )
+  ) {
+    categories.push(IEEE_CATEGORY.powerElectronics);
+  }
+
+  if (category.startsWith("arc flash hazard analysis - ")) {
+    categories.push(IEEE_CATEGORY.safety);
+  }
+
+  if (category.startsWith("3000 industrial and commercial power systems - ")) {
+    categories.push(IEEE_CATEGORY.applications);
+  }
+
+  if (
+    category.startsWith("1547 DER interconnection - Energy Storage") ||
+    category.startsWith("2030 smart grid DERMS and microgrids - Energy Storage")
+  ) {
+    categories.push(IEEE_CATEGORY.batteries);
+  }
+
+  if (matchesIeeeStandardNumber(designation, "2030.100")) {
+    categories.push(IEEE_CATEGORY.communications);
+  }
+
+  if (categoryLower.includes("class 1e motors")) {
+    categories.push(IEEE_CATEGORY.machinery);
+  }
+
+  if (categoryLower.includes("nuclear cables")) {
+    categories.push(IEEE_CATEGORY.cables);
+  }
+
+  if (categoryLower.includes("class 1e switchgear")) {
+    categories.push(IEEE_CATEGORY.switchgear);
+  }
+
+  if (categoryLower.includes("nuclear standby power supplies")) {
+    categories.push(IEEE_CATEGORY.machinery);
+  }
+
+  if (
+    category.startsWith("C95 electromagnetic field human exposure safety - ") &&
+    /symbols|hazard communication/.test(categoryLower)
+  ) {
+    categories.push(IEEE_CATEGORY.documentation);
+  }
+
+  return [...new Set(categories)].map((engineeringCategory) => [
+    engineeringCategory,
+    ...familyPath.slice(1)
+  ]);
+}
+
+function getIeeePrimaryEngineeringCategory(category: string): string {
+  if (
+    category === "Utility safety code" ||
+    category.startsWith("electrical safety codes - ")
+  ) {
+    return IEEE_CATEGORY.safety;
+  }
+
+  if (category.startsWith("C57 transformers regulators and reactors - ")) {
+    return IEEE_CATEGORY.transformers;
+  }
+
+  if (category.startsWith("C37 switchgear and protection equipment - ")) {
+    return IEEE_CATEGORY.switchgear;
+  }
+
+  if (category.startsWith("C62 surge arresters and surge protective devices - ")) {
+    return IEEE_CATEGORY.insulation;
+  }
+
+  if (
+    category.startsWith("C63 electromagnetic compatibility and radio-noise measurements - ") ||
+    category.startsWith("C95 electromagnetic field human exposure safety - ")
+  ) {
+    return IEEE_CATEGORY.emc;
+  }
+
+  if (
+    category.startsWith("C135 overhead line and pole-line hardware - ") ||
+    category.startsWith("overhead transmission lines - ")
+  ) {
+    return IEEE_CATEGORY.lines;
+  }
+
+  if (category.startsWith("transportation and traction power - ")) {
+    return IEEE_CATEGORY.transportation;
+  }
+
+  if (category.startsWith("communications SCADA and IED cybersecurity - ")) {
+    return IEEE_CATEGORY.communications;
+  }
+
+  if (
+    category.startsWith("1547 DER interconnection - ") ||
+    category.startsWith("2030 smart grid DERMS and microgrids - ") ||
+    category.startsWith("2800 inverter-based resource interconnection - ")
+  ) {
+    return IEEE_CATEGORY.interconnection;
+  }
+
+  if (category.startsWith("arc flash hazard analysis - ")) {
+    return IEEE_CATEGORY.planning;
+  }
+
+  if (category.startsWith("battery and dc systems - ")) {
+    return IEEE_CATEGORY.batteries;
+  }
+
+  if (category.startsWith("3000 industrial and commercial power systems - ")) {
+    if (category.endsWith("Power Systems Grounding")) {
+      return IEEE_CATEGORY.grounding;
+    }
+
+    if (category.endsWith("Protection and Coordination")) {
+      return IEEE_CATEGORY.switchgear;
+    }
+
+    if (
+      category.endsWith("Power Systems Analysis") ||
+      category.endsWith("Power Systems Design")
+    ) {
+      return IEEE_CATEGORY.planning;
+    }
+
+    return IEEE_CATEGORY.applications;
+  }
+
+  if (category.startsWith("reliability and availability - ")) {
+    return IEEE_CATEGORY.reliability;
+  }
+
+  if (
+    category.startsWith("grounding and grounding connections - ") ||
+    category.startsWith("80/81/837 grounding and grounding connections - ")
+  ) {
+    return IEEE_CATEGORY.grounding;
+  }
+
+  if (
+    category.startsWith("capacitors - ") ||
+    category.startsWith("reactive power compensation - ")
+  ) {
+    return IEEE_CATEGORY.capacitors;
+  }
+
+  if (category.startsWith("heat tracing - ")) {
+    return IEEE_CATEGORY.applications;
+  }
+
+  if (category.startsWith("cable systems and insulated conductors - ")) {
+    return IEEE_CATEGORY.cables;
+  }
+
+  if (category.startsWith("substation design and operations - ")) {
+    return IEEE_CATEGORY.substations;
+  }
+
+  if (category.startsWith("power quality and harmonics - ")) {
+    return IEEE_CATEGORY.powerQuality;
+  }
+
+  if (category.startsWith("nuclear power electrical equipment - ")) {
+    return IEEE_CATEGORY.generation;
+  }
+
+  if (
+    category.startsWith("electric generators and excitation systems - ") ||
+    category.startsWith("electric motors and motor applications - ") ||
+    category.startsWith("rotating machine testing insulation and diagnostics - ")
+  ) {
+    return IEEE_CATEGORY.machinery;
+  }
+
+  return "Other IEEE Records";
+}
+
+function ieeeDesignationWithoutPublisher(designation: string): string {
+  return designation.replace(
+    /^(?:IEEE\/ANSI\/USEMCSC|ANSI\/IEEE|IEEE\/ANSI|ANSI\/USEMCSC|IEEE\/IEC|IEC\/IEEE|IEEE\/CSA|CSA\/IEEE|IEEE\/NACE|NACE\/IEEE|IEEE\/AMPP|AMPP\/IEEE|IEEE|ANSI)\s+(?:Std\s+)?/i,
+    ""
+  );
+}
+
+function matchesIeeeStandardNumber(designation: string, standardNumber: string) {
+  return new RegExp(
+    `^${escapeCategoryRegExp(standardNumber)}(?:[a-z]|\\.|-|/|$)`,
+    "i"
+  ).test(designation);
+}
+
+function escapeCategoryRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getIeeeFamilyPath(standard: StandardRecord): string[] {
   const category = standard.primary_category;
 
   if (category === "Utility safety code") {

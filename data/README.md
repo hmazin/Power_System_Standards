@@ -16,6 +16,11 @@ WECC regional standards, criteria, and standards procedure records can be refres
 
 IEEE family and series records can be refreshed from official IEEE SA standards pages discovered through the public IEEE standards sitemap with `scripts/update_ieee_catalog.mjs`.
 
+For IEEE rows, `primary_category` is the stable source-family classification
+written by the refresh script. The app maps that source classification into the
+numbered engineering taxonomy and may expose one standard through multiple
+category paths. Do not duplicate a CSV row to represent another category.
+
 Empty source-specific CSV files may be added with only the standard header row to reserve future target publishers without creating public app records.
 
 ## What Is Allowed

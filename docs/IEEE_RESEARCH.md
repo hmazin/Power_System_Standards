@@ -1,6 +1,6 @@
 # IEEE Standards Research
 
-Source review date: 2026-08-31.
+Source review date: 2026-09-01.
 
 ## Scope
 
@@ -35,12 +35,51 @@ This pass targets IEEE power-system standards that are especially relevant to ut
 - Electric motors and motor applications family - induction motors, severe-duty process-industry motors, nuclear safety-related motors, motor auxiliary devices, and AC motor repair and rewinding
 - Rotating machine testing, insulation, and diagnostics family - shared rotating-machine testing, insulation maintenance, insulation diagnostics, thermal evaluation, partial discharge measurement, permanent magnet machine testing, and DC electric machine maintenance
 
+## Engineering Category Taxonomy
+
+The app presents IEEE records through the finalized numbered engineering
+taxonomy used by the organized library:
+
+1. Power System Planning, Design, Studies, and Ratings
+2. Power System Reliability, Availability, and Resilience
+3. Power Generation and Nuclear Plant Electrical Systems
+4. DER and Grid Interconnection
+5. Batteries, Energy Storage, and DC Systems
+6. Power Electronics, HVDC, and FACTS
+7. Electric Machinery and Excitation Systems
+8. Transformers, Regulators, and Reactors
+9. Substations
+10. Switchgear, Protection, and Relaying
+11. Transmission and Distribution Lines
+12. Cable Systems and Insulated Conductors
+13. Grounding and Bonding
+14. Insulation, Surge Protection, and High-Voltage Testing
+15. Capacitors and Reactive Power Compensation
+16. Power Quality
+17. Power System Instrumentation, Measurement, and Metering
+18. Communications, SCADA, IEDs, and Cybersecurity
+19. Electrical Safety Codes and Work Practices
+20. Industrial, Commercial, and Special Applications
+21. Transportation and Traction Power
+22. Electrical Documentation and Symbols
+23. EMC, EMI, and EMF Safety
+24. Software and Systems Engineering
+
+IEEE records are not duplicated when they span disciplines. The source
+`primary_category` remains the canonical family classification, while the app
+derives one canonical engineering path and any justified secondary paths. This
+supports cases such as IEEE 525 in both Cable Systems and Substations, IEEE 80
+in both Grounding and Substations, IEEE C57.13 in both Transformers and Power
+System Instrumentation, and IEEE 1584 in both Power System Studies and
+Electrical Safety.
+
 The current dataset is built from public IEEE SA metadata pages discovered through the official IEEE standards sitemap. It tracks the latest public standards metadata for the app, not the user's local Google Drive PDF archive. Rows are kept when the IEEE SA page reports `Active Standard`, plus the narrow latest-published reference exceptions documented below.
 IEEE 80-2013 and IEEE 835-1994 are included as narrow reference exceptions because they are foundational grounding and cable ampacity references, while the IEEE SA pages currently list them as `Inactive-Reserved Standard`.
 IEEE 525-2025 is retained in the cable systems family as its primary category, but the webapp also surfaces it through the `IEEE Substations` family filter because its scope is substation cable systems. IEEE 1119-1988 is not included in the active public dataset because IEEE SA lists it as `Inactive-Withdrawn Standard`.
 IEEE 1409-2012 and IEEE 1564-2014 are included as power-quality reference exceptions because the IEEE SA pages currently list the published standards as `Inactive-Reserved Standard` while active PARs exist for replacement work.
 Machine-family reference exceptions include IEEE 43-2013, IEEE 67-2005, IEEE 95-2002, IEEE C50.13-2014, IEEE 810-2015, IEEE 1068-2015, IEEE 1095-2012, IEEE 1129-2014, IEEE 117-2015, IEEE 1310-2012, IEEE 1434-2014, IEEE 1776-2008, IEEE 421.2-2014, IEEE 421.4-2014, IEEE 434-2006, and IEEE 492-1999 where the IEEE SA pages currently list the published standards as `Inactive-Reserved Standard` while active PARs, active companion standards, or current engineering practice keep the topics useful.
 Communications/SCADA/IED cybersecurity reference exceptions include latest-published but inactive records for the IEEE 487 dot-series, IEEE 643, IEEE 999, IEEE 1379, IEEE 1613.1, IEEE 1646, IEEE 1815, and IEEE 1815.1 families. Older superseded Drive PDFs remain archive-only unless they are the latest known public IEEE SA metadata record for that family or subfamily.
+IEEE 211-2018 is included in Communications, SCADA, IEDs, and Cybersecurity as the current active radio-wave propagation terminology standard. The archived IEEE 211-1997 PDF is superseded and remains Drive-only.
 The Overhead Transmission Lines family excludes the IEEE C135 hardware series because C135 remains its own IEEE family in this registry.
 The local Drive Heat Tracing archive currently includes IEEE 515-2004 and IEEE 515.1-2005 PDFs, but those editions are superseded; Git tracks the current IEEE SA Heat Tracing metadata instead.
 The local Drive Transportation and Traction Power archive currently includes older or inactive editions such as IEEE 1629-2013 and IEEE 1653.1-2016; Git tracks the current active IEEE SA metadata for this family instead, including IEEE 1653.1-2026.
@@ -60,7 +99,7 @@ Current record counts:
 - Electrical safety codes: 1
 - Overhead Transmission Lines: 42
 - Transportation and traction power: 24
-- Communications, SCADA, and IED cybersecurity: 26
+- Communications, SCADA, and IED cybersecurity: 27
 - 1547: 6
 - 1584: 3
 - 2030: 17

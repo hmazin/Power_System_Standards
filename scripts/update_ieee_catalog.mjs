@@ -74,6 +74,7 @@ const SUPPLEMENTAL_STANDARD_URLS = [
   "https://standards.ieee.org/ieee/3175/10974",
   "https://standards.ieee.org/ieee/3351/11658",
   "https://standards.ieee.org/ieee/3352/11659",
+  "https://standards.ieee.org/ieee/211/6669",
   "https://standards.ieee.org/ieee/487/5662",
   "https://standards.ieee.org/ieee/487.1/5711",
   "https://standards.ieee.org/ieee/487.2/11558",
@@ -530,6 +531,7 @@ const TRANSPORTATION_TRACTION_POWER_STANDARD_NUMBERS = [
   "3352"
 ];
 const COMMUNICATIONS_SCADA_CYBERSECURITY_STANDARD_NUMBERS = [
+  "211",
   "487",
   "487.1",
   "487.2",
@@ -1413,6 +1415,10 @@ function subcategoryFor(series, title, designation) {
 
     if (/corrigendum|corrigenda|amendment/.test(haystack)) {
       return "Amendments and Corrections";
+    }
+
+    if (matchesStandardNumber(standardNumber, "211")) {
+      return "Radio-Wave Propagation Terminology";
     }
 
     if (matchesAnyStandardNumber(standardNumber, ["487", "487.1", "487.2", "487.3", "487.4", "487.5", "1692"])) {
